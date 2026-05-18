@@ -1,0 +1,38 @@
+{
+  "season": "2026",
+  "fetched": "2026-05-18",
+  "status": "preliminary",
+  "note": "CDC preliminary data. Official 2026 annual summary available end of year.",
+  "data": [
+    {
+      "week": 1,
+      "date": "2026-01-01",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "source": "CDC provisional",
+      "notes": "Winter - minimal activity expected"
+    },
+    {
+      "week": 20,
+      "date": "2026-05-18",
+      "wnv_cases": 0,
+      "lyme_cases": 2,
+      "rmsf_cases": 0,
+      "source": "CDC provisional",
+      "notes": "Early season - tick activity increasing with spring warming"
+    }
+  ],
+  "historical_baseline_2024": {
+    "wnv_cases_full_year": 12,
+    "lyme_cases_full_year": 119,
+    "peak_wnv_month": "August",
+    "peak_lyme_month": "July",
+    "ytd_through_may": {
+      "wnv": 0,
+      "lyme": 3
+    }
+  },
+  "update_frequency": "weekly",
+  "next_update": "2026-05-25"
+}
