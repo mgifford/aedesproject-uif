@@ -1,0 +1,103 @@
+name: Weekly CDC Data Ingestion
+
+on:
+  schedule:
+    - cron: '0 17 * * 5'   # Every Friday at 5 PM UTC (when CDC publishes weekly updates)
+  workflow_dispatch:         # Manual trigger
+    inputs:
+      week:
+        description: 'Week number to update (leave blank for auto)'
+        required: false
+        type: string
+      wnv:
+        description: 'WNV cases for the week'
+        required: false
+        default: '0'
+        type: string
+      lyme:
+        description: 'Lyme cases for the week'
+        required: false
+        default: '0'
+        type: string
+      rmsf:
+        description: 'RMSF cases for the week'
+        required: false
+        default: '0'
+        type: string
+      notes:
+        description: 'Notes for this update'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  ingest-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Attempt CDC provisional data fetch
+        id: fetch
+        run: |
+          python scripts/ingest_cdc_provisional.py --fetch
+        continue-on-error: true
+
+      - name: Manual week update (if workflow_dispatch with week specified)
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.week != ''
+        run: |
+          python scripts/ingest_cdc_provisional.py \
+            --week ${{ github.event.inputs.week }} \
+            --wnv ${{ github.event.inputs.wnv || '0' }} \
+            --lyme ${{ github.event.inputs.lyme || '0' }} \
+            --rmsf ${{ github.event.inputs.rmsf || '0' }} \
+            --notes "${{ github.event.inputs.notes || 'Manual weekly update' }}"
+
+      - name: Validate data
+        run: python scripts/ingest_cdc_provisional.py --validate
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git diff --quiet data/surveillance/ || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit updated data
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "AEDES Bot"
+          git config user.email "aedes-bot@users.noreply.github.com"
+          git add data/surveillance/
+          WEEK=$(python -c "import datetime; print(datetime.date.today().isocalendar()[1])")
+          git commit -m "data: weekly CDC ingestion — week ${WEEK} [skip ci]"
+          git push origin main
+
+      - name: Trigger dashboard rebuild
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'surveillance-dashboard.yml',
+              ref: 'main',
+            });
+            console.log('Triggered dashboard rebuild');
+
+      - name: No new data
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "No surveillance data changes detected this week."

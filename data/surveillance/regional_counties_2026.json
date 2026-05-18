@@ -1,0 +1,163 @@
+{
+  "season": "2026",
+  "fetched": "2026-05-18",
+  "source": "CDC NNDSS / Colorado CDPHE provisional",
+  "note": "County-level data is provisional. Aggregated from CDPHE weekly reports.",
+  "regions": {
+    "front_range": {
+      "label": "Front Range",
+      "counties": ["Denver", "Jefferson", "Arapahoe", "Adams", "Larimer", "Weld", "Boulder", "Douglas", "El Paso"]
+    },
+    "western_slope": {
+      "label": "Western Slope",
+      "counties": ["Mesa", "Garfield", "Montrose", "Delta", "Routt", "Eagle", "Pitkin"]
+    },
+    "eastern_plains": {
+      "label": "Eastern Plains",
+      "counties": ["Morgan", "Logan", "Yuma", "Phillips", "Sedgwick", "Washington", "Lincoln", "Kit Carson"]
+    },
+    "southern": {
+      "label": "Southern Colorado",
+      "counties": ["Pueblo", "Huerfano", "Las Animas", "Otero", "Bent", "Prowers", "Baca"]
+    }
+  },
+  "county_ytd": [
+    {
+      "county": "Denver",
+      "fips": "08031",
+      "region": "front_range",
+      "wnv_cases": 0,
+      "lyme_cases": 1,
+      "rmsf_cases": 0,
+      "population": 715522,
+      "lat": 39.7392,
+      "lon": -104.9903
+    },
+    {
+      "county": "Jefferson",
+      "fips": "08059",
+      "region": "front_range",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "population": 582910,
+      "lat": 39.5883,
+      "lon": -105.2136
+    },
+    {
+      "county": "Arapahoe",
+      "fips": "08005",
+      "region": "front_range",
+      "wnv_cases": 0,
+      "lyme_cases": 1,
+      "rmsf_cases": 0,
+      "population": 655070,
+      "lat": 39.6305,
+      "lon": -104.3373
+    },
+    {
+      "county": "Adams",
+      "fips": "08001",
+      "region": "front_range",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "population": 519572,
+      "lat": 39.8729,
+      "lon": -104.3373
+    },
+    {
+      "county": "Larimer",
+      "fips": "08069",
+      "region": "front_range",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "population": 359066,
+      "lat": 40.6630,
+      "lon": -105.3972
+    },
+    {
+      "county": "Weld",
+      "fips": "08123",
+      "region": "front_range",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "population": 328981,
+      "lat": 40.5516,
+      "lon": -104.3855
+    },
+    {
+      "county": "Boulder",
+      "fips": "08013",
+      "region": "front_range",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "population": 326196,
+      "lat": 40.0937,
+      "lon": -105.3584
+    },
+    {
+      "county": "El Paso",
+      "fips": "08041",
+      "region": "front_range",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "population": 730395,
+      "lat": 38.8339,
+      "lon": -104.8253
+    },
+    {
+      "county": "Pueblo",
+      "fips": "08101",
+      "region": "southern",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 1,
+      "population": 168424,
+      "lat": 38.2544,
+      "lon": -104.6091
+    },
+    {
+      "county": "Mesa",
+      "fips": "08077",
+      "region": "western_slope",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "population": 155998,
+      "lat": 39.0639,
+      "lon": -108.5506
+    },
+    {
+      "county": "Morgan",
+      "fips": "08087",
+      "region": "eastern_plains",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "population": 29068,
+      "lat": 40.2622,
+      "lon": -103.8024
+    },
+    {
+      "county": "Weld",
+      "fips": "08123",
+      "region": "eastern_plains",
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "population": 328981,
+      "lat": 40.5516,
+      "lon": -104.3855
+    }
+  ],
+  "historical_county_peaks": {
+    "wnv_hotspot_counties": ["Weld", "Adams", "Larimer", "Morgan", "Yuma"],
+    "lyme_hotspot_counties": ["Boulder", "Jefferson", "Larimer", "Denver"],
+    "rmsf_hotspot_counties": ["El Paso", "Pueblo", "Fremont"]
+  }
+}

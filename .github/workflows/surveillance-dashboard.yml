@@ -8,6 +8,7 @@ on:
     paths:
       - 'notebooks/**'
       - 'scripts/**'
+      - 'data/surveillance/**'
   workflow_dispatch:        # Manual trigger from Actions tab
 
 permissions:
@@ -35,6 +36,7 @@ jobs:
             jupyter \
             nbconvert \
             nbformat \
+            nbclient \
             pandas \
             numpy \
             matplotlib \

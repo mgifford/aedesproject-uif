@@ -62,6 +62,45 @@ def surveillance_data_dir(temp_dir, sample_wnv_data, sample_lyme_data, sample_cl
         "climate_colorado_90d.json": sample_climate_data,
         "inaturalist_ticks_colorado.json": {"fetched": "2026-01-01", "source": "iNaturalist", "data": []},
         "inaturalist_mosquitoes_colorado.json": {"fetched": "2026-01-01", "source": "iNaturalist", "data": []},
+        "2026_season_ytd.json": {
+            "season": "2026",
+            "fetched": "2026-01-01",
+            "status": "preliminary",
+            "data": [
+                {"week": 1,  "date": "2026-01-05", "wnv_cases": 0, "lyme_cases": 0, "rmsf_cases": 0,
+                 "source": "CDC provisional", "notes": "Winter baseline"},
+                {"week": 20, "date": "2026-05-18", "wnv_cases": 0, "lyme_cases": 2, "rmsf_cases": 0,
+                 "source": "CDC provisional", "notes": "Early season"},
+            ],
+            "historical_baseline_2024": {
+                "wnv_cases_full_year": 12, "lyme_cases_full_year": 119,
+                "peak_wnv_month": "August", "peak_lyme_month": "July",
+                "ytd_through_may": {"wnv": 0, "lyme": 3},
+            },
+            "update_frequency": "weekly",
+            "next_update": "2026-05-25",
+        },
+        "regional_counties_2026.json": {
+            "season": "2026",
+            "fetched": "2026-01-01",
+            "source": "CDC provisional",
+            "regions": {
+                "front_range": {"label": "Front Range", "counties": ["Denver", "Jefferson"]},
+            },
+            "county_ytd": [
+                {"county": "Denver",    "fips": "08031", "region": "front_range",
+                 "wnv_cases": 0, "lyme_cases": 1, "rmsf_cases": 0,
+                 "population": 715522, "lat": 39.74, "lon": -104.99},
+                {"county": "Jefferson", "fips": "08059", "region": "front_range",
+                 "wnv_cases": 0, "lyme_cases": 0, "rmsf_cases": 0,
+                 "population": 582910, "lat": 39.59, "lon": -105.21},
+            ],
+            "historical_county_peaks": {
+                "wnv_hotspot_counties": ["Weld"],
+                "lyme_hotspot_counties": ["Boulder"],
+                "rmsf_hotspot_counties": ["El Paso"],
+            },
+        },
     }
     for name, payload in files.items():
         with open(os.path.join(temp_dir, name), "w") as f:

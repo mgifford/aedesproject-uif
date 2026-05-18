@@ -32,6 +32,34 @@ NOTEBOOK_META = {
         "disease": "Lyme / RMSF / CTF",
         "vector": "Ixodes / Dermacentor",
     },
+    "04_climate_disease_correlation": {
+        "title": "Climate–Disease Correlation",
+        "icon": "🌡️",
+        "description": "Feature engineering with Growing Degree Days, winter survival risk, and correlation between climate variables and disease incidence.",
+        "disease": "WNV / Lyme",
+        "vector": "Climate-driven",
+    },
+    "05_climate_change_impact_analysis": {
+        "title": "Climate Change Impact Analysis",
+        "icon": "📈",
+        "description": "Long-term climate trends, projected vector range expansion, and future risk scoring under warming scenarios.",
+        "disease": "WNV / Lyme / RMSF",
+        "vector": "Multi-vector",
+    },
+    "06_current_season_monitoring": {
+        "title": "2026 Season Monitoring",
+        "icon": "📅",
+        "description": "Real-time 2026 season tracking with weekly case counts, baseline comparisons, and early-warning alert levels.",
+        "disease": "WNV / Lyme / RMSF",
+        "vector": "Live monitoring",
+    },
+    "07_regional_tracking": {
+        "title": "Regional County Tracking",
+        "icon": "🗺️",
+        "description": "County-level breakdown for Colorado — choropleth map, Front Range hotspot analysis, and per-county iNaturalist vector observations.",
+        "disease": "WNV / Lyme / RMSF",
+        "vector": "County-level",
+    },
 }
 
 

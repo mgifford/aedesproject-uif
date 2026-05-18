@@ -217,6 +217,59 @@ def fetch_inaturalist_mosquitoes() -> None:
     save("inaturalist_mosquitoes_colorado.json", {"fetched": TODAY, "source": "unavailable", "data": []})
 
 
+def update_regional_data() -> None:
+    """
+    Refresh county-level YTD totals in regional_counties_2026.json.
+
+    Merges iNaturalist observation county tags into the county registry and
+    sets the `fetched` timestamp so notebooks know the file is current.
+    If the file doesn't exist yet, the initial seed file is left in place.
+    """
+    print("Updating regional county data...")
+
+    regional_path = os.path.join(OUTPUT_DIR, "regional_counties_2026.json")
+
+    # Load existing regional data (created by seed file at install time)
+    if not os.path.exists(regional_path):
+        print("  ⚠ regional_counties_2026.json not found; skipping regional update")
+        return
+
+    with open(regional_path) as f:
+        regional = json.load(f)
+
+    # Count iNaturalist tick observations per county this season
+    ticks_path = os.path.join(OUTPUT_DIR, "inaturalist_ticks_colorado.json")
+    mosq_path = os.path.join(OUTPUT_DIR, "inaturalist_mosquitoes_colorado.json")
+
+    county_tick_obs: dict[str, int] = {}
+    county_mosq_obs: dict[str, int] = {}
+
+    for path, counter in [(ticks_path, county_tick_obs), (mosq_path, county_mosq_obs)]:
+        if os.path.exists(path):
+            try:
+                with open(path) as f:
+                    obs_data = json.load(f)
+                for obs in obs_data.get("data", []):
+                    county_guess = obs.get("county", "") or ""
+                    # iNaturalist uses "County, CO" format
+                    parts = [p.strip() for p in county_guess.split(",")]
+                    if parts:
+                        county_name = parts[0].replace(" County", "").strip()
+                        counter[county_name] = counter.get(county_name, 0) + 1
+            except (json.JSONDecodeError, IOError) as exc:
+                print(f"  WARNING: could not load {path}: {exc}")
+
+    # Annotate each county with observation counts
+    for county_entry in regional.get("county_ytd", []):
+        name = county_entry.get("county", "")
+        county_entry["tick_observations_ytd"] = county_tick_obs.get(name, 0)
+        county_entry["mosquito_observations_ytd"] = county_mosq_obs.get(name, 0)
+
+    regional["fetched"] = TODAY
+    save("regional_counties_2026.json", regional)
+    print(f"  Updated regional data for {len(regional.get('county_ytd', []))} counties")
+
+
 if __name__ == "__main__":
     print(f"AEDES Surveillance Data Fetch — {TODAY}")
     print("=" * 50)
@@ -225,5 +278,6 @@ if __name__ == "__main__":
     fetch_nasa_power_colorado()
     fetch_inaturalist_ticks()
     fetch_inaturalist_mosquitoes()
+    update_regional_data()
     print("=" * 50)
     print("Data fetch complete. Notebooks will use available data.")
