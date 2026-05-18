@@ -1,0 +1,13 @@
+.md-header {
+  height: 100px;  /* Adjust this value to your preference */
+}
+.md-header__button img {
+  height: 80px !important;  /* Adjust the height to your preference */
+  width: auto !important;  /* Maintain aspect ratio */
+}
+.md-header__title {
+  font-size: 24px !important;  /* Adjust the font size to your preference */
+}
+
+
+
