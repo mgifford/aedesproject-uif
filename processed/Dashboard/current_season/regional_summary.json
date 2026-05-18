@@ -1,0 +1,87 @@
+{
+  "generated": "2026-05-18",
+  "season": "2026",
+  "regions": [
+    {
+      "region": "eastern_plains",
+      "region_label": "Eastern Plains",
+      "counties": 2,
+      "population": 358049,
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "total_cases": 0,
+      "cases_per_100k": 0.0
+    },
+    {
+      "region": "front_range",
+      "region_label": "Front Range",
+      "counties": 8,
+      "population": 4217712,
+      "wnv_cases": 0,
+      "lyme_cases": 2,
+      "rmsf_cases": 0,
+      "total_cases": 2,
+      "cases_per_100k": 0.05
+    },
+    {
+      "region": "southern",
+      "region_label": "Southern Colorado",
+      "counties": 1,
+      "population": 168424,
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 1,
+      "total_cases": 1,
+      "cases_per_100k": 0.59
+    },
+    {
+      "region": "western_slope",
+      "region_label": "Western Slope",
+      "counties": 1,
+      "population": 155998,
+      "wnv_cases": 0,
+      "lyme_cases": 0,
+      "rmsf_cases": 0,
+      "total_cases": 0,
+      "cases_per_100k": 0.0
+    }
+  ],
+  "top_counties_by_cases": [
+    {
+      "county": "Denver",
+      "region": "front_range",
+      "total_cases": 1,
+      "cases_per_100k": 0.14
+    },
+    {
+      "county": "Arapahoe",
+      "region": "front_range",
+      "total_cases": 1,
+      "cases_per_100k": 0.15
+    },
+    {
+      "county": "Pueblo",
+      "region": "southern",
+      "total_cases": 1,
+      "cases_per_100k": 0.59
+    },
+    {
+      "county": "Jefferson",
+      "region": "front_range",
+      "total_cases": 0,
+      "cases_per_100k": 0.0
+    },
+    {
+      "county": "Adams",
+      "region": "front_range",
+      "total_cases": 0,
+      "cases_per_100k": 0.0
+    }
+  ],
+  "statewide_totals": {
+    "wnv": 0,
+    "lyme": 2,
+    "rmsf": 1
+  }
+}

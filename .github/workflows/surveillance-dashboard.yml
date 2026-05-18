@@ -58,8 +58,12 @@ jobs:
             jupyter nbconvert \
               --to html \
               --execute \
+              --no-input \
+              --no-prompt \
               --ExecutePreprocessor.timeout=300 \
               --output-dir _site/notebooks \
+              --template-dir templates \
+              --template collapsible.tpl \
               "$nb"
           done
 

@@ -196,12 +196,6 @@ For detailed information on how to use and leverage the full potential of aedesp
 
 https://cirrolytix.github.io/aedesproject-uif/ 📚
 
-## Awards
-
-Global Award for Best Use of Data, [2019 NASA Space Apps Challenge](https://2019.spaceappschallenge.org/challenges/living-our-world/smash-your-sdgs/teams/aedes-project/project)  
-2020 Earth Observation for the Sustainable Development Goals (GEO SDG) Award, [Group on Earth Observations](https://www.earthobservations.org/geo_blog_obs.php?id=472)
-Digital Public Good Status, [UNICEF Philippines, UNICEF Office of Global Innovation, and Digital Public Goods Alliance](https://digitalpublicgoods.net/blog/unicef-philippines-announces-its-first-digital-public-good-pathfinding-pilot/)
-Highly Commended, Resilience, safety, resource quality & protection of life Category, [Geovation International Geospatial Innovation Awards 2023](https://geovation.uk/insights/introducing-our-award-winners/)
 
 ## Licenses
 
