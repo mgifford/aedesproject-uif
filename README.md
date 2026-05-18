@@ -2,44 +2,142 @@
 
 [![Test Coverage](https://github.com/Cirrolytix/aedesproject-uif/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/Cirrolytix/aedesproject-uif/actions/workflows/test-coverage.yml)
 
-# Project AEDES Unicef Innovation Repository
+# Project AEDES: Universal Vector-Borne Disease Surveillance
 
 ## What is AEDES?
 
-**Advanced Early Dengue Prediction and Exploration Service (AEDES)** aims to achieve a sustainable future for humanity by **advancing innovations in risk management**. We strive to improve risk identification and mitigation through 4IR technologies such as big data, AI, robotics, and IoT. Through big data, we enhance root cause analysis, design, planning, and monitoring to achieve positive outcomes and minimize harms to humanity. Our mission is to **empower the public sector and non-profit organizations** with **multimodal, multidimensional dashboards** that inform sustainable risk interventions towards quantifiable impacts on society.
+**Advanced Early Disease Prediction and Exploration Service (AEDES)** is a unified, modular surveillance platform for vector-borne and zoonotic diseases. Originally developed for dengue forecasting in the Philippines, AEDES has evolved into a flexible framework for monitoring multiple diseases across different geographic contexts using big data, AI, and environmental intelligence. Our mission is to **empower public health agencies and non-profits with real-time dashboards and predictive models** that identify disease outbreaks before they spread, enabling rapid, targeted interventions.
 
-### Dengue Crisis in the Philippines
+### Historical Foundation: Dengue in the Philippines ✅
 
-The dengue situation in the Philippines has been a persistent public health concern. In 2019, the country reported over 146,062 cases and 622 deaths due to dengue, making it the nation with the most number of dengue cases in Southeast Asia for that year [[Paris, J. (2019)]](https://www.rappler.com/nation/237340-philippines-has-most-dengue-cases-southeast-asia-2019/). In 2022, the situation escalated further with approximately 221,000 recorded cases, marking an 182% increase compared to the same period in the previous year [[Statista Research Department (2019)]](https://www.statista.com/statistics/1120319/philippines-number-dengue-cases/). As of July 15, 2023, the Philippines Department of Health (DOH) has reported a total of 80,318 dengue fever cases, with 14 of the 17 regions in the country experiencing an increase in cases over the past month [["Philippines dengue tally" (2023)]](https://outbreaknewstoday.com/philippines-dengue-tally-eclipses-80000-in-2023-to-date-92506/#:~:text=The%20Philippines%20Department%20of%20Health,cases%20over%20the%20past%20month.).
+AEDES was originally created to address dengue crisis in the Philippines—a persistent public health emergency. In 2019, the Philippines reported 146,062 dengue cases and 622 deaths. By 2022, cases surged to 221,000 (182% increase). The AEDES dengue surveillance system successfully demonstrated that combining case data with environmental signals (climate, satellite imagery, search trends) could provide early warnings of outbreaks 2-3 weeks ahead of official case reports.
 
-### Global Dengue Situation
+**This proven approach is now being adapted globally.**
 
-In 2023, the global dengue situation is alarming. As of August 23, over 3.7 million cases and more than 2,000 dengue-related deaths have been reported from 70 countries/territories. The Americas are particularly hard-hit, with over 3 million new infections recorded so far. Countries like Brazil, Peru, and Bolivia are among the most affected, experiencing severe outbreaks that have strained their healthcare systems [["Dengue Worldwide Overview" (2023)]](https://www.ecdc.europa.eu/en/dengue-monthly).
+---
 
-### The Need for a Big Data Dengue Risk Surveillance Portal
+## USA Vector-Borne Disease Surveillance: Focus on Colorado
 
-The escalating numbers of dengue cases, both in the Philippines and globally, make a compelling case for the urgent need for a big data dengue risk surveillance portal. Such a system could offer advanced warnings of potential outbreaks to public health agencies and local governments, enabling them to allocate resources more effectively and implement targeted interventions.
+The United States faces a growing threat from multiple tick-borne and mosquito-borne diseases. Colorado is particularly vulnerable due to its position on major bird migration routes and diverse ecology that supports multiple vector species.
 
-### Our Solution
+### Vector-Borne Diseases in Colorado
 
-AEDES for Dengue is an automated information portal that correlates dengue cases and deaths with various non-traditional data, giving an advance indicator of when dengue will emerge and potential dengue hotspot locations.
+#### 1. **Lyme Disease** (Tick-borne) — PRIMARY CONCERN
+- **Cases in Colorado**: Rising (2023: 42 reported cases)
+- **Vector**: Ixodes scapularis ticks (black-legged ticks) and I. pacificus (western ticks)
+- **Peak Season**: April-October (highest June-August)
+- **Risk Areas**: Forested and wooded areas, especially eastern and western Colorado
+- **Trend**: Expanding northward and westward as climate warms
 
-This service relies on 5 data sets:
-1. Satellite Data: Satellite imaging data from NASA Worldview and AppEEARS
-2. Meteorological Data: from NASA POWER
-3. Google Data: Search trends for 'dengue' and related terms
-4. Places of Interest (POIs): Buildings, amenities, and water bodies from OpenStreetMap
-5. Demographic Data: Population density and relative wealth index from Meta Data for Good
+#### 2. **West Nile Virus** (Mosquito-borne)
+- **Cases in Colorado**: Variable (2023: 8 reported cases)
+- **Vector**: Culex mosquitoes (night-feeding)
+- **Peak Season**: June-October (highest August-September)
+- **Risk Areas**: Urban areas with stagnant water, irrigation systems
+- **Trend**: Persistent endemic circulation
 
-To populate the information portal, AEDES runs on three models:
-1. Dengue cases prediction from climate and search data
-2. Likely stagnant water detection (dengue hotspots) from satellite data
-3. Assessment the risk of dengue crisis by examining the hazard, vulnerability, and lack of coping capacity of localities
+#### 3. **Rocky Mountain Spotted Fever** (Tick-borne)
+- **Cases in Colorado**: Low but potentially underreported
+- **Vector**: Dermacentor (American dog tick) and Ixodes ticks
+- **Peak Season**: April-June (spring tick season)
+- **Trend**: Sporadic cases, often misdiagnosed initially
 
-By doing this, AEDES is addressing 2 key challenges for public health and local government officials:
+#### 4. **Avian Influenza** (Spillover Risk) — EMERGING THREAT
+- **Wild Bird Detections**: Growing across Colorado (H5N1 confirmed)
+- **Risk to Poultry**: High economic impact (commercial flocks)
+- **Risk to Humans**: Occupational exposure for farm workers, wildlife handlers
+- **Monitoring**: Real-time via USGS, eBird observations
+- **Trend**: Seasonal peaks during spring (March-May) and fall (August-October) migration
 
-- Get ahead of the lagged delay of dengue reporting by using real-time information (e.g., climate, searches) to infer if dengue cases are about to spike.
-- Precisely anticipate areas that may be affected by dengue to prioritize health aid, supplies, and proactive fumigation to prevent the outbreaks.
+---
+
+### Why Colorado Needs AEDES
+
+**The Challenge:**
+- Multiple diseases with overlapping seasons (spring: ticks + bird migration; summer: mosquitoes)
+- Cases reported with 1-3 week delays to public health agencies
+- Different data sources (CDPHE cases, CPW wildlife data, weather, Google Trends) are not integrated
+- Forecasting capability lags by weeks compared to environmental signals
+
+**The AEDES Solution:**
+- **Real-time data integration**: Combine CDPHE case reports with environmental signals
+- **Early warning**: Use climate patterns, wildlife observations, Google Trends to forecast 2-4 weeks ahead
+- **Multi-disease monitoring**: Track Lyme, WNV, RMSF, and bird flu spillover risk in one unified dashboard
+- **Risk stratification**: Identify high-risk counties and time periods for targeted interventions
+- **Occupational health**: Monitor wildlife handlers and farm workers for disease exposure
+
+---
+
+### AEDES Colorado Surveillance Model
+
+AEDES Colorado integrates five data streams for each disease:
+
+**1. Case Surveillance** (from Colorado Department of Public Health & Environment)
+- Confirmed/probable cases by date, location, demographics
+- Hospital admissions, severity data
+- Deaths and complications
+
+**2. Vector & Wildlife Monitoring**
+- Tick surveillance (iNaturalist observations, citizen science)
+- Mosquito trapping data (CPW)
+- Dead bird reports (USGS, iNaturalist)
+- Occupational exposure incidents
+
+**3. Environmental Signals**
+- Temperature and humidity (NOAA weather)
+- Precipitation patterns
+- Satellite land cover data (vegetation, water bodies)
+- Tick life cycle models based on climate
+
+**4. Search & Social Signals**
+- Google Trends for disease-related searches
+- News media mentions
+- Social media signals
+- Public health alert volume
+
+**5. Migration & Phenology Data**
+- Bird migration intensity (spring/fall peaks)
+- Tick emergence timing (based on growing degree days)
+- Mosquito breeding habitat conditions
+
+**Integration Model:**
+```
+Real-Time Data → Analysis Engine → Risk Score → Forecast → Dashboard
+     ↓              ↓                 ↓           ↓          ↓
+  CDPHE cases   Environmental       Tick Risk   Week 1-4   Public Health
+  iNaturalist   correlation         WNV Risk    Cases      Officials
+  Weather       Machine learning    Bird Flu    Alerts     Clinicians
+  Google Trends Predictive models   RMSF Risk   Maps       Community
+  USGS          Historical patterns                        
+```
+
+---
+
+### Dashboard Features
+
+**AEDES Colorado provides:**
+- Real-time case maps by disease
+- 4-week risk forecasts with confidence intervals
+- Tick activity hotspot predictions
+- Mosquito breeding habitat risk assessment
+- Bird migration intensity index (early warning for spillover)
+- County-level risk scores
+- Occupational exposure alerts
+- Automated notifications when thresholds exceeded
+
+---
+
+### Key Data Sources
+
+| Disease | Source | Frequency | Focus |
+|---------|--------|-----------|-------|
+| **All Cases** | CDPHE Disease Reports | Weekly | Confirmed/probable cases |
+| **Lyme, RMSF** | iNaturalist + eBird | Real-time | Tick observations |
+| **West Nile** | CPW Mosquito Surveillance | Weekly | Mosquito abundance |
+| **Bird Flu** | USGS HPAI Dashboard | Daily | H5N1 detections |
+| **Weather** | NOAA Weather API | Hourly | Temperature, humidity, precip |
+| **Trends** | Google Trends + News | Daily | Public interest, media coverage |
+| **Migration** | eBird Migration Maps | Daily | Bird movement patterns |
 
 ## Documentation
 
