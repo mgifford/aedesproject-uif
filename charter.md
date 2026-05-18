@@ -2,7 +2,9 @@
 
 ## What is Project AEDES?
 
-Advanced Early Dengue Prediction and Exploration Service (AEDES) aims to improve public health response against dengue in the Philippines by predicting dengue cases from climate and digital data and pinpointing possible hotspots from satellite data.
+Advanced Early Disease Prediction and Exploration Service (AEDES) aims to improve public health response against vector-borne diseases by predicting disease cases from climate and digital data and pinpointing possible hotspots from satellite and environmental data.
+
+> **Historical note**: AEDES was originally conceived as the *Advanced Early **Dengue** Prediction and Exploration Service*, focused on dengue surveillance in the Philippines (Ligot & Toledo, 2021). The framework has since been generalized to support multiple vector-borne diseases across different geographic contexts.
 
 Effective: September 1, 2022
 Last Updated: January 25, 2023

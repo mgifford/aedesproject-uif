@@ -87,7 +87,8 @@
 			
 			<span id="about" ><br/></span><hr/>
 			<section class="w3-padding">
-				<div class="w3-xlarge" >Advanced Early Dengue Prediction and Exploration Service (AEDES)</div>
+				<div class="w3-xlarge" >Advanced Early Disease Prediction and Exploration Service (AEDES)</div>
+				<p><em>Originally developed as the Advanced Early <strong>Dengue</strong> Prediction and Exploration Service for dengue surveillance in the Philippines.</em></p>
 				<p>AEDES aims to improve public health response against dengue in the Philippines by predicting dengue cases from climate and digital data and pinpointing possible hotspots from satellite data.</p>
 				
 				<p>The service relies on 3 data sets:

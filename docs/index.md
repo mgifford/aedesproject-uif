@@ -1,8 +1,10 @@
-# Advanced Early Detection and Exploration Service for Dengue (UNICEF Innovation Fund)
+# Advanced Early Disease Prediction and Exploration Service (AEDES)
 
 ## Introduction
 
-Welcome to the AedesProject-UIF documentation! This Python package is designed for advanced early dengue detection and exploration services.
+Welcome to the AedesProject-UIF documentation! This Python package is designed for advanced early disease prediction and exploration, supporting surveillance of multiple vector-borne diseases across different geographic contexts.
+
+> **Original work**: AEDES was originally developed as the *Advanced Early **Dengue** Prediction and Exploration Service* under the UNICEF Innovation Fund, focused on dengue surveillance in the Philippines.
 
 ### Dengue Crisis in the Philippines
 
