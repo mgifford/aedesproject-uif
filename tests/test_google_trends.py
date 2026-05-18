@@ -38,7 +38,7 @@ class TestFetchGoogleTrends:
     """Tests for fetch_google_trends function."""
 
     @patch("pathlib.Path.exists")
-    @patch("pd.read_csv")
+    @patch("pandas.read_csv")
     @patch("aedesproject_uif.data_extraction.google_trends.TrendReq")
     def test_fetch_google_trends_success(self, mock_trends_class, mock_read_csv, mock_exists):
         """Test successful fetch of Google Trends data."""
@@ -74,7 +74,7 @@ class TestFetchGoogleTrends:
         assert len(result) > 0
 
     @patch("pathlib.Path.exists")
-    @patch("pd.read_csv")
+    @patch("pandas.read_csv")
     def test_fetch_google_trends_missing_subdivision_data(self, mock_read_csv, mock_exists):
         """Test handling of missing subdivision data."""
         mock_exists.return_value = False
@@ -83,7 +83,7 @@ class TestFetchGoogleTrends:
             fetch_google_trends("PHL", "2016-01-01", "2021-01-01")
 
     @patch("pathlib.Path.exists")
-    @patch("pd.read_csv")
+    @patch("pandas.read_csv")
     def test_fetch_google_trends_corrupted_csv(self, mock_read_csv, mock_exists):
         """Test handling of corrupted CSV data."""
         mock_exists.return_value = True
@@ -93,7 +93,7 @@ class TestFetchGoogleTrends:
             fetch_google_trends("PHL", "2016-01-01", "2021-01-01")
 
     @patch("pathlib.Path.exists")
-    @patch("pd.read_csv")
+    @patch("pandas.read_csv")
     @patch("aedesproject_uif.data_extraction.google_trends.TrendReq")
     def test_fetch_google_trends_api_error(self, mock_trends_class, mock_read_csv, mock_exists):
         """Test handling of API errors."""
@@ -118,7 +118,7 @@ class TestSaveGoogleTrends:
     """Tests for save_google_trends function."""
 
     @patch("pathlib.Path.mkdir")
-    @patch("pd.DataFrame.to_csv")
+    @patch("pandas.DataFrame.to_csv")
     def test_save_google_trends_success(self, mock_to_csv, mock_mkdir):
         """Test successful saving of Google Trends data."""
         df = pd.DataFrame({
@@ -134,7 +134,7 @@ class TestSaveGoogleTrends:
             assert "PHL.csv" in str(path)
 
     @patch("pathlib.Path.mkdir")
-    @patch("pd.DataFrame.to_csv")
+    @patch("pandas.DataFrame.to_csv")
     def test_save_google_trends_write_error(self, mock_to_csv, mock_mkdir):
         """Test handling of write errors."""
         df = pd.DataFrame({
@@ -155,11 +155,11 @@ class TestSaveGoogleTrends:
             "value": [50]
         })
 
-        with tempfile import TemporaryDirectory:
-            with TemporaryDirectory() as tmpdir:
-                output_dir = Path(tmpdir)
-                path = save_google_trends(df, "PHL", output_dir)
-                assert path.parent == output_dir
+        from tempfile import TemporaryDirectory
+        with TemporaryDirectory() as tmpdir:
+            output_dir = Path(tmpdir)
+            path = save_google_trends(df, "PHL", output_dir)
+            assert path.parent == output_dir
 
 
 if __name__ == "__main__":

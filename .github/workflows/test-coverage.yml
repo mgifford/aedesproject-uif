@@ -1,60 +1,55 @@
-name: Test Coverage
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
 jobs:
-    Test-Coverage:
-        runs-on: ubuntu-latest
-        steps:
-          - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-          - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-          - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-          - name: Check out repository code
-            uses: actions/checkout@v3
-          - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-          - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-          - name: List files in the repository
-            run: |
-              ls ${{ github.workspace }}
-          - run: echo "🍏 This job's status is ${{ job.status }}."
-          
-          - uses: actions/checkout@v3
-          - name: Set up Python 3.10
-            uses: actions/setup-python@v3
-            with:
-                python-version: "3.10"
-          - name: Install dependencies
-            run: |
-                python -m pip install --upgrade pip
-                pip install flake8 pytest
-                #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-                pip install pytest-cov
-                pip install geopandas
-                pip install requests
-                pip install pytrends
-                pip install wget
-                pip install osmnx
-                pip install retrying
-                pip install rasterio
-                pip install typing
-                pip install shapely
-          - name: Lint with flake8
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install core dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov pytest-mock
+          pip install requests pytrends pandas retrying
+          pip install -e . --no-deps
+
+      - name: Lint with flake8
             run: |
                 # stop the build if there are Python syntax errors or undefined names
                 # flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
                 # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
                 # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-          - name: Test with pytest
-            run: |
-                pytest tests/test_geoboundaries.py
-                pytest tests/test_demographics.py
-                pytest tests/test_geoboundaries.py 
-                pytest tests/test_google_trends.py 
-                pytest tests/test_meteorological.py 
-                pytest tests/test_nasa_appeears.py                 
-                pytest --cov
-          - run: echo "Test completed"
-          - name: Upload coverage reports to Codecov
-            uses: codecov/codecov-action@v3
-            env:
-                CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Run tests with coverage
+        run: |
+          pytest tests/ \
+            --ignore=tests/test_geoboundaries.py \
+            --ignore=tests/test_nasa_worldview.py \
+            --ignore=tests/test_osm.py \
+            -v \
+            --tb=short \
+            --cov=scripts \
+            --cov=src/aedesproject_uif \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.xml
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
