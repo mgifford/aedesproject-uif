@@ -7793,15 +7793,57 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --></head>
+<!-- End of mermaid configuration -->
+<style>
+.code-toggle-btn {
+  margin: 0.4rem 0 0.2rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background: #f6f8fa;
+  color: #24292f;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.code-toggle-btn:hover { background: #eef2f6; }
+.jp-InputArea.jp-Cell-inputArea.collapsed-query { display: none; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.jp-CodeCell').forEach(function (cell) {
+    const input = cell.querySelector('.jp-InputArea.jp-Cell-inputArea');
+    if (!input) return;
+
+    input.classList.add('collapsed-query');
+    const button = document.createElement('button');
+    button.className = 'code-toggle-btn';
+    button.type = 'button';
+    button.textContent = 'Show query';
+
+    button.addEventListener('click', function () {
+      const isCollapsed = input.classList.contains('collapsed-query');
+      if (isCollapsed) {
+        input.classList.remove('collapsed-query');
+        button.textContent = 'Hide query';
+      } else {
+        input.classList.add('collapsed-query');
+        button.textContent = 'Show query';
+      }
+    });
+
+    input.parentNode.insertBefore(button, input);
+  });
+});
+</script>
+
+</head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f55bc8be">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="%F0%9F%95%B7%EF%B8%8F-Tick-Borne-Disease-Surveillance-%E2%80%94-Colorado">🕷️ Tick-Borne Disease Surveillance — Colorado<a class="anchor-link" href="#%F0%9F%95%B7%EF%B8%8F-Tick-Borne-Disease-Surveillance-%E2%80%94-Colorado">¶</a></h1><p><strong>AEDES | Advanced Early Disease Prediction and Exploration Service</strong></p>
 <p>This notebook tracks tick-borne diseases in Colorado using:</p>
 <ul>
@@ -7820,7 +7862,6 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
@@ -7859,7 +7900,6 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Analysis date: 2026-05-18
 Data directory exists: True
@@ -7873,8 +7913,7 @@ Data directory exists: True
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="1.-Lyme-Disease-Case-Trends-(2015%E2%80%932024)">1. Lyme Disease Case Trends (2015–2024)<a class="anchor-link" href="#1.-Lyme-Disease-Case-Trends-(2015%E2%80%932024)">¶</a></h2>
 </div>
 </div>
@@ -7884,7 +7923,6 @@ Data directory exists: True
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="n">raw</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s1">'lyme_colorado.json'</span><span class="p">)</span>
@@ -7919,7 +7957,6 @@ Data directory exists: True
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Source: CDC Lyme Data Tables (historical)
 Total cases (2015–2024): 806
@@ -7929,7 +7966,6 @@ Avg annual growth rate: 10.4%
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8015,7 +8051,6 @@ Avg annual growth rate: 10.4%
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -8058,7 +8093,6 @@ Avg annual growth rate: 10.4%
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Source: CDC Lyme Data Tables (historical)
 </pre>
@@ -8071,8 +8105,7 @@ Avg annual growth rate: 10.4%
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="2.-Seasonal-Risk-Calendar">2. Seasonal Risk Calendar<a class="anchor-link" href="#2.-Seasonal-Risk-Calendar">¶</a></h2>
 </div>
 </div>
@@ -8082,7 +8115,6 @@ Avg annual growth rate: 10.4%
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Tick activity and disease risk by month for Colorado</span>
@@ -8140,8 +8172,7 @@ Avg annual growth rate: 10.4%
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="3.-iNaturalist-Tick-Observations">3. iNaturalist Tick Observations<a class="anchor-link" href="#3.-iNaturalist-Tick-Observations">¶</a></h2>
 </div>
 </div>
@@ -8151,7 +8182,6 @@ Avg annual growth rate: 10.4%
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="n">raw_ticks</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s1">'inaturalist_ticks_colorado.json'</span><span class="p">)</span>
@@ -8207,7 +8237,6 @@ Avg annual growth rate: 10.4%
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Total research-grade tick observations: 100
 Fetched: 2026-05-18
@@ -8221,8 +8250,7 @@ Fetched: 2026-05-18
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="4.-Early-Warning-Summary">4. Early Warning Summary<a class="anchor-link" href="#4.-Early-Warning-Summary">¶</a></h2>
 </div>
 </div>
@@ -8232,7 +8260,6 @@ Fetched: 2026-05-18
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="n">current_month</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">month</span>
@@ -8281,7 +8308,6 @@ Fetched: 2026-05-18
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>=======================================================
   AEDES Tick Surveillance Summary — May

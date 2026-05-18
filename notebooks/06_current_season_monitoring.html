@@ -7793,15 +7793,57 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --></head>
+<!-- End of mermaid configuration -->
+<style>
+.code-toggle-btn {
+  margin: 0.4rem 0 0.2rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background: #f6f8fa;
+  color: #24292f;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.code-toggle-btn:hover { background: #eef2f6; }
+.jp-InputArea.jp-Cell-inputArea.collapsed-query { display: none; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.jp-CodeCell').forEach(function (cell) {
+    const input = cell.querySelector('.jp-InputArea.jp-Cell-inputArea');
+    if (!input) return;
+
+    input.classList.add('collapsed-query');
+    const button = document.createElement('button');
+    button.className = 'code-toggle-btn';
+    button.type = 'button';
+    button.textContent = 'Show query';
+
+    button.addEventListener('click', function () {
+      const isCollapsed = input.classList.contains('collapsed-query');
+      if (isCollapsed) {
+        input.classList.remove('collapsed-query');
+        button.textContent = 'Hide query';
+      } else {
+        input.classList.add('collapsed-query');
+        button.textContent = 'Show query';
+      }
+    });
+
+    input.parentNode.insertBefore(button, input);
+  });
+});
+</script>
+
+</head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=63110fc0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="2026-Season-Monitoring">2026 Season Monitoring<a class="anchor-link" href="#2026-Season-Monitoring">¶</a></h1><p>Real-time tracking of Colorado's 2026 vector-borne disease season with weekly case counts, baseline comparisons, and early-warning alert levels.</p>
 </div>
 </div>
@@ -7811,7 +7853,6 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Import required libraries and set up paths</span>
@@ -7993,7 +8034,6 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Loaded 2026 season YTD data
 ✓ Python environment initialized
@@ -8015,7 +8055,6 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">validate_data_integrity</span><span class="p">():</span>
@@ -8116,7 +8155,6 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 ======================================================================
@@ -8140,8 +8178,7 @@ DATA INTEGRITY VALIDATION
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="8.-Automate-Refresh-for-New-Reporting-Weeks">8. Automate Refresh for New Reporting Weeks<a class="anchor-link" href="#8.-Automate-Refresh-for-New-Reporting-Weeks">¶</a></h2>
 </div>
 </div>
@@ -8151,7 +8188,6 @@ DATA INTEGRITY VALIDATION
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Generate summary tables for dashboard/export</span>
@@ -8231,7 +8267,6 @@ DATA INTEGRITY VALIDATION
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Exported current season summary: /home/runner/work/aedesproject-uif/aedesproject-uif/notebooks/../processed/Dashboard/current_season/current_season_summary.json
 
@@ -8256,8 +8291,7 @@ West Nile Virus          0   4.846154   -100.0%       🟢 LOW                 1
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="7.-Generate-Current-Season-Summary-Tables">7. Generate Current-Season Summary Tables<a class="anchor-link" href="#7.-Generate-Current-Season-Summary-Tables">¶</a></h2>
 </div>
 </div>
@@ -8267,7 +8301,6 @@ West Nile Virus          0   4.846154   -100.0%       🟢 LOW                 1
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Calculate alert metrics for current season</span>
@@ -8339,7 +8372,6 @@ West Nile Virus          0   4.846154   -100.0%       🟢 LOW                 1
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>======================================================================
 IN-SEASON ALERT METRICS
@@ -8373,8 +8405,7 @@ Interpretation:
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="6.-Add-In-Season-Alert-Metrics">6. Add In-Season Alert Metrics<a class="anchor-link" href="#6.-Add-In-Season-Alert-Metrics">¶</a></h2>
 </div>
 </div>
@@ -8384,7 +8415,6 @@ Interpretation:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># CHART 1: Historical WNV Trend with 2026 YTD projection</span>
@@ -8495,16 +8525,12 @@ Interpretation:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 </div>
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 </div>
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 </div>
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Visualizations generated
 </pre>
@@ -8517,8 +8543,7 @@ Interpretation:
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="5.-Create-Current-vs-Historical-Trend-Visuals">5. Create Current vs Historical Trend Visuals<a class="anchor-link" href="#5.-Create-Current-vs-Historical-Trend-Visuals">¶</a></h2>
 </div>
 </div>
@@ -8528,7 +8553,6 @@ Interpretation:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Create historical baselines by filtering to comparable time periods</span>
@@ -8583,7 +8607,6 @@ Interpretation:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>======================================================================
 HISTORICAL BASELINES (for context)
@@ -8608,8 +8631,7 @@ Lyme Disease Cases (Historical):
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="4.-Compute-Historical-Baselines-for-Context">4. Compute Historical Baselines for Context<a class="anchor-link" href="#4.-Compute-Historical-Baselines-for-Context">¶</a></h2>
 </div>
 </div>
@@ -8619,7 +8641,6 @@ Lyme Disease Cases (Historical):
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Prepare current season dataset with weekly aggregation</span>
@@ -8681,7 +8702,6 @@ Lyme Disease Cases (Historical):
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
 Current Season (2026) Weekly Summary:
@@ -8702,8 +8722,7 @@ Latest week snapshot:
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="3.-Build-Weekly-Current-Season-Dataset">3. Build Weekly Current-Season Dataset<a class="anchor-link" href="#3.-Build-Weekly-Current-Season-Dataset">¶</a></h2>
 </div>
 </div>
@@ -8713,7 +8732,6 @@ Latest week snapshot:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Load 2026 current season YTD data</span>
@@ -8776,7 +8794,6 @@ Latest week snapshot:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Loaded 2026 YTD data: 2 weeks
 ✓ Loaded WNV history: 15 years (through 2024)
@@ -8795,8 +8812,7 @@ Current season (2026) status:
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="2.-Ingest-Latest-In-Season-Data">2. Ingest Latest In-Season Data<a class="anchor-link" href="#2.-Ingest-Latest-In-Season-Data">¶</a></h2>
 </div>
 </div>
@@ -8806,7 +8822,6 @@ Current season (2026) status:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -8886,7 +8901,6 @@ Current season (2026) status:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Climate modules loaded
 ======================================================================
@@ -8907,8 +8921,7 @@ Output directory: /home/runner/work/aedesproject-uif/aedesproject-uif/_site/clim
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="1.-Dynamic-Season-Parameters-(No-Hardcoded-2024)">1. Dynamic Season Parameters (No Hardcoded 2024)<a class="anchor-link" href="#1.-Dynamic-Season-Parameters-(No-Hardcoded-2024)">¶</a></h2>
 </div>
 </div>
@@ -8918,8 +8931,7 @@ Output directory: /home/runner/work/aedesproject-uif/aedesproject-uif/_site/clim
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="%F0%9F%94%B4-REAL-TIME:-Current-Season-Monitoring-(2026)">🔴 REAL-TIME: Current Season Monitoring (2026)<a class="anchor-link" href="#%F0%9F%94%B4-REAL-TIME:-Current-Season-Monitoring-(2026)">¶</a></h1><p><strong>AEDES | Advanced Early Disease Prediction and Exploration Service</strong></p>
 <p><strong>What People Care About:</strong> Where are we in THIS season, and what does it mean?</p>
 <p>This notebook focuses on the <strong>current 2026 season</strong> with historical context as reference.</p>

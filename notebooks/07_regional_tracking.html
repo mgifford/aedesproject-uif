@@ -7793,15 +7793,57 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --></head>
+<!-- End of mermaid configuration -->
+<style>
+.code-toggle-btn {
+  margin: 0.4rem 0 0.2rem;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  background: #f6f8fa;
+  color: #24292f;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.code-toggle-btn:hover { background: #eef2f6; }
+.jp-InputArea.jp-Cell-inputArea.collapsed-query { display: none; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.jp-CodeCell').forEach(function (cell) {
+    const input = cell.querySelector('.jp-InputArea.jp-Cell-inputArea');
+    if (!input) return;
+
+    input.classList.add('collapsed-query');
+    const button = document.createElement('button');
+    button.className = 'code-toggle-btn';
+    button.type = 'button';
+    button.textContent = 'Show query';
+
+    button.addEventListener('click', function () {
+      const isCollapsed = input.classList.contains('collapsed-query');
+      if (isCollapsed) {
+        input.classList.remove('collapsed-query');
+        button.textContent = 'Hide query';
+      } else {
+        input.classList.add('collapsed-query');
+        button.textContent = 'Show query';
+      }
+    });
+
+    input.parentNode.insertBefore(button, input);
+  });
+});
+</script>
+
+</head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a40b5839">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="07-%E2%80%94-Colorado-Regional-/-County-Level-Tracking">07 — Colorado Regional / County-Level Tracking<a class="anchor-link" href="#07-%E2%80%94-Colorado-Regional-/-County-Level-Tracking">¶</a></h1><p>Breaks down the statewide WNV, Lyme, and RMSF 2026 YTD totals to the county level.</p>
 <p><strong>Data sources</strong></p>
 <ul>
@@ -7823,7 +7865,6 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Imports and path setup</span>
@@ -7856,7 +7897,6 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Project root : /home/runner/work/aedesproject-uif/aedesproject-uif
   Data dir      : /home/runner/work/aedesproject-uif/aedesproject-uif/data/surveillance
@@ -7870,7 +7910,6 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Load regional county data</span>
@@ -7928,7 +7967,6 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Loaded regional data: 12 counties
   Fetched: 2026-05-18
@@ -7943,7 +7981,6 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Load iNaturalist observation data for context</span>
@@ -7984,7 +8021,6 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Tick observations by county: 29 counties with data
   Mosquito observations by county: 0 counties with data
@@ -7998,8 +8034,7 @@ a.anchor-link {
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="1.-Regional-Summary-Table">1. Regional Summary Table<a class="anchor-link" href="#1.-Regional-Summary-Table">¶</a></h2>
 </div>
 </div>
@@ -8009,7 +8044,6 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Build regional summary</span>
@@ -8054,7 +8088,6 @@ a.anchor-link {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>     region_label  counties  population  wnv_cases  lyme_cases  rmsf_cases  total_cases  cases_per_100k  tick_obs  mosq_obs
    Eastern Plains         2      358049          0           0           0            0            0.00         0         0
@@ -8071,8 +8104,7 @@ Southern Colorado         1      168424          0           0           1      
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="2.-Bubble-Map-%E2%80%94-Cases-per-100k-by-County">2. Bubble Map — Cases per 100k by County<a class="anchor-link" href="#2.-Bubble-Map-%E2%80%94-Cases-per-100k-by-County">¶</a></h2>
 </div>
 </div>
@@ -8082,7 +8114,6 @@ Southern Colorado         1      168424          0           0           1      
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Bubble map centred on Colorado</span>
@@ -8146,7 +8177,6 @@ Southern Colorado         1      168424          0           0           1      
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 </div>
 </div>
 </div>
@@ -8155,8 +8185,7 @@ Southern Colorado         1      168424          0           0           1      
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="3.-Regional-Bar-Chart-%E2%80%94-Disease-Breakdown">3. Regional Bar Chart — Disease Breakdown<a class="anchor-link" href="#3.-Regional-Bar-Chart-%E2%80%94-Disease-Breakdown">¶</a></h2>
 </div>
 </div>
@@ -8166,7 +8195,6 @@ Southern Colorado         1      168424          0           0           1      
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Grouped bar: WNV + Lyme + RMSF by region</span>
@@ -8206,7 +8234,6 @@ Southern Colorado         1      168424          0           0           1      
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 </div>
 </div>
 </div>
@@ -8215,8 +8242,7 @@ Southern Colorado         1      168424          0           0           1      
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="4.-Vector-Observation-Density-vs.-Case-Count">4. Vector Observation Density vs. Case Count<a class="anchor-link" href="#4.-Vector-Observation-Density-vs.-Case-Count">¶</a></h2>
 </div>
 </div>
@@ -8226,7 +8252,6 @@ Southern Colorado         1      168424          0           0           1      
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Scatter: tick observations (x) vs lyme+rmsf cases (y)</span>
@@ -8277,7 +8302,6 @@ Southern Colorado         1      168424          0           0           1      
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 </div>
 </div>
 </div>
@@ -8286,8 +8310,7 @@ Southern Colorado         1      168424          0           0           1      
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="5.-Historical-Hotspot-Comparison">5. Historical Hotspot Comparison<a class="anchor-link" href="#5.-Historical-Hotspot-Comparison">¶</a></h2>
 </div>
 </div>
@@ -8297,7 +8320,6 @@ Southern Colorado         1      168424          0           0           1      
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Flag counties that are historically high-risk</span>
@@ -8331,7 +8353,6 @@ Southern Colorado         1      168424          0           0           1      
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Historical hotspot counties with 2026 YTD cases:
    county         region  wnv_cases  lyme_cases  rmsf_cases  tick_observations_ytd  wnv_hotspot  lyme_hotspot  rmsf_hotspot
@@ -8361,8 +8382,7 @@ Summary:
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="6.-Export-Regional-Summary-JSON">6. Export Regional Summary JSON<a class="anchor-link" href="#6.-Export-Regional-Summary-JSON">¶</a></h2>
 </div>
 </div>
@@ -8372,7 +8392,6 @@ Summary:
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
@@ -8417,7 +8436,6 @@ Summary:
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Regional summary exported to /home/runner/work/aedesproject-uif/aedesproject-uif/processed/Dashboard/current_season/regional_summary.json
   Regions: 4
