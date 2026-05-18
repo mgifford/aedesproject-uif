@@ -6,6 +6,43 @@
       "sourceType": "github",
       "skillPath": "plugins/python-development/skills/python-code-style/SKILL.md",
       "computedHash": "35ed0c437f33462187b0a89da8e5bfe9ac259dbc8731257c5445f1a5e1229acf"
+    },
+    "charts-graphs": {
+      "source": "mgifford/accessibility-skills",
+      "sourceType": "github",
+      "skillPath": "skills/charts-graphs/SKILL.md",
+      "url": "https://github.com/mgifford/accessibility-skills/tree/main/skills/charts-graphs",
+      "priority": "HIGH",
+      "applies_to": ["notebooks/**/*.ipynb", "dashboards/**/*.html"],
+      "wcag_level": "AA"
+    },
+    "image-alt-text": {
+      "source": "mgifford/accessibility-skills",
+      "sourceType": "github",
+      "skillPath": "skills/image-alt-text/SKILL.md",
+      "url": "https://github.com/mgifford/accessibility-skills/tree/main/skills/image-alt-text",
+      "applies_to": ["notebooks/**/*.ipynb", "docs/**/*.md"]
+    },
+    "tables": {
+      "source": "mgifford/accessibility-skills",
+      "sourceType": "github",
+      "skillPath": "skills/tables/SKILL.md",
+      "url": "https://github.com/mgifford/accessibility-skills/tree/main/skills/tables",
+      "applies_to": ["notebooks/**/*.ipynb"]
+    },
+    "plain-language": {
+      "source": "mgifford/accessibility-skills",
+      "sourceType": "github",
+      "skillPath": "skills/plain-language/SKILL.md",
+      "url": "https://github.com/mgifford/accessibility-skills/tree/main/skills/plain-language",
+      "applies_to": ["notebooks/**/*.ipynb", "docs/**/*.md"]
+    },
+    "color-contrast": {
+      "source": "mgifford/accessibility-skills",
+      "sourceType": "github",
+      "skillPath": "skills/color-contrast/SKILL.md",
+      "url": "https://github.com/mgifford/accessibility-skills/tree/main/skills/color-contrast",
+      "applies_to": ["notebooks/**/*.ipynb", "dashboards/**/*.html"]
     }
   }
 }

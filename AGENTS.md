@@ -27,6 +27,42 @@ Skills are reusable capabilities that guide development practices and coding sta
 
 **Reference:** [wshobson/agents](https://github.com/wshobson/agents) — Source repository
 
+### Data Visualization Accessibility
+
+**Location:** [`mgifford/accessibility-skills` — charts-graphs](https://github.com/mgifford/accessibility-skills/tree/main/skills/charts-graphs)
+
+**Description:** Accessible data visualization patterns for charts, graphs, dashboards, and infographics using Plotly, Matplotlib, D3.js, and web technologies.
+
+**Use When:**
+- Creating data visualizations (charts, graphs, plots, heatmaps)
+- Building interactive dashboards with Plotly
+- Designing infographics or data-driven presentations
+- Generating surveillance monitoring displays
+- Publishing analysis notebooks with visual output
+
+**Key Patterns:**
+- Text alternatives to charts (descriptions, summaries)
+- Data tables alongside visualizations
+- Color contrast and colorblind-friendly palettes
+- SVG accessibility for custom graphics
+- Canvas + ARIA patterns for complex visualizations
+- Keyboard navigation for interactive charts
+
+**Related Skills:**
+- **Image Alt Text** — Describe charts, diagrams, and visual elements
+- **Tables** — Provide data table alternatives to charts
+- **SVG Graphics** — Accessible patterns for SVG-based visualizations
+- **Plain Language** — Write chart descriptions clearly
+
+**AEDES Application:**
+- Plotly charts in Notebooks 01-06: trending data, risk assessment visuals
+- Surveillance dashboards with accessible color schemes
+- Climate-disease correlation heatmaps
+- Weekly case count visualizations
+- Risk scoring indicators (🟢🟡🟠🔴 color patterns)
+
+**Reference:** [mgifford/accessibility-skills](https://github.com/mgifford/accessibility-skills) — Source repository
+
 ---
 
 ## GitHub Actions Workflows
@@ -117,12 +153,22 @@ skills-lock.json
 │   ├── ruff (formatting + linting)
 │   ├── mypy (type checking)
 │   └── pytest (testing framework)
-└── [Optional accessibility skills in /skills/]
-    ├── ACCESSIBILITY-general/
-    ├── charts-graphs/
-    ├── forms/
-    └── ... (25+ accessibility/quality standards)
+│
+├── charts-graphs (mgifford/accessibility-skills) [HIGH PRIORITY]
+│   ├── Color contrast & colorblind-safe palettes
+│   ├── Text alternatives (descriptions + data tables)
+│   ├── SVG accessibility patterns
+│   └── Keyboard navigation for interactive charts
+│
+├── Supporting Accessibility Skills (mgifford/accessibility-skills)
+│   ├── image-alt-text
+│   ├── tables
+│   ├── plain-language
+│   ├── color-contrast
+│   └── svg (for custom diagrams)
 ```
+
+**Configuration:** See [`.agents/ACCESSIBILITY.md`](.agents/ACCESSIBILITY.md) for detailed accessibility standards and implementation patterns.
 
 ---
 
