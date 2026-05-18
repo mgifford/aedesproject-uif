@@ -97,7 +97,18 @@ Mosquitoes are the world's deadliest animals, responsible for more than 700,000 
 **Annual US cases**: 500–7,500 neuroinvasive reported; estimated 2–3 million total infections/year  
 **Reportable**: Nationally notifiable (ArboNET)  
 **Blood supply risk**: Can be transfusion-transmitted; blood donations screened by PCR  
-**Monitoring signals**: Dead crow/corvid reports, mosquito pool positivity rates, equine cases (sentinel), weather (heat + drought concentrate birds/mosquitoes at shared water sources)
+**Monitoring signals**: Dead crow/corvid reports, mosquito pool positivity rates, equine cases (sentinel), weather (heat + drought concentrate birds/mosquitoes at shared water sources)  
+
+**🌡️ Climate Sensitivity**:  
+*Culex* mosquito development and WNV replication both temperature-dependent. Virus replicates only above 18°C in mosquitoes; transmission peak at 25–28°C:
+- Spring emergence: Currently June 1–15; warming accelerates by 1–2 weeks
+- Development speed: Egg-to-adult takes 21 days at 16°C, only 4–5 days at 28°C
+- Extrinsic incubation: Virus takes 14 days to replicate at 18°C, only 2–3 days at 28°C
+- Peak transmission: Currently July–September; projected May–October by 2050
+- Wet years vs. dry: Spring/early summer rainfall creates breeding habitat; drought concentrates birds/mosquitoes at water sources (paradoxically increasing risk)
+- Extended season: Warm autumns delay freeze; cases now observed into November (historically ended October)
+
+**Climate-driven risk**: 25–50% increase in peak transmission intensity by 2050; season duration doubled; younger age groups at higher relative risk due to expanded summer activity.
 
 ### Dengue Fever
 **Agent**: Dengue virus (DENV 1–4, Flavivirus)  
@@ -109,7 +120,18 @@ Mosquitoes are the world's deadliest animals, responsible for more than 700,000 
 **US cases**: ~5,000–8,000 travel-related/year; local transmission in FL, TX, HI, PR  
 **Reportable**: Nationally notifiable  
 **Serotype risk**: Prior infection with one serotype increases severe disease risk upon second infection (antibody-dependent enhancement)  
-**Monitoring signals**: Google Trends (travel-associated), airport passenger flows, *Ae. aegypti* container index (# positive containers / # inspected × 100), climate (temperature, precipitation)
+**Monitoring signals**: Google Trends (travel-associated), airport passenger flows, *Ae. aegypti* container index (# positive containers / # inspected × 100), climate (temperature, precipitation)  
+
+**🌡️ Climate Sensitivity**:  
+*Aedes aegypti* temperature-sensitive; typically limited to areas with sustained >20°C average temperatures. Dengue transmission occurs only at >18°C:
+- Current range: Southern US (FL, TX, AZ, southern CA) and US territories (Puerto Rico, USVI, Guam)
+- Warming expansion: US mainland dengue transmission currently rare; *Ae. aegypti* range expanding northward into southern tier states
+- Winter survival: *Ae. aegypti* cannot overwinter north of ~30°N latitude (subtropical line); climate change expanding this boundary northward
+- Rainfall & containers: *Ae. aegypti* breeds in small containers (tires, plant pots); heavy rains increase breeding habitat; urban water containers provide stable habitat in dry years
+- Humidity requirement: Requires >60% relative humidity; urban heat islands and irrigation increase humidity locally
+- Projected range by 2050: Parts of southern US (TX, southern AZ) may become endemic for dengue with climate warming
+
+**Regional significance**: Currently not endemic in Colorado; risk remains limited to international travel exposure. However, northern *Ae. albopictus* range is expanding; long-term warming could theoretically allow dengue establishment in warmer microhabitats.
 
 ### Eastern Equine Encephalitis (EEE)
 **Agent**: Eastern equine encephalitis virus (Alphavirus)  

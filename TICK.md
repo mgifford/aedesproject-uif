@@ -81,7 +81,17 @@ Ticks are obligate blood-feeding arthropods and the second most important vector
 **Annual US cases**: ~476,000 estimated; ~63,000 reported (2022)  
 **Reportable**: Nationally notifiable  
 **Treatment**: Doxycycline, amoxicillin, cefuroxime (early stage)  
-**Monitoring signals**: Tick drag sampling, wildlife seroprevalence, ER chief complaint data, Google Trends ("bull's eye rash"), iNaturalist *Ixodes* observations
+**Monitoring signals**: Tick drag sampling, wildlife seroprevalence, ER chief complaint data, Google Trends ("bull's eye rash"), iNaturalist *Ixodes* observations  
+
+**🌡️ Climate Sensitivity**:  
+*Ixodes scapularis* development strongly tied to temperature. Each 1°C increase above 10°C accelerates nymph development by ~3 days. Critical thresholds:
+- Winter survival: Ticks die if sustained temps <-10°C; milder winters → 50% higher survival
+- Spring emergence: Triggered by >7°C day temps; warming causes 2–3 week earlier peak nymph activity
+- Season extension: Warm falls delay freeze; active ticks observed in November (vs. traditional October shutdown)
+- GDD accumulation: Currently 500 GDD by mid-June; projected earlier by 2–3 weeks by 2050
+- Expanding range: Northward range expansion ~1.5 km/year in response to winter minimum warming
+
+**Climate-driven risk increase**: Front Range and Western Slope experiencing 3–5% annual case increase; projection: 50–100% increase by 2050 if current warming continues.
 
 ### Rocky Mountain Spotted Fever (RMSF)
 **Agent**: *Rickettsia rickettsii* (gram-negative bacterium)  
@@ -92,7 +102,17 @@ Ticks are obligate blood-feeding arthropods and the second most important vector
 **Annual US cases**: ~4,000–6,000 reported  
 **Reportable**: Nationally notifiable  
 **Critical note**: Most fatal tick-borne disease in the US; treatment must begin before lab confirmation  
-**Monitoring signals**: Emergency department records, tick drag sampling, physician case reports
+**Monitoring signals**: Emergency department records, tick drag sampling, physician case reports  
+
+**🌡️ Climate Sensitivity**:  
+*Dermacentor* species more cold-hardy than *Ixodes* but still temperature-sensitive. Spring emergence triggered by >5–10°C; peak activity April–June currently, extending earlier with warming:
+- Earlier spring = April emergence (vs. traditional May)
+- Summer estivation: Ticks hide in cool microclimates when temps >27°C; increasing heat stress reduces summer activity
+- Fall reactivation: Warm autumns (freezes delayed) extend transmission into October
+- Elevation effects: Range expanding upward as lower elevations warm; traditionally limited to <8,000 ft
+- Projected impact: 2–3 week season extension by 2050; possible range expansion into higher elevations
+
+**Climate-driven risk**: Currently stable to slowly increasing; Western Slope warmer winters may increase overwinter survival and spring densities.
 
 ### Anaplasmosis
 **Agent**: *Anaplasma phagocytophilum* (obligate intracellular bacterium)  
@@ -102,7 +122,14 @@ Ticks are obligate blood-feeding arthropods and the second most important vector
 **Case fatality**: <1%  
 **Annual US cases**: ~5,700 reported (2019)  
 **Reportable**: Nationally notifiable  
-**Co-infection**: Often co-transmitted with Lyme and Babesiosis
+**Co-infection**: Often co-transmitted with Lyme and Babesiosis  
+
+**🌡️ Climate Sensitivity**:  
+Transmitted by same vectors as Lyme (*Ixodes*); climate sensitivity mirrors *Ixodes* population dynamics. Risk follows tick abundance:
+- Tightly linked to Lyme disease season (same vector, overlapping transmission window)
+- Spring warming = earlier co-infection risk
+- Milder winters = more overwintering nymphs → higher spring transmission density
+- Projected increase: Similar trajectory to Lyme (50–100% increase by 2050 in warming scenario)
 
 ### Babesiosis
 **Agent**: *Babesia microti*, *B. duncani* (intraerythrocytic parasites)  
