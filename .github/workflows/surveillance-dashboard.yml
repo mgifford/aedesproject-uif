@@ -38,7 +38,11 @@ jobs:
             pandas \
             numpy \
             matplotlib \
-            requests
+            requests \
+            plotly \
+            scipy \
+            scikit-learn
+          pip install -e . --no-deps
 
       - name: Fetch surveillance data
         run: python scripts/fetch_surveillance_data.py
