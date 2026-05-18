@@ -355,7 +355,8 @@ $$\text{ERI} = \text{Tick density} \times \text{Infection rate} \times \text{Hum
 # Example context configuration for tick-borne disease surveillance
 context = {
     "name": "colorado_ticks",
-    "diseases": ["lyme", "rmsf", "ctf", "anaplasmosis", "tularemia"],
+    "diseases": ["lyme", "rmsf", "ctf", "anaplasmosis", "tularemia",
+                 "hantavirus", "plague"],  # rodent-associated diseases tracked alongside tick-borne
     "tick_species": ["Ixodes scapularis", "Dermacentor andersoni",
                      "Dermacentor variabilis", "Amblyomma americanum"],
     "data_sources": {
@@ -369,6 +370,129 @@ context = {
     "forecast_horizon_days": 21
 }
 ```
+
+---
+
+## Other Trackable Rodent- and Wildlife-Associated Diseases
+
+The same environmental and digital surveillance methods used for tick-borne diseases apply to a broader set of zoonotic diseases driven by **rodent population dynamics, habitat change, and climate cycles**. These diseases share key monitoring signals — rodent abundance, precipitation anomalies, vegetation greenness, and citizen science observations — with the AEDES framework.
+
+### Hantavirus Pulmonary Syndrome (HPS)
+
+**Agent**: Sin Nombre virus (SNV); also Bayou, Black Creek Canal, and other hantaviruses  
+**Reservoir**: Deer mouse (*Peromyscus maniculatus*) — primary; also cotton rat, rice rat, white-footed mouse  
+**Transmission**: Inhalation of aerosolized rodent urine, droppings, or saliva; NOT person-to-person  
+**Range**: Western and central US; Colorado is historically one of the highest-incidence states (Four Corners region)  
+**Incubation**: 1–8 weeks  
+**Symptoms**: Prodrome of fever, myalgia, fatigue (days 1–5); rapid progression to respiratory failure (days 5–10)  
+**Case fatality**: **35–40%** — one of the highest CFRs of any US-endemic disease  
+**Annual US cases**: ~20–40 reported; about 850 total cases since 1993  
+**Reportable**: Nationally notifiable  
+**Seasonal pattern**: Spring–summer peak, following winter rodent population boom  
+
+**Why it's trackable with AEDES methods:**
+- Deer mouse populations surge after above-average precipitation years (El Niño/La Niña cycles), particularly following wet winters that increase vegetation and food supply
+- NDVI (vegetation greenness) is a strong proxy for rodent habitat quality — high NDVI in spring predicts elevated rodent density 6–8 weeks later
+- iNaturalist *Peromyscus* observations can signal unusual population activity
+- Google Trends ("hantavirus", "deer mouse symptoms") correlate with case clusters
+- PRISM precipitation anomalies 6–12 months prior are the best-validated early warning signal
+
+**Key data sources**:
+
+| Source | URL | Notes |
+|--------|-----|-------|
+| CDC Hantavirus case data | wonder.cdc.gov | Annual counts by state/county |
+| NOAA PRISM precipitation | prism.oregonstate.edu | 6-month precipitation anomaly |
+| MODIS NDVI | lpdaac.usgs.gov | Vegetation greenness (rodent habitat) |
+| iNaturalist *Peromyscus* | api.inaturalist.org | Deer mouse observations |
+| USDA NWRC rodent data | aphis.usda.gov | Rodent population index |
+
+---
+
+### Plague
+
+**Agent**: *Yersinia pestis* (gram-negative bacterium)  
+**Vector**: Fleas (primarily *Oropsylla montana* on prairie dogs; *Xenopsylla cheopis* on rats)  
+**Reservoirs**: Prairie dogs, ground squirrels, chipmunks, wood rats  
+**Transmission**: Flea bite; direct contact with infected animal; rarely respiratory (pneumonic plague)  
+**Range**: Western US; Colorado, New Mexico, Arizona, California — **Colorado averages 1–4 human cases/year**  
+**Incubation**: 2–8 days (bubonic); 1–4 days (pneumonic)  
+**Symptoms**: Sudden fever, swollen lymph nodes (buboes); pneumonic form is rapidly fatal without treatment  
+**Case fatality**: 10–15% with antibiotics; nearly 100% untreated pneumonic plague  
+**Annual US cases**: ~7 (range 1–17)  
+**Reportable**: Nationally notifiable; potential bioterrorism agent (Category A)  
+**Seasonality**: June–September in Colorado; follows flea and prairie dog activity  
+
+**Why it's trackable with AEDES methods:**
+- Prairie dog colony die-offs (visible as vegetation change in satellite imagery and reported via citizen science) are the clearest early warning signal — mass die-offs precede human cases by weeks
+- NDVI drop in prairie dog town footprints detectable via Landsat/Sentinel-2 time series
+- iNaturalist and eBird: sudden absence of burrowing owls (which nest in prairie dog towns) signals colony die-off
+- Colorado Parks & Wildlife reports prairie dog die-offs through a public notification system
+- Flea index (fleas per host animal) from small mammal trapping predicts spillover risk
+
+**Key data sources**:
+
+| Source | URL | Notes |
+|--------|-----|-------|
+| CDC plague surveillance | cdc.gov/plague | Annual case reports |
+| CDPHE plague reports | cdphe.colorado.gov | Colorado-specific, near real-time |
+| Colorado Parks & Wildlife | cpw.state.co.us | Prairie dog die-off notifications |
+| iNaturalist prairie dogs | api.inaturalist.org | Colony presence/absence |
+| Landsat/Sentinel-2 | earthexplorer.usgs.gov | Vegetation die-off detection |
+
+---
+
+### Leptospirosis
+
+**Agent**: *Leptospira interrogans* and other pathogenic serovars (spirochete)  
+**Reservoirs**: Rats, cattle, dogs, wildlife (raccoons, skunks, opossums)  
+**Transmission**: Contact with water or soil contaminated with infected animal urine; through mucous membranes or skin abrasions  
+**Range**: Worldwide; US cases mostly in Hawaii, Puerto Rico, and post-flooding events nationwide  
+**Incubation**: 2–30 days  
+**Symptoms**: Biphasic illness — initial flu-like phase, then Weil's disease (jaundice, renal failure, hemorrhage)  
+**Case fatality**: <5% mild disease; up to 40% Weil's disease  
+**Annual US cases**: ~100–150 (significant under-reporting)  
+**Reportable**: Nationally notifiable in some states; not uniform  
+**Outbreak triggers**: Flooding events, agricultural work, water recreation after heavy rain  
+
+**Why it's trackable with AEDES methods:**
+- Flood extent mapping (Sentinel-1 SAR imagery) identifies high-risk exposure areas within days of flooding events
+- Precipitation anomalies and flood forecasts (NOAA NWS) provide advance warning
+- NDWI (Normalized Difference Water Index) from satellite detects standing water accumulation
+- Social media and Google Trends ("leptospirosis", "rat urine water") spike after flooding events
+
+---
+
+### Rabies (Wildlife)
+
+**Agent**: Rabies lyssavirus  
+**Reservoirs**: Bats (all US states), raccoons (eastern US), skunks (central US), foxes (Alaska, SW US), coyotes (historically Texas)  
+**Transmission**: Bite or scratch from infected animal; rarely mucous membrane exposure to saliva  
+**Range**: Nationwide; different reservoir species dominate by region  
+**Incubation**: 1 week–1 year (median ~2 months); depends on bite location and viral load  
+**Case fatality**: Virtually 100% once symptomatic  
+**Annual US human cases**: 1–3 (down from hundreds pre-vaccination era); bat exposure is now the primary source  
+**Animal cases**: ~5,000 positive animals/year  
+**Reportable**: Nationally notifiable  
+
+**Why it's trackable with AEDES methods:**
+- Bat population and roosting site data from eBird, iNaturalist, and Bat Conservation International
+- Raccoon rabies epizootic front (northeastern US) moves predictably and can be tracked by case reports
+- Google Trends ("bat bite", "animal bite rabies") correlate with seasonal bat activity and exposure events
+- Wildlife agency reports of rabid animals (available via USDA APHIS) provide geographic risk mapping
+
+---
+
+### Summary: Applicability of AEDES Methods to These Diseases
+
+| Disease | Key Driver | Best Remote Sensing Signal | Best Digital Signal | Lead Time |
+|---------|-----------|--------------------------|---------------------|-----------|
+| **Hantavirus** | Rodent abundance (precipitation-driven) | NDVI anomaly (6–8 week lag) | Google Trends, PRISM precip anomaly | 6–12 weeks |
+| **Plague** | Prairie dog die-offs, flea index | Landsat NDVI drop in prairie dog towns | iNaturalist colony observations, CPW reports | 2–4 weeks |
+| **Leptospirosis** | Flooding, rodent density | Sentinel-1 SAR flood extent, NDWI | NOAA flood forecasts, Google Trends | 0–1 weeks (reactive) |
+| **Rabies** | Wildlife reservoir activity | Bat roost site maps, wildlife density | eBird bat reports, Google Trends | Seasonal |
+
+All of these could be added to the AEDES framework as additional disease contexts alongside tick- and mosquito-borne diseases, using the same data pipeline architecture.
 
 ---
 
