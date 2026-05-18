@@ -258,27 +258,78 @@ The time for pathogen to replicate within the mosquito to infectious levels:
 
 ## Environmental and Climatic Drivers
 
-### Temperature
-- **Optimal development**: 25–30°C for most *Culex* and *Aedes*
-- **Biting rate**: Increases exponentially with temperature; halves for every 10°C drop
-- **Key threshold**: Above 14°C for WNV transmission competence; above 16°C for dengue
-- **Heat waves**: Force birds and mosquitoes to share limited water sources → amplified WNV transmission
+### Temperature & Thermal Thresholds
+
+**Critical Temperature Thresholds for *Culex* Mosquitoes (WNV vectors):**
+- **Development base**: 10°C (50°F) — minimum for larval/pupal development
+- **Extrinsic incubation period (EIP)** for WNV: 8–14 days; accelerates above 18°C
+- **Optimal transmission**: 25–30°C (77–86°F) — peak virus replication and feeding behavior
+- **Biting rate**: Doubles for every 5–10°C increase in temperature
+- **Heat stress**: >35°C reduces biting and survival; mosquitoes seek refugia
+
+**Seasonal Pattern in Colorado:**
+- **May–June**: Water temps rise above 18°C → WNV replication begins in *Cx. tarsalis*
+- **July–August**: Peak WNV transmission window; peak mosquito abundance
+- **September–October**: Cooling water temps + shorter photoperiod → reduced transmission
+- **November+**: *Culex* overwinters as fertilized females in protected sites
+
+**Growing Degree Days (GDD) for WNV Season:**
+- **300 GDD** (base 10°C): First-generation adults emerge; breeding habitat established
+- **500 GDD**: Peak adult abundance; WNV amplification begins
+- **1000+ GDD**: Multiple generations possible in warm years; fall adults seeking overwintering sites
+
+**Climate Change Impact:**
+- **Earlier transmission season**: May start **2–3 weeks earlier** than 20-year average
+- **Later transmission season**: October activity extends **1–2 weeks longer**
+- **More generations**: Warm years now allow **2–3 generations/summer** vs. 1–1.5 historically
+- **Elevation expansion**: WNV mosquitoes now found at **8,500+ feet** in Colorado; was limited to <7,000 ft historically
+- **Result**: Total WNV cases could increase **50–100%** by 2050 under RCP 8.5 scenarios
+
+**AEDES Tracking:** Daily GDD calculation; alert when cumulative GDD exceeds historical average by >100 GDD (indicating early season amplification risk).
 
 ### Precipitation and Standing Water
 - Container-breeding species (*Ae. aegypti*, *Ae. albopictus*): Heavy rain creates breeding opportunities
 - Floodwater breeders (*Ae. vexans*): Population explosions following flooding
-- Drought effect on WNV: Concentrates birds and *Cx. tarsalis* at remaining water bodies → amplification
-- "Drought followed by rain" pattern linked to WNV outbreaks in Colorado and Great Plains
+- **Drought effect on WNV**: Concentrates birds and *Cx. tarsalis* at remaining water bodies → **amplification hotspots**
+- **"Drought followed by rain" pattern**: Linked to WNV outbreaks in Colorado and Great Plains
+  - Drought stresses bird populations, increasing viremia
+  - Rain refills mosquito breeding habitat; massive *Culex* generation coincides with host stress
+  - Result: **WNV epidemic amplification 2–4 weeks after rain event**
+
+**Colorado-Specific Precipitation Risk:**
+- Spring precipitation (Mar–May): Fills irrigation canals and ditches (primary *Cx. tarsalis* habitat)
+- Late summer/early fall monsoon (August–September): Rainfall events during peak transmission create explosive populations
 
 ### Urbanization
 - Urban heat islands extend mosquito season and expand range
 - Storm drain infrastructure provides year-round *Culex* breeding
 - Impervious surfaces alter hydrology, creating pooling
+- **Denver metro temperatures 1–2°C warmer than rural areas** → earlier season, more generations
 
 ### Land Use and Water Infrastructure
-- Agricultural irrigation canals (Colorado): Primary *Cx. tarsalis* larval habitat
-- Urban tree canopy: Shading reduces larval development temperatures
+- Agricultural irrigation canals (Colorado): Primary *Cx. tarsalis* larval habitat; flow and temperature regulated by management
+- Urban tree canopy: Shading reduces larval development temperatures; favors cooler-water *Cx. pipiens*
 - Wetland presence/absence: Affects *Cs. melanura* (EEE), *An. quadrimaculatus* (malaria)
+- Stormwater detention ponds: New breeding habitat in urban areas; increases *Culex* production
+
+### Bird Migration & WNV Spillover
+
+**Spring Migration (March–May):**
+- North-bound migratory birds arrive from southern wintering grounds
+- If birds are viremic (especially passerines: robins, jays, sparrows), they expose northern *Culex* populations
+- **Result**: WNV can be introduced to Colorado during spring before local amplification
+
+**Fall Migration (August–October):**
+- South-bound birds may have WNV acquired from Colorado
+- Transport virus southward; establish WNV in southern US/Mexico overwintering grounds
+- **Result**: Amplification in Colorado in July–August spreads disease burden geographically
+
+**Key Bird Species (WNV Amplifiers):**
+- American Robins: **Most important amplifiers** (high viremia, abundant, feed many mosquitoes)
+- American Crows/Ravens: **Sentinels** (high mortality when infected; early death detection = WNV outbreak signal)
+- Blue Jays: Moderate amplifiers; susceptible to disease
+
+**AEDES Integration:** Track eBird sightings of American Robins; early arrival (3+ weeks early) correlates with elevated WNV amplification risk.
 
 ---
 
