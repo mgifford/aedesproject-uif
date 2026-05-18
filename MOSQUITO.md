@@ -457,10 +457,10 @@ context = {
 
 ## Key References
 
-- Reisen, W.K. (2010). Landscape epidemiology of vector-borne diseases. *Annual Review of Entomology*, 55, 461–483.
-- Petersen, L.R., et al. (2013). West Nile virus epidemics in North America are driven by shifts in mosquito feeding behavior. *PLOS Biology*.
-- Mordecai, E.A., et al. (2019). Thermal biology of mosquito-borne disease. *Ecology Letters*, 22(10), 1690–1708.
-- Ryan, S.J., et al. (2019). Global expansion and redistribution of Aedes-borne virus transmission risk with climate change. *PLOS Neglected Tropical Diseases*, 13(3).
-- CDC. (2024). West Nile Virus and Other Arboviral Diseases — United States, 2023. *MMWR*.
-- Colorado Department of Public Health and Environment. (Annual). Colorado West Nile Virus Surveillance Summary.
-- Ligot, D.V., Toledo, M. (2021). Advanced Early Dengue Prediction and Exploration Service (AEDES). *Academia Letters*, Article 2956. (Foundational AEDES methodology, applied to dengue surveillance in the Philippines)
+- Reisen, W.K. (2010). Landscape epidemiology of vector-borne diseases. *Annual Review of Entomology*, 55, 461–483. [https://doi.org/10.1146/annurev-ento-112408-085419](https://doi.org/10.1146/annurev-ento-112408-085419)
+- Kilpatrick, A.M., et al. (2006). West Nile virus epidemics in North America are driven by shifts in mosquito feeding behavior. *PLOS Biology*, 4(4):e82. [https://doi.org/10.1371/journal.pbio.0040082](https://doi.org/10.1371/journal.pbio.0040082)
+- Mordecai, E.A., et al. (2019). Thermal biology of mosquito-borne disease. *Ecology Letters*, 22(10), 1690–1708. [https://doi.org/10.1111/ele.13335](https://doi.org/10.1111/ele.13335)
+- Ryan, S.J., et al. (2019). Global expansion and redistribution of Aedes-borne virus transmission risk with climate change. *PLOS Neglected Tropical Diseases*, 13(3):e0007213. [https://doi.org/10.1371/journal.pntd.0007213](https://doi.org/10.1371/journal.pntd.0007213)
+- CDC. (2024). West Nile Virus and Other Arboviral Diseases. [https://www.cdc.gov/west-nile-virus/data-maps/](https://www.cdc.gov/west-nile-virus/data-maps/)
+- Colorado Department of Public Health and Environment. West Nile Virus. [https://cdphe.colorado.gov/west-nile-virus](https://cdphe.colorado.gov/west-nile-virus)
+- Ligot, D.V., Toledo, M. (2021). Advanced Early Dengue Prediction and Exploration Service (AEDES). *Academia Letters*, Article 2956. [https://doi.org/10.20935/AL2956](https://doi.org/10.20935/AL2956)

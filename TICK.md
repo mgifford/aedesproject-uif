@@ -498,9 +498,9 @@ All of these could be added to the AEDES framework as additional disease context
 
 ## Key References
 
-- Eisen, R.J., et al. (2016). County-scale distribution of *Ixodes scapularis* and *Ixodes pacificus*. *Journal of Medical Entomology*.
-- Rosenberg, R., et al. (2018). Vital Signs: Trends in Reported Vectorborne Disease Cases. *MMWR*, 67(17).
-- CDC. (2024). Tickborne Disease Surveillance Data Summary. Atlanta: US Dept of Health and Human Services.
-- Ginsberg, H.S., et al. (2021). Effects of deer reduction on abundance of the deer tick. *Journal of Medical Entomology*.
-- Ogden, N.H., et al. (2014). Role of migratory birds in introduction and range expansion of *Ixodes scapularis*. *Applied and Environmental Microbiology*.
-- Ligot, D.V., Toledo, M. (2021). Advanced Early Dengue Prediction and Exploration Service (AEDES). *Academia Letters*, Article 2956. (Foundational AEDES methodology)
+- Eisen, R.J., et al. (2016). County-scale distribution of *Ixodes scapularis* and *Ixodes pacificus*. *Journal of Medical Entomology*. [https://doi.org/10.1093/jme/tjv237](https://doi.org/10.1093/jme/tjv237)
+- Rosenberg, R., et al. (2018). Vital Signs: Trends in Reported Vectorborne Disease Cases. *MMWR*, 67(17). [https://www.cdc.gov/mmwr/volumes/67/wr/mm6717e1.htm](https://www.cdc.gov/mmwr/volumes/67/wr/mm6717e1.htm)
+- CDC. (2024). Tickborne Disease Surveillance Data Summary. [https://www.cdc.gov/ticks/data-research/facts-stats/index.html](https://www.cdc.gov/ticks/data-research/facts-stats/index.html)
+- Ginsberg, H.S., et al. (2021). Effects of deer reduction on abundance of the deer tick. *Journal of Medical Entomology*. [PubMed](https://pubmed.ncbi.nlm.nih.gov/?term=Ginsberg+2021+deer+tick)
+- Ogden, N.H., et al. (2014). Role of migratory birds in introduction and range expansion of *Ixodes scapularis*. *Applied and Environmental Microbiology*. [PubMed](https://pubmed.ncbi.nlm.nih.gov/?term=Ogden+2014+Ixodes+scapularis)
+- Ligot, D.V., Toledo, M. (2021). Advanced Early Dengue Prediction and Exploration Service (AEDES). *Academia Letters*, Article 2956. [https://doi.org/10.20935/AL2956](https://doi.org/10.20935/AL2956)
