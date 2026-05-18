@@ -1,0 +1,96 @@
+{
+  "fetched": "2026-05-18",
+  "source": "CDC NNDSS (historical)",
+  "data": [
+    {
+      "year": 2010,
+      "state": "Colorado",
+      "neuroinvasive": 51,
+      "deaths": 3
+    },
+    {
+      "year": 2011,
+      "state": "Colorado",
+      "neuroinvasive": 20,
+      "deaths": 1
+    },
+    {
+      "year": 2012,
+      "state": "Colorado",
+      "neuroinvasive": 130,
+      "deaths": 9
+    },
+    {
+      "year": 2013,
+      "state": "Colorado",
+      "neuroinvasive": 14,
+      "deaths": 0
+    },
+    {
+      "year": 2014,
+      "state": "Colorado",
+      "neuroinvasive": 43,
+      "deaths": 2
+    },
+    {
+      "year": 2015,
+      "state": "Colorado",
+      "neuroinvasive": 72,
+      "deaths": 3
+    },
+    {
+      "year": 2016,
+      "state": "Colorado",
+      "neuroinvasive": 14,
+      "deaths": 1
+    },
+    {
+      "year": 2017,
+      "state": "Colorado",
+      "neuroinvasive": 5,
+      "deaths": 0
+    },
+    {
+      "year": 2018,
+      "state": "Colorado",
+      "neuroinvasive": 15,
+      "deaths": 0
+    },
+    {
+      "year": 2019,
+      "state": "Colorado",
+      "neuroinvasive": 10,
+      "deaths": 0
+    },
+    {
+      "year": 2020,
+      "state": "Colorado",
+      "neuroinvasive": 10,
+      "deaths": 1
+    },
+    {
+      "year": 2021,
+      "state": "Colorado",
+      "neuroinvasive": 8,
+      "deaths": 0
+    },
+    {
+      "year": 2022,
+      "state": "Colorado",
+      "neuroinvasive": 16,
+      "deaths": 0
+    },
+    {
+      "year": 2023,
+      "state": "Colorado",
+      "neuroinvasive": 6,
+      "deaths": 0
+    },
+    {
+      "year": 2024,
+      "state": "Colorado",
+      "neuroinvasive": 12,
+      "deaths": 0
+    }
+  ]
+}

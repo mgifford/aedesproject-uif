@@ -1,0 +1,73 @@
+name: Surveillance Dashboard
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # Daily at 6 AM UTC (midnight Mountain)
+  push:
+    branches: [main]
+    paths:
+      - 'notebooks/**'
+      - 'scripts/**'
+  workflow_dispatch:        # Manual trigger from Actions tab
+
+permissions:
+  contents: write           # Needed to push to gh-pages branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install \
+            jupyter \
+            nbconvert \
+            nbformat \
+            pandas \
+            numpy \
+            matplotlib \
+            requests
+
+      - name: Fetch surveillance data
+        run: python scripts/fetch_surveillance_data.py
+        continue-on-error: true   # Dashboard still builds with sample data if APIs are down
+
+      - name: Execute and convert notebooks
+        run: |
+          mkdir -p _site/notebooks
+          for nb in notebooks/*.ipynb; do
+            echo "Converting $nb..."
+            jupyter nbconvert \
+              --to html \
+              --execute \
+              --ExecutePreprocessor.timeout=300 \
+              --output-dir _site/notebooks \
+              "$nb"
+          done
+
+      - name: Generate dashboard index page
+        run: python scripts/generate_dashboard.py
+
+      - name: Copy static assets
+        run: |
+          cp -r docs/css _site/css 2>/dev/null || true
+          cp -r docs/images _site/images 2>/dev/null || true
+
+      - name: Deploy to GitHub Pages (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          commit_message: "dashboard: automated update ${{ github.run_number }} [skip ci]"

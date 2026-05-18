@@ -1,0 +1,66 @@
+{
+  "fetched": "2026-05-18",
+  "source": "CDC Lyme Data Tables (historical)",
+  "data": [
+    {
+      "year": 2015,
+      "state": "Colorado",
+      "confirmed": 35,
+      "probable": 18
+    },
+    {
+      "year": 2016,
+      "state": "Colorado",
+      "confirmed": 29,
+      "probable": 22
+    },
+    {
+      "year": 2017,
+      "state": "Colorado",
+      "confirmed": 33,
+      "probable": 27
+    },
+    {
+      "year": 2018,
+      "state": "Colorado",
+      "confirmed": 41,
+      "probable": 31
+    },
+    {
+      "year": 2019,
+      "state": "Colorado",
+      "confirmed": 44,
+      "probable": 35
+    },
+    {
+      "year": 2020,
+      "state": "Colorado",
+      "confirmed": 38,
+      "probable": 28
+    },
+    {
+      "year": 2021,
+      "state": "Colorado",
+      "confirmed": 52,
+      "probable": 41
+    },
+    {
+      "year": 2022,
+      "state": "Colorado",
+      "confirmed": 57,
+      "probable": 46
+    },
+    {
+      "year": 2023,
+      "state": "Colorado",
+      "confirmed": 61,
+      "probable": 49
+    },
+    {
+      "year": 2024,
+      "state": "Colorado",
+      "confirmed": 65,
+      "probable": 54
+    }
+  ]
+}

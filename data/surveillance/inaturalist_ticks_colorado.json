@@ -1,0 +1,907 @@
+{
+  "fetched": "2026-05-18",
+  "source": "iNaturalist API",
+  "count": 100,
+  "data": [
+    {
+      "id": 362505526,
+      "observed_on": "2026-05-17",
+      "taxon": "Eristalinus aeneus",
+      "common_name": "Common Lagoon Fly",
+      "lat": "43.5628886792",
+      "lon": "-70.3672913939",
+      "county": "Scarborough, ME, USA"
+    },
+    {
+      "id": 362505516,
+      "observed_on": "2026-05-17",
+      "taxon": "Eristalinus aeneus",
+      "common_name": "Common Lagoon Fly",
+      "lat": "43.5628886792",
+      "lon": "-70.3672913939",
+      "county": "Scarborough, ME, USA"
+    },
+    {
+      "id": 362505482,
+      "observed_on": "2026-05-17",
+      "taxon": "Eristalinus aeneus",
+      "common_name": "Common Lagoon Fly",
+      "lat": "43.5628886792",
+      "lon": "-70.3672913939",
+      "county": "Scarborough, ME, USA"
+    },
+    {
+      "id": 362505473,
+      "observed_on": "2026-05-17",
+      "taxon": "Eristalis anthophorina",
+      "common_name": "Orange-spotted Drone Fly",
+      "lat": "43.5628886792",
+      "lon": "-70.3672913939",
+      "county": "Scarborough, ME, USA"
+    },
+    {
+      "id": 362505471,
+      "observed_on": "2026-05-17",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "43.5628886792",
+      "lon": "-70.3672913939",
+      "county": "Scarborough, ME, USA"
+    },
+    {
+      "id": 362505464,
+      "observed_on": "2026-05-17",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "43.5628886792",
+      "lon": "-70.3672913939",
+      "county": "Scarborough, ME, USA"
+    },
+    {
+      "id": 362505452,
+      "observed_on": "2026-05-17",
+      "taxon": "Eristalis anthophorina",
+      "common_name": "Orange-spotted Drone Fly",
+      "lat": "43.5628886792",
+      "lon": "-70.3672913939",
+      "county": "Scarborough, ME, USA"
+    },
+    {
+      "id": 362463384,
+      "observed_on": "2025-10-24",
+      "taxon": "Platytipula",
+      "common_name": null,
+      "lat": "44.2270183616",
+      "lon": "-69.8549548905",
+      "county": "High St, West Gardiner, ME, US"
+    },
+    {
+      "id": 362167113,
+      "observed_on": "2026-05-10",
+      "taxon": "Eristalinus aeneus",
+      "common_name": "Common Lagoon Fly",
+      "lat": "44.0697138333",
+      "lon": "-69.0628361667",
+      "county": "Gulf of Maine, Owls Head, ME, US"
+    },
+    {
+      "id": 362110221,
+      "observed_on": "2026-05-16",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 362110211,
+      "observed_on": "2026-05-16",
+      "taxon": "Sphaerophoria",
+      "common_name": "Globetails",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 362091360,
+      "observed_on": "2026-05-15",
+      "taxon": "Eristalinus aeneus",
+      "common_name": "Common Lagoon Fly",
+      "lat": "43.8921166667",
+      "lon": "-68.7327583333",
+      "county": "Vinalhaven, ME, US"
+    },
+    {
+      "id": 362041660,
+      "observed_on": "2026-05-16",
+      "taxon": "Eristalis flavipes",
+      "common_name": "Orange-legged Drone Fly",
+      "lat": "43.2717794856",
+      "lon": "-70.8182927575",
+      "county": "Berwick, ME 03901, USA"
+    },
+    {
+      "id": 362041652,
+      "observed_on": "2026-05-16",
+      "taxon": "Sphecomyia vittata",
+      "common_name": "Long-horned Yellowjacket Fly",
+      "lat": "43.2717782961",
+      "lon": "-70.8182037218",
+      "county": "Berwick, ME 03901, USA"
+    },
+    {
+      "id": 362041639,
+      "observed_on": "2026-05-16",
+      "taxon": "Eupeodes perplexus",
+      "common_name": "Bare-winged Aphideater",
+      "lat": "43.2618645012",
+      "lon": "-70.7988557828",
+      "county": "Berwick, ME 03901, USA"
+    },
+    {
+      "id": 362041629,
+      "observed_on": "2026-05-16",
+      "taxon": "Eristalis transversa",
+      "common_name": "Transverse-banded Flower Fly",
+      "lat": "43.2509525476",
+      "lon": "-70.8026368263",
+      "county": "Berwick, ME 03901, USA"
+    },
+    {
+      "id": 361856023,
+      "observed_on": "2026-05-15",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "46.66427",
+      "lon": "-69.84702",
+      "county": "Depot Rd, Northwest Aroostook, ME, USA"
+    },
+    {
+      "id": 361499386,
+      "observed_on": "2026-05-14",
+      "taxon": "Eupeodes latifasciatus",
+      "common_name": "Broad-banded Aphideater",
+      "lat": "44.4188262982",
+      "lon": "-68.3020946429",
+      "county": "Hancock County, US-ME, US"
+    },
+    {
+      "id": 361499382,
+      "observed_on": "2026-05-14",
+      "taxon": "Melanostoma mellinum",
+      "common_name": "Variable Duskyface Fly",
+      "lat": "44.5567427055",
+      "lon": "-68.3987042327",
+      "county": "Hancock County, US-ME, US"
+    },
+    {
+      "id": 361475757,
+      "observed_on": "2026-05-14",
+      "taxon": "Anasimyia anausis",
+      "common_name": null,
+      "lat": "44.2320102778",
+      "lon": "-69.0915647222",
+      "county": "Camden, ME, USA"
+    },
+    {
+      "id": 361469348,
+      "observed_on": "2023-09-03",
+      "taxon": "Toxomerus politus",
+      "common_name": "Maize Calligrapher",
+      "lat": "44.5633283333",
+      "lon": "-69.6593333333",
+      "county": "Mayflower Hill Dr, Waterville, ME, US"
+    },
+    {
+      "id": 361298589,
+      "observed_on": "2026-05-13",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "45.9732455328",
+      "lon": "-67.8981103291",
+      "county": "Cary, ME 04471, USA"
+    },
+    {
+      "id": 361297957,
+      "observed_on": "2026-05-13",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "45.9732455328",
+      "lon": "-67.8981103291",
+      "county": "Cary, ME 04471, USA"
+    },
+    {
+      "id": 361297824,
+      "observed_on": "2026-05-13",
+      "taxon": "Epalpus signifer",
+      "common_name": "Early Tachinid Fly",
+      "lat": "45.9732455328",
+      "lon": "-67.8981103291",
+      "county": "Cary, ME 04471, USA"
+    },
+    {
+      "id": 361297712,
+      "observed_on": "2026-05-13",
+      "taxon": "Sphaerophoria",
+      "common_name": "Globetails",
+      "lat": "45.9732455328",
+      "lon": "-67.8981103291",
+      "county": "Cary, ME 04471, USA"
+    },
+    {
+      "id": 361297579,
+      "observed_on": "2026-05-13",
+      "taxon": "Sphaerophoria",
+      "common_name": "Globetails",
+      "lat": "45.9732455328",
+      "lon": "-67.8981103291",
+      "county": "Cary, ME 04471, USA"
+    },
+    {
+      "id": 361226986,
+      "observed_on": "2026-05-12",
+      "taxon": "Helophilus fasciatus",
+      "common_name": "Narrow-headed Marsh Fly",
+      "lat": "43.3922343489",
+      "lon": "-70.6201584853",
+      "county": "Kennebunk, ME, USA"
+    },
+    {
+      "id": 361224763,
+      "observed_on": "2026-05-13",
+      "taxon": "Sphaerophoria",
+      "common_name": "Globetails",
+      "lat": "44.5600067887",
+      "lon": "-68.3939503399",
+      "county": "Hancock County, US-ME, US"
+    },
+    {
+      "id": 361126511,
+      "observed_on": "2026-05-12",
+      "taxon": "Helophilus lapponicus",
+      "common_name": "Yellow-margined Marsh Fly",
+      "lat": "43.8884966667",
+      "lon": "-68.7349783333",
+      "county": "Knox County, US-ME, US"
+    },
+    {
+      "id": 360960142,
+      "observed_on": "2026-05-12",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "44.5029233231",
+      "lon": "-68.2109855383",
+      "county": "Hancock County, US-ME, US"
+    },
+    {
+      "id": 360959604,
+      "observed_on": "2026-05-12",
+      "taxon": "Sphaerophoria",
+      "common_name": "Globetails",
+      "lat": "43.4353136444",
+      "lon": "-70.7617831557",
+      "county": "Sanford, ME, USA"
+    },
+    {
+      "id": 360959603,
+      "observed_on": "2026-05-12",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "43.4357327145",
+      "lon": "-70.7616487352",
+      "county": "Sanford, ME, USA"
+    },
+    {
+      "id": 360959593,
+      "observed_on": "2026-05-12",
+      "taxon": "Eristalis tenax",
+      "common_name": "Common Drone Fly",
+      "lat": "43.4125285708",
+      "lon": "-70.7220426775",
+      "county": "South Sanford, Sanford, ME, USA"
+    },
+    {
+      "id": 360959592,
+      "observed_on": "2026-05-12",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "43.4116755752",
+      "lon": "-70.7205176575",
+      "county": "South Sanford, Sanford, ME, USA"
+    },
+    {
+      "id": 360950869,
+      "observed_on": "2026-05-12",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "44.04979",
+      "lon": "-69.51311",
+      "county": "Damariscotta, ME 04543, USA"
+    },
+    {
+      "id": 360949534,
+      "observed_on": "2026-05-12",
+      "taxon": "Eristalis flavipes",
+      "common_name": "Orange-legged Drone Fly",
+      "lat": "44.0670649644",
+      "lon": "-69.5882667602",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360745267,
+      "observed_on": "2026-05-11",
+      "taxon": "Chalcosyrphus libo",
+      "common_name": "Long-haired Leafwalker",
+      "lat": "44.0673054937",
+      "lon": "-69.5888552074",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360736664,
+      "observed_on": "2026-05-11",
+      "taxon": "Parhelophilus rex",
+      "common_name": "Dusky Bog Fly",
+      "lat": "44.0670032928",
+      "lon": "-69.5882909001",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360733713,
+      "observed_on": "2026-05-11",
+      "taxon": "Toxomerus marginatus",
+      "common_name": "Margined Calligrapher",
+      "lat": "44.0670071473",
+      "lon": "-69.5884357394",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360733343,
+      "observed_on": "2026-05-11",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "44.0670148562",
+      "lon": "-69.5884227412",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360613401,
+      "observed_on": "2026-05-11",
+      "taxon": "Brachypalpus oarus",
+      "common_name": "Eastern Catkin Fly",
+      "lat": "43.3318303027",
+      "lon": "-70.8847145425",
+      "county": "Berwick, ME 03901, USA"
+    },
+    {
+      "id": 360534299,
+      "observed_on": "2026-05-10",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "44.0670244924",
+      "lon": "-69.5884566763",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360459427,
+      "observed_on": "2026-05-10",
+      "taxon": "Brachypalpus oarus",
+      "common_name": "Eastern Catkin Fly",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 360459412,
+      "observed_on": "2026-05-10",
+      "taxon": "Sphecomyia vittata",
+      "common_name": "Long-horned Yellowjacket Fly",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 360425514,
+      "observed_on": "2026-05-10",
+      "taxon": "Eristalis tenax",
+      "common_name": "Common Drone Fly",
+      "lat": "44.0793445022",
+      "lon": "-69.5812242387",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360386551,
+      "observed_on": "2026-05-10",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "44.0793560874",
+      "lon": "-69.5812489568",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360384827,
+      "observed_on": "2026-05-10",
+      "taxon": "Eristalis arbustorum",
+      "common_name": "Eurasian Drone Fly",
+      "lat": "44.0793384759",
+      "lon": "-69.5811830462",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360383917,
+      "observed_on": "2026-05-10",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "44.0793307685",
+      "lon": "-69.5812259616",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360383006,
+      "observed_on": "2026-05-10",
+      "taxon": "Eupeodes latifasciatus",
+      "common_name": "Broad-banded Aphideater",
+      "lat": "44.0670765278",
+      "lon": "-69.5883096756",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 360371369,
+      "observed_on": "2026-05-10",
+      "taxon": "Toxomerus marginatus",
+      "common_name": "Margined Calligrapher",
+      "lat": "43.50135353",
+      "lon": "-70.60313338",
+      "county": "York, Maine, United States"
+    },
+    {
+      "id": 360353247,
+      "observed_on": "2026-05-10",
+      "taxon": "Paragus haemorrhous",
+      "common_name": "Common Grass Skimmer",
+      "lat": "43.5014131845",
+      "lon": "-70.6030628627",
+      "county": "Lyman, ME, USA"
+    },
+    {
+      "id": 360347909,
+      "observed_on": "2026-05-10",
+      "taxon": "Blera nigra",
+      "common_name": "Golden-haired Wood Fly",
+      "lat": "43.501711",
+      "lon": "-70.603346",
+      "county": "Rumah kami"
+    },
+    {
+      "id": 360294619,
+      "observed_on": "2025-06-15",
+      "taxon": "Merodon equestris",
+      "common_name": "Narcissus Bulb Fly",
+      "lat": "43.6754283333",
+      "lon": "-70.2785333333",
+      "county": "Mackworth St, Portland, ME, US"
+    },
+    {
+      "id": 360293731,
+      "observed_on": "2026-05-10",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "43.2717597362",
+      "lon": "-70.8180364402",
+      "county": "Berwick, ME 03901, USA"
+    },
+    {
+      "id": 360293727,
+      "observed_on": "2026-05-10",
+      "taxon": "Toxomerus marginatus",
+      "common_name": "Margined Calligrapher",
+      "lat": "43.2716249864",
+      "lon": "-70.8179552072",
+      "county": "Berwick, ME 03901, USA"
+    },
+    {
+      "id": 360293722,
+      "observed_on": "2026-05-10",
+      "taxon": "Melanostoma mellinum",
+      "common_name": "Variable Duskyface Fly",
+      "lat": "43.2620094019",
+      "lon": "-70.8000661242",
+      "county": "Berwick, ME 03901, USA"
+    },
+    {
+      "id": 360284137,
+      "observed_on": "2025-08-23",
+      "taxon": "Xenox tigrinus",
+      "common_name": "Tiger Bee Fly",
+      "lat": "43.6753883333",
+      "lon": "-70.2951966667",
+      "county": "Stevens Ave, Portland, ME, US"
+    },
+    {
+      "id": 360030559,
+      "observed_on": "2026-05-09",
+      "taxon": "Helophilus fasciatus",
+      "common_name": "Narrow-headed Marsh Fly",
+      "lat": "45.9734133034",
+      "lon": "-67.8966726654",
+      "county": "Cary, ME 04471, USA"
+    },
+    {
+      "id": 360030399,
+      "observed_on": "2026-05-09",
+      "taxon": "Sphaerophoria",
+      "common_name": "Globetails",
+      "lat": "45.973346195",
+      "lon": "-67.8967155807",
+      "county": "Cary, ME 04471, USA"
+    },
+    {
+      "id": 360028385,
+      "observed_on": "2026-05-09",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "45.9733691686",
+      "lon": "-67.896459997",
+      "county": "Cary, ME 04471, USA"
+    },
+    {
+      "id": 360026913,
+      "observed_on": "2026-05-09",
+      "taxon": "Eristalis tenax",
+      "common_name": "Common Drone Fly",
+      "lat": "45.9733424671",
+      "lon": "-67.8968282336",
+      "county": "Cary, ME 04471, USA"
+    },
+    {
+      "id": 359991235,
+      "observed_on": "2026-05-09",
+      "taxon": "Toxomerus geminatus",
+      "common_name": "Eastern Calligrapher",
+      "lat": "44.5982875722",
+      "lon": "-67.4604428321",
+      "county": "Roque Bluffs, ME 04654, USA"
+    },
+    {
+      "id": 359973438,
+      "observed_on": "2026-05-09",
+      "taxon": "Toxomerus marginatus",
+      "common_name": "Margined Calligrapher",
+      "lat": "44.3980736135",
+      "lon": "-68.3259432698",
+      "county": "Bar Harbor, ME, USA"
+    },
+    {
+      "id": 359972215,
+      "observed_on": "2026-05-09",
+      "taxon": "Bombylius major",
+      "common_name": "Greater Bee Fly",
+      "lat": "44.4694588111",
+      "lon": "-68.3704395228",
+      "county": "Trenton, ME 04605, USA"
+    },
+    {
+      "id": 359970778,
+      "observed_on": "2026-05-09",
+      "taxon": "Eupeodes perplexus",
+      "common_name": "Bare-winged Aphideater",
+      "lat": "44.4270930703",
+      "lon": "-68.3649967162",
+      "county": "Trenton, ME 04605, USA"
+    },
+    {
+      "id": 359951038,
+      "observed_on": "2026-05-09",
+      "taxon": "Eupeodes latifasciatus",
+      "common_name": "Broad-banded Aphideater",
+      "lat": "44.0669763114",
+      "lon": "-69.5885510744",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359949741,
+      "observed_on": "2026-05-09",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "44.0669801659",
+      "lon": "-69.5885237808",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359947783,
+      "observed_on": "2026-05-09",
+      "taxon": "Lapposyrphus lapponicus",
+      "common_name": "Common Loopwing Aphideater",
+      "lat": "44.0670086833",
+      "lon": "-69.5883338154",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359943907,
+      "observed_on": "2026-05-09",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "43.9508583333",
+      "lon": "-69.502845",
+      "county": "Lower Round Pond Rd, Bristol, ME, US"
+    },
+    {
+      "id": 359940332,
+      "observed_on": "2026-05-09",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "44.0670071473",
+      "lon": "-69.5882702066",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359938944,
+      "observed_on": "2026-05-09",
+      "taxon": "Helophilus fasciatus",
+      "common_name": "Narrow-headed Marsh Fly",
+      "lat": "44.0670341286",
+      "lon": "-69.5882671731",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359706747,
+      "observed_on": "2026-04-28",
+      "taxon": "Eristalinus aeneus",
+      "common_name": "Common Lagoon Fly",
+      "lat": "43.8896",
+      "lon": "-68.73382",
+      "county": "Vinalhaven, ME, USA"
+    },
+    {
+      "id": 359686175,
+      "observed_on": "2026-05-07",
+      "taxon": "Melanostoma mellinum",
+      "common_name": "Variable Duskyface Fly",
+      "lat": "43.8421968069",
+      "lon": "-70.6286565191",
+      "county": "Sebago, ME, USA"
+    },
+    {
+      "id": 359667313,
+      "observed_on": "2026-05-08",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "44.0670784551",
+      "lon": "-69.5882683278",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359643280,
+      "observed_on": "2026-05-08",
+      "taxon": "Sphaerophoria",
+      "common_name": "Globetails",
+      "lat": "44.3976291033",
+      "lon": "-68.3352900706",
+      "county": "Bar Harbor, ME, USA"
+    },
+    {
+      "id": 359641159,
+      "observed_on": "2026-05-08",
+      "taxon": "Eupeodes latifasciatus",
+      "common_name": "Broad-banded Aphideater",
+      "lat": "44.3782322469",
+      "lon": "-68.2091815719",
+      "county": "Bar Harbor, ME 04609, USA"
+    },
+    {
+      "id": 359627077,
+      "observed_on": "2026-05-08",
+      "taxon": "Sphaerophoria",
+      "common_name": "Globetails",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 359627056,
+      "observed_on": "2026-05-08",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 359627040,
+      "observed_on": "2026-05-08",
+      "taxon": "Eristalis tenax",
+      "common_name": "Common Drone Fly",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 359627023,
+      "observed_on": "2026-05-08",
+      "taxon": "Toxomerus marginatus",
+      "common_name": "Margined Calligrapher",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 359379003,
+      "observed_on": "2026-05-07",
+      "taxon": "Eupeodes americanus",
+      "common_name": "Long-tailed Aphideater Complex",
+      "lat": "44.3981136053",
+      "lon": "-68.3259283976",
+      "county": "Bar Harbor, ME, USA"
+    },
+    {
+      "id": 359378225,
+      "observed_on": "2026-05-07",
+      "taxon": "Toxomerus marginatus",
+      "common_name": "Margined Calligrapher",
+      "lat": "44.4143474668",
+      "lon": "-68.2960014362",
+      "county": "Bar Harbor, ME, USA"
+    },
+    {
+      "id": 359375155,
+      "observed_on": "2026-05-07",
+      "taxon": "Toxomerus marginatus",
+      "common_name": "Margined Calligrapher",
+      "lat": "44.4265147081",
+      "lon": "-68.3647359538",
+      "county": "Trenton, ME 04605, USA"
+    },
+    {
+      "id": 359373355,
+      "observed_on": "2026-05-07",
+      "taxon": "Toxomerus geminatus",
+      "common_name": "Eastern Calligrapher",
+      "lat": "44.4270832977",
+      "lon": "-68.3649338822",
+      "county": "Trenton, ME 04605, USA"
+    },
+    {
+      "id": 359372740,
+      "observed_on": "2026-05-07",
+      "taxon": "Eristalinus aeneus",
+      "common_name": "Common Lagoon Fly",
+      "lat": "44.427164184",
+      "lon": "-68.3650980096",
+      "county": "Trenton, ME 04605, USA"
+    },
+    {
+      "id": 359346440,
+      "observed_on": "2026-05-07",
+      "taxon": "Epalpus signifer",
+      "common_name": "Early Tachinid Fly",
+      "lat": "43.8421986727",
+      "lon": "-70.6286561418",
+      "county": "Sebago, ME, USA"
+    },
+    {
+      "id": 359321989,
+      "observed_on": "2026-05-07",
+      "taxon": "Eupeodes latifasciatus",
+      "common_name": "Broad-banded Aphideater",
+      "lat": "44.0669936566",
+      "lon": "-69.588397717",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359315209,
+      "observed_on": "2026-05-07",
+      "taxon": "Eristalis arbustorum",
+      "common_name": "Eurasian Drone Fly",
+      "lat": "44.0793571051",
+      "lon": "-69.5812098683",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359313885,
+      "observed_on": "2026-05-07",
+      "taxon": "Eristalis dimidiata",
+      "common_name": "Black-shouldered Drone Fly",
+      "lat": "44.0793245685",
+      "lon": "-69.5810630305",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359307700,
+      "observed_on": "2026-05-07",
+      "taxon": "Helophilus fasciatus",
+      "common_name": "Narrow-headed Marsh Fly",
+      "lat": "44.0670919457",
+      "lon": "-69.5882265271",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359306179,
+      "observed_on": "2026-05-07",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "44.0670264196",
+      "lon": "-69.5882862999",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359305263,
+      "observed_on": "2026-05-07",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "44.0670876431",
+      "lon": "-69.5882706897",
+      "county": "Newcastle, ME, USA"
+    },
+    {
+      "id": 359295497,
+      "observed_on": "2026-05-07",
+      "taxon": "Toxomerus geminatus",
+      "common_name": "Eastern Calligrapher",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 359295434,
+      "observed_on": "2026-05-07",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 359274207,
+      "observed_on": "2026-05-07",
+      "taxon": "Sphaerophoria",
+      "common_name": "Globetails",
+      "lat": "43.939775",
+      "lon": "-69.575",
+      "county": "Walpole, ME 04573, USA"
+    },
+    {
+      "id": 359235233,
+      "observed_on": "2026-05-07",
+      "taxon": "Tipula dorsimacula",
+      "common_name": null,
+      "lat": "43.640045",
+      "lon": "-70.2296966667",
+      "county": "Willow St, South Portland, ME, US"
+    },
+    {
+      "id": 359070690,
+      "observed_on": "2026-05-04",
+      "taxon": "Eupeodes americanus",
+      "common_name": "Long-tailed Aphideater Complex",
+      "lat": "43.8421968151",
+      "lon": "-70.6286555063",
+      "county": "Sebago, ME, USA"
+    },
+    {
+      "id": 359068794,
+      "observed_on": "2026-05-05",
+      "taxon": "Toxomerus geminatus",
+      "common_name": "Eastern Calligrapher",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 358985864,
+      "observed_on": "2026-05-06",
+      "taxon": "Anasimyia bilinearis",
+      "common_name": "Two-lined Swamp Fly",
+      "lat": "43.2778845353",
+      "lon": "-70.7005347826",
+      "county": "South Berwick, ME 03908, USA"
+    },
+    {
+      "id": 358774107,
+      "observed_on": "2026-05-05",
+      "taxon": "Ormosia romanovichiana",
+      "common_name": null,
+      "lat": "44.2503474",
+      "lon": "-69.7172658",
+      "county": "Chelsea, ME 04330, USA"
+    }
+  ]
+}
