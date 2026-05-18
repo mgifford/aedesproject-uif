@@ -1,0 +1,22 @@
+{
+  "model_type": "RandomForest",
+  "created_timestamp": "2026-05-18T15:24:39.566195",
+  "performance": {
+    "mae": 0.0,
+    "rmse": 0.0,
+    "r2": NaN
+  },
+  "features_used": [
+    "gdd_advancement",
+    "temp_avg_7d",
+    "precip_mm",
+    "wnv_transmission_active"
+  ],
+  "training_weeks": 21,
+  "feature_importances": {
+    "gdd_advancement": 0.0,
+    "temp_avg_7d": 0.0,
+    "precip_mm": 0.0,
+    "wnv_transmission_active": 0.0
+  }
+}

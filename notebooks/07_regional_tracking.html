@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>01_west_nile_virus_surveillance</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>07_regional_tracking</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7796,26 +7796,29 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0c9eb6e1">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a40b5839">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%F0%9F%A6%9F-West-Nile-Virus-Surveillance-%E2%80%94-Colorado">🦟 West Nile Virus Surveillance — Colorado<a class="anchor-link" href="#%F0%9F%A6%9F-West-Nile-Virus-Surveillance-%E2%80%94-Colorado">¶</a></h1><p><strong>AEDES | Advanced Early Disease Prediction and Exploration Service</strong></p>
-<p>This notebook tracks West Nile Virus (WNV) neuroinvasive disease in Colorado using:</p>
+<h1 id="07-%E2%80%94-Colorado-Regional-/-County-Level-Tracking">07 — Colorado Regional / County-Level Tracking<a class="anchor-link" href="#07-%E2%80%94-Colorado-Regional-/-County-Level-Tracking">¶</a></h1><p>Breaks down the statewide WNV, Lyme, and RMSF 2026 YTD totals to the county level.</p>
+<p><strong>Data sources</strong></p>
 <ul>
-<li>CDC NNDSS annual case reports</li>
-<li>NASA POWER daily temperature and precipitation data</li>
-<li>iNaturalist citizen-science mosquito observations</li>
+<li><code>data/surveillance/regional_counties_2026.json</code> — county YTD case counts from CDPHE/CDC provisional reports</li>
+<li><code>data/surveillance/inaturalist_ticks_colorado.json</code> — citizen-science tick observations by county</li>
+<li><code>data/surveillance/inaturalist_mosquitoes_colorado.json</code> — citizen-science mosquito observations by county</li>
 </ul>
-<p><strong>Primary vector</strong>: <em>Culex tarsalis</em> (western encephalitis mosquito)<br/>
-<strong>Peak transmission</strong>: July–September<br/>
-<strong>Key risk factor</strong>: Drought + heat waves concentrate birds and mosquitoes at shared water sources</p>
+<p><strong>Outputs</strong></p>
+<ul>
+<li>Choropleth bubble map (cases per 100 k)</li>
+<li>Regional summary table (Front Range / Western Slope / Eastern Plains / Southern)</li>
+<li>Observation density chart overlaid with case counts</li>
+</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1a05ca38">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2bb67ce3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7823,33 +7826,26 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Imports and path setup</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
-<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'Agg'</span><span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mticker</span>
-
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
 
-<span class="c1"># Locate data directory relative to notebook</span>
-<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">'..'</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">,</span> <span class="s1">'surveillance'</span><span class="p">)</span>
-<span class="n">TODAY</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">load_json</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="k">return</span> <span class="kc">None</span>
+<span class="c1"># Resolve project root (works both inside and outside notebooks/ dir)</span>
+<span class="n">_cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="n">PROJECT_ROOT</span> <span class="o">=</span> <span class="n">_cwd</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_cwd</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">))</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_cwd</span><span class="p">,</span> <span class="s1">'..'</span><span class="p">))</span>
+<span class="n">DATA_DIR</span>   <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">,</span> <span class="s1">'surveillance'</span><span class="p">)</span>
+<span class="n">OUTPUT_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">,</span> <span class="s1">'_site'</span><span class="p">,</span> <span class="s1">'notebooks'</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Analysis date: </span><span class="si">{</span><span class="n">TODAY</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Data directory: </span><span class="si">{</span><span class="n">DATA_DIR</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Data directory exists: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Project root : </span><span class="si">{</span><span class="n">PROJECT_ROOT</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Data dir      : </span><span class="si">{</span><span class="n">DATA_DIR</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7862,26 +7858,14 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Analysis date: 2026-05-18
-Data directory: /home/runner/work/aedesproject-uif/aedesproject-uif/notebooks/../data/surveillance
-Data directory exists: True
+<pre>✓ Project root : /home/runner/work/aedesproject-uif/aedesproject-uif
+  Data dir      : /home/runner/work/aedesproject-uif/aedesproject-uif/data/surveillance
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=98cdbb1d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="1.-Annual-Case-Trends-(2010%E2%80%932024)">1. Annual Case Trends (2010–2024)<a class="anchor-link" href="#1.-Annual-Case-Trends-(2010%E2%80%932024)">¶</a></h2>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a2f594b2">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f47ec101">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7889,27 +7873,51 @@ Data directory exists: True
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="n">raw</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s1">'wnv_colorado.json'</span><span class="p">)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Load regional county data</span>
+<span class="n">REGIONAL_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">'regional_counties_2026.json'</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">raw</span> <span class="ow">and</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">):</span>
-    <span class="n">df_wnv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span>
-    <span class="n">source_label</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'source'</span><span class="p">,</span> <span class="s1">'CDC NNDSS'</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Source: </span><span class="si">{</span><span class="n">source_label</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="c1"># Built-in sample data (CDC published historical values)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'Using built-in historical data (no data file found)'</span><span class="p">)</span>
-    <span class="n">source_label</span> <span class="o">=</span> <span class="s1">'CDC NNDSS (built-in)'</span>
-    <span class="n">df_wnv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-        <span class="s1">'year'</span><span class="p">:</span>           <span class="p">[</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2011</span><span class="p">,</span> <span class="mi">2012</span><span class="p">,</span> <span class="mi">2013</span><span class="p">,</span> <span class="mi">2014</span><span class="p">,</span> <span class="mi">2015</span><span class="p">,</span> <span class="mi">2016</span><span class="p">,</span> <span class="mi">2017</span><span class="p">,</span> <span class="mi">2018</span><span class="p">,</span> <span class="mi">2019</span><span class="p">,</span> <span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">,</span> <span class="mi">2022</span><span class="p">,</span> <span class="mi">2023</span><span class="p">,</span> <span class="mi">2024</span><span class="p">],</span>
-        <span class="s1">'neuroinvasive'</span><span class="p">:</span>  <span class="p">[</span>  <span class="mi">51</span><span class="p">,</span>   <span class="mi">20</span><span class="p">,</span>  <span class="mi">130</span><span class="p">,</span>   <span class="mi">14</span><span class="p">,</span>   <span class="mi">43</span><span class="p">,</span>   <span class="mi">72</span><span class="p">,</span>   <span class="mi">14</span><span class="p">,</span>    <span class="mi">5</span><span class="p">,</span>   <span class="mi">15</span><span class="p">,</span>   <span class="mi">10</span><span class="p">,</span>   <span class="mi">10</span><span class="p">,</span>    <span class="mi">8</span><span class="p">,</span>   <span class="mi">16</span><span class="p">,</span>    <span class="mi">6</span><span class="p">,</span>   <span class="mi">12</span><span class="p">],</span>
-        <span class="s1">'deaths'</span><span class="p">:</span>         <span class="p">[</span>   <span class="mi">3</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">9</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>    <span class="mi">2</span><span class="p">,</span>    <span class="mi">3</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>    <span class="mi">1</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">,</span>    <span class="mi">0</span><span class="p">],</span>
-    <span class="p">})</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">REGIONAL_PATH</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">regional_raw</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">county_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'county_ytd'</span><span class="p">,</span> <span class="p">[]))</span>
+    <span class="n">REGIONS</span> <span class="o">=</span> <span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'regions'</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">HOTSPOTS</span> <span class="o">=</span> <span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'historical_county_peaks'</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Loaded regional data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">county_df</span><span class="p">)</span><span class="si">}</span><span class="s2"> counties"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Fetched: </span><span class="si">{</span><span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'fetched'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"⚠ regional_counties_2026.json not found; creating placeholder"</span><span class="p">)</span>
+    <span class="n">county_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+        <span class="p">{</span><span class="s1">'county'</span><span class="p">:</span> <span class="s1">'Denver'</span><span class="p">,</span>    <span class="s1">'fips'</span><span class="p">:</span> <span class="s1">'08031'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">:</span> <span class="s1">'front_range'</span><span class="p">,</span> <span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">:</span> <span class="mi">715522</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">:</span> <span class="mf">39.74</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="o">-</span><span class="mf">104.99</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">'county'</span><span class="p">:</span> <span class="s1">'El Paso'</span><span class="p">,</span>   <span class="s1">'fips'</span><span class="p">:</span> <span class="s1">'08041'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">:</span> <span class="s1">'front_range'</span><span class="p">,</span> <span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">:</span> <span class="mi">730395</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">:</span> <span class="mf">38.83</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="o">-</span><span class="mf">104.83</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">'county'</span><span class="p">:</span> <span class="s1">'Arapahoe'</span><span class="p">,</span>  <span class="s1">'fips'</span><span class="p">:</span> <span class="s1">'08005'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">:</span> <span class="s1">'front_range'</span><span class="p">,</span> <span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">:</span> <span class="mi">655070</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">:</span> <span class="mf">39.63</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="o">-</span><span class="mf">104.34</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">'county'</span><span class="p">:</span> <span class="s1">'Jefferson'</span><span class="p">,</span> <span class="s1">'fips'</span><span class="p">:</span> <span class="s1">'08059'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">:</span> <span class="s1">'front_range'</span><span class="p">,</span> <span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">:</span> <span class="mi">582910</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">:</span> <span class="mf">39.59</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="o">-</span><span class="mf">105.21</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">'county'</span><span class="p">:</span> <span class="s1">'Larimer'</span><span class="p">,</span>   <span class="s1">'fips'</span><span class="p">:</span> <span class="s1">'08069'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">:</span> <span class="s1">'front_range'</span><span class="p">,</span> <span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">:</span> <span class="mi">359066</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">:</span> <span class="mf">40.66</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="o">-</span><span class="mf">105.40</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">'county'</span><span class="p">:</span> <span class="s1">'Weld'</span><span class="p">,</span>      <span class="s1">'fips'</span><span class="p">:</span> <span class="s1">'08123'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">:</span> <span class="s1">'front_range'</span><span class="p">,</span> <span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">:</span> <span class="mi">328981</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">:</span> <span class="mf">40.55</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="o">-</span><span class="mf">104.39</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">'county'</span><span class="p">:</span> <span class="s1">'Pueblo'</span><span class="p">,</span>    <span class="s1">'fips'</span><span class="p">:</span> <span class="s1">'08101'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">:</span> <span class="s1">'southern'</span><span class="p">,</span>    <span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">:</span> <span class="mi">168424</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">:</span> <span class="mf">38.25</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="o">-</span><span class="mf">104.61</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">'county'</span><span class="p">:</span> <span class="s1">'Mesa'</span><span class="p">,</span>      <span class="s1">'fips'</span><span class="p">:</span> <span class="s1">'08077'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">:</span> <span class="s1">'western_slope'</span><span class="p">,</span><span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span><span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">:</span> <span class="mi">155998</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">:</span> <span class="mf">39.06</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="o">-</span><span class="mf">108.55</span><span class="p">},</span>
+    <span class="p">])</span>
+    <span class="n">REGIONS</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">HOTSPOTS</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Records: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_wnv</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Total neuroinvasive cases (all years): </span><span class="si">{</span><span class="n">df_wnv</span><span class="p">[</span><span class="s2">"neuroinvasive"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Total deaths (all years): </span><span class="si">{</span><span class="n">df_wnv</span><span class="p">[</span><span class="s2">"deaths"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Peak year: </span><span class="si">{</span><span class="n">df_wnv</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_wnv</span><span class="p">[</span><span class="s2">"neuroinvasive"</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(),</span><span class="w"> </span><span class="s2">"year"</span><span class="p">]</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">df_wnv</span><span class="p">[</span><span class="s2">"neuroinvasive"</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s1"> cases)'</span><span class="p">)</span>
-<span class="n">df_wnv</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="c1"># Numeric coercion</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'wnv_cases'</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span>
+            <span class="s1">'tick_observations_ytd'</span><span class="p">,</span> <span class="s1">'mosquito_observations_ytd'</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">county_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">county_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">county_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Derived metrics</span>
+<span class="n">county_df</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'wnv_cases'</span><span class="p">]</span> <span class="o">+</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'lyme_cases'</span><span class="p">]</span> <span class="o">+</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'rmsf_cases'</span><span class="p">]</span>
+<span class="n">county_df</span><span class="p">[</span><span class="s1">'cases_per_100k'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="n">county_df</span><span class="p">[</span><span class="s1">'population'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span> <span class="o">/</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'population'</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100_000</span><span class="p">,</span>
+    <span class="mi">0</span>
+<span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Total YTD cases statewide: WNV=</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'wnv_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s2">, "</span>
+      <span class="sa">f</span><span class="s2">"Lyme=</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'lyme_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s2">, "</span>
+      <span class="sa">f</span><span class="s2">"RMSF=</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'rmsf_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7922,85 +7930,15 @@ Data directory exists: True
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Source: CDC NNDSS (historical)
-Records: 15
-Total neuroinvasive cases (all years): 426
-Total deaths (all years): 20
-Peak year: 2012 (130 cases)
+<pre>✓ Loaded regional data: 12 counties
+  Fetched: 2026-05-18
+  Total YTD cases statewide: WNV=0, Lyme=2, RMSF=1
 </pre>
 </div>
 </div>
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>year</th>
-<th>state</th>
-<th>neuroinvasive</th>
-<th>deaths</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>10</th>
-<td>2020</td>
-<td>Colorado</td>
-<td>10</td>
-<td>1</td>
-</tr>
-<tr>
-<th>11</th>
-<td>2021</td>
-<td>Colorado</td>
-<td>8</td>
-<td>0</td>
-</tr>
-<tr>
-<th>12</th>
-<td>2022</td>
-<td>Colorado</td>
-<td>16</td>
-<td>0</td>
-</tr>
-<tr>
-<th>13</th>
-<td>2023</td>
-<td>Colorado</td>
-<td>6</td>
-<td>0</td>
-</tr>
-<tr>
-<th>14</th>
-<td>2024</td>
-<td>Colorado</td>
-<td>12</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4b18b6af">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bb374d73">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8008,32 +7946,34 @@ Peak year: 2012 (130 cases)
 <div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Colorado West Nile Virus Surveillance'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.98</span><span class="p">)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Load iNaturalist observation data for context</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_inaturalist_county_counts</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Parse iNaturalist JSON and return a county → count dict."""</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">county_guess</span> <span class="o">=</span> <span class="n">obs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'county'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">''</span>
+            <span class="c1"># iNaturalist uses 'Jefferson County, CO' format</span>
+            <span class="n">county</span> <span class="o">=</span> <span class="n">county_guess</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' County'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">county</span><span class="p">:</span>
+                <span class="n">counts</span><span class="p">[</span><span class="n">county</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">county</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">counts</span>
 
-<span class="c1"># Neuroinvasive cases</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'#e53e3e'</span> <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="n">df_wnv</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_wnv</span><span class="p">[</span><span class="s1">'neuroinvasive'</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(),</span> <span class="s1">'year'</span><span class="p">]</span> <span class="k">else</span> <span class="s1">'#3182ce'</span>
-          <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">df_wnv</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]]</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">df_wnv</span><span class="p">[</span><span class="s1">'year'</span><span class="p">],</span> <span class="n">df_wnv</span><span class="p">[</span><span class="s1">'neuroinvasive'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Neuroinvasive Cases'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Neuroinvasive Disease Cases by Year'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">'2012 outbreak</span><span class="se">\n</span><span class="s1">(130 cases)'</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">130</span><span class="p">),</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mf">2013.5</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
-                 <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s1">'-&gt;'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#e53e3e'</span><span class="p">),</span>
-                 <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#e53e3e'</span><span class="p">)</span>
+<span class="n">tick_obs</span> <span class="o">=</span> <span class="n">load_inaturalist_county_counts</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">'inaturalist_ticks_colorado.json'</span><span class="p">))</span>
+<span class="n">mosq_obs</span> <span class="o">=</span> <span class="n">load_inaturalist_county_counts</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">'inaturalist_mosquitoes_colorado.json'</span><span class="p">))</span>
 
-<span class="c1"># Deaths</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">df_wnv</span><span class="p">[</span><span class="s1">'year'</span><span class="p">],</span> <span class="n">df_wnv</span><span class="p">[</span><span class="s1">'deaths'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#742a2a'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Deaths'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'WNV Deaths by Year'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">mticker</span><span class="o">.</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="n">integer</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Year'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="c1"># Merge observation counts if not already in county_df</span>
+<span class="k">if</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'tick_observations_ytd'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">tick_obs</span><span class="p">:</span>
+    <span class="n">county_df</span><span class="p">[</span><span class="s1">'tick_observations_ytd'</span><span class="p">]</span> <span class="o">=</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'county'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">tick_obs</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'mosquito_observations_ytd'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">mosq_obs</span><span class="p">:</span>
+    <span class="n">county_df</span><span class="p">[</span><span class="s1">'mosquito_observations_ytd'</span><span class="p">]</span> <span class="o">=</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'county'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">mosq_obs</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">'wnv_annual_trend.png'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">'tight'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Source: </span><span class="si">{</span><span class="n">source_label</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Tick observations by county: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tick_obs</span><span class="p">)</span><span class="si">}</span><span class="s2"> counties with data"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Mosquito observations by county: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mosq_obs</span><span class="p">)</span><span class="si">}</span><span class="s2"> counties with data"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8046,24 +7986,25 @@ Peak year: 2012 (130 cases)
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Source: CDC NNDSS (historical)
+<pre>✓ Tick observations by county: 28 counties with data
+  Mosquito observations by county: 0 counties with data
 </pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=00292bf4">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4b8bfe3d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.-Recent-Climate-Conditions-(90-Day-Window)">2. Recent Climate Conditions (90-Day Window)<a class="anchor-link" href="#2.-Recent-Climate-Conditions-(90-Day-Window)">¶</a></h2>
+<h2 id="1.-Regional-Summary-Table">1. Regional Summary Table<a class="anchor-link" href="#1.-Regional-Summary-Table">¶</a></h2>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=71a4890f">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6d922129">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8071,22 +8012,38 @@ Peak year: 2012 (130 cases)
 <div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="n">raw_climate</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s1">'climate_colorado_90d.json'</span><span class="p">)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Build regional summary</span>
+<span class="n">region_labels</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'front_range'</span><span class="p">:</span>    <span class="s1">'Front Range'</span><span class="p">,</span>
+    <span class="s1">'western_slope'</span><span class="p">:</span>  <span class="s1">'Western Slope'</span><span class="p">,</span>
+    <span class="s1">'eastern_plains'</span><span class="p">:</span> <span class="s1">'Eastern Plains'</span><span class="p">,</span>
+    <span class="s1">'southern'</span><span class="p">:</span>       <span class="s1">'Southern Colorado'</span><span class="p">,</span>
+<span class="p">}</span>
 
-<span class="k">if</span> <span class="n">raw_climate</span> <span class="ow">and</span> <span class="n">raw_climate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_climate</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">df_clim</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">raw_climate</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span>
-    <span class="n">df_clim</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clim</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
-    <span class="n">df_clim</span> <span class="o">=</span> <span class="n">df_clim</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'temp_c'</span><span class="p">])</span>
-    <span class="n">climate_source</span> <span class="o">=</span> <span class="n">raw_climate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'source'</span><span class="p">,</span> <span class="s1">'NASA POWER'</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Climate data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_clim</span><span class="p">)</span><span class="si">}</span><span class="s1"> days from </span><span class="si">{</span><span class="n">climate_source</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Date range: </span><span class="si">{</span><span class="n">df_clim</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s1"> to </span><span class="si">{</span><span class="n">df_clim</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Mean temp (°C): </span><span class="si">{</span><span class="n">df_clim</span><span class="p">[</span><span class="s2">"temp_c"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-    <span class="n">days_above_18</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_clim</span><span class="p">[</span><span class="s1">'temp_c'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">18</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Days above 18°C (WNV transmission threshold): </span><span class="si">{</span><span class="n">days_above_18</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-    <span class="n">have_climate</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'Climate API unavailable — showing transmission threshold reference only'</span><span class="p">)</span>
-    <span class="n">have_climate</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">region_summary</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">county_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'region'</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+        <span class="n">counties</span><span class="o">=</span><span class="p">(</span><span class="s1">'county'</span><span class="p">,</span> <span class="s1">'count'</span><span class="p">),</span>
+        <span class="n">population</span><span class="o">=</span><span class="p">(</span><span class="s1">'population'</span><span class="p">,</span> <span class="s1">'sum'</span><span class="p">),</span>
+        <span class="n">wnv_cases</span><span class="o">=</span><span class="p">(</span><span class="s1">'wnv_cases'</span><span class="p">,</span> <span class="s1">'sum'</span><span class="p">),</span>
+        <span class="n">lyme_cases</span><span class="o">=</span><span class="p">(</span><span class="s1">'lyme_cases'</span><span class="p">,</span> <span class="s1">'sum'</span><span class="p">),</span>
+        <span class="n">rmsf_cases</span><span class="o">=</span><span class="p">(</span><span class="s1">'rmsf_cases'</span><span class="p">,</span> <span class="s1">'sum'</span><span class="p">),</span>
+        <span class="n">tick_obs</span><span class="o">=</span><span class="p">(</span><span class="s1">'tick_observations_ytd'</span><span class="p">,</span> <span class="s1">'sum'</span><span class="p">),</span>
+        <span class="n">mosq_obs</span><span class="o">=</span><span class="p">(</span><span class="s1">'mosquito_observations_ytd'</span><span class="p">,</span> <span class="s1">'sum'</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">region_summary</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">region_summary</span><span class="p">[</span><span class="s1">'wnv_cases'</span><span class="p">]</span> <span class="o">+</span> <span class="n">region_summary</span><span class="p">[</span><span class="s1">'lyme_cases'</span><span class="p">]</span> <span class="o">+</span> <span class="n">region_summary</span><span class="p">[</span><span class="s1">'rmsf_cases'</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">region_summary</span><span class="p">[</span><span class="s1">'cases_per_100k'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="n">region_summary</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span> <span class="o">/</span> <span class="n">region_summary</span><span class="p">[</span><span class="s1">'population'</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100_000</span>
+<span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">region_summary</span><span class="p">[</span><span class="s1">'region_label'</span><span class="p">]</span> <span class="o">=</span> <span class="n">region_summary</span><span class="p">[</span><span class="s1">'region'</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">region_labels</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">region_summary</span><span class="p">[</span><span class="s1">'region'</span><span class="p">])</span>
+
+<span class="n">display_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'region_label'</span><span class="p">,</span> <span class="s1">'counties'</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span> <span class="s1">'wnv_cases'</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">,</span>
+                <span class="s1">'rmsf_cases'</span><span class="p">,</span> <span class="s1">'total_cases'</span><span class="p">,</span> <span class="s1">'cases_per_100k'</span><span class="p">,</span> <span class="s1">'tick_obs'</span><span class="p">,</span> <span class="s1">'mosq_obs'</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">region_summary</span><span class="p">[</span><span class="n">display_cols</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -8099,16 +8056,28 @@ Peak year: 2012 (130 cases)
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Climate data: 91 days from NASA POWER
-Date range: 2026-02-17 to 2026-05-18
-Mean temp (°C): -24.7
-Days above 18°C (WNV transmission threshold): 4
+<pre>     region_label  counties  population  wnv_cases  lyme_cases  rmsf_cases  total_cases  cases_per_100k  tick_obs  mosq_obs
+   Eastern Plains         2      358049          0           0           0            0            0.00         0         0
+      Front Range         8     4217712          0           2           0            2            0.05         0         0
+Southern Colorado         1      168424          0           0           1            1            0.59         0         0
+    Western Slope         1      155998          0           0           0            0            0.00         0         0
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=eeec7749">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=759c02f0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="2.-Bubble-Map-%E2%80%94-Cases-per-100k-by-County">2. Bubble Map — Cases per 100k by County<a class="anchor-link" href="#2.-Bubble-Map-%E2%80%94-Cases-per-100k-by-County">¶</a></h2>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=08c94111">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8116,34 +8085,57 @@ Days above 18°C (WNV transmission threshold): 4
 <div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="k">if</span> <span class="n">have_climate</span><span class="p">:</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Colorado Climate Conditions — Last 90 Days (Denver)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Bubble map centred on Colorado</span>
+<span class="k">if</span> <span class="s1">'lat'</span> <span class="ow">in</span> <span class="n">county_df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s1">'lon'</span> <span class="ow">in</span> <span class="n">county_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">map_df</span> <span class="o">=</span> <span class="n">county_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">map_df</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">map_df</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span>
+    <span class="n">map_df</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">map_df</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span>
+    <span class="n">map_df</span> <span class="o">=</span> <span class="n">map_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">])</span>
 
-    <span class="c1"># Temperature with WNV threshold line</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_clim</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clim</span><span class="p">[</span><span class="s1">'temp_c'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#dd6b20'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Daily temp (°C)'</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#e53e3e'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'WNV transmission threshold (18°C)'</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">df_clim</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clim</span><span class="p">[</span><span class="s1">'temp_c'</span><span class="p">],</span> <span class="mi">18</span><span class="p">,</span>
-                         <span class="n">where</span><span class="o">=</span><span class="n">df_clim</span><span class="p">[</span><span class="s1">'temp_c'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">18</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#e53e3e'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Above threshold'</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Temperature (°C)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="c1"># Tooltip</span>
+    <span class="n">map_df</span><span class="p">[</span><span class="s1">'hover'</span><span class="p">]</span> <span class="o">=</span> <span class="n">map_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"&lt;b&gt;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">'county'</span><span class="p">]</span><span class="si">}</span><span class="s2"> County&lt;/b&gt;&lt;br&gt;"</span>
+            <span class="sa">f</span><span class="s2">"WNV: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'wnv_cases'</span><span class="p">])</span><span class="si">}</span><span class="s2">  |  Lyme: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'lyme_cases'</span><span class="p">])</span><span class="si">}</span><span class="s2">  |  RMSF: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'rmsf_cases'</span><span class="p">])</span><span class="si">}</span><span class="s2">&lt;br&gt;"</span>
+            <span class="sa">f</span><span class="s2">"Total: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">])</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">'cases_per_100k'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> per 100k)&lt;br&gt;"</span>
+            <span class="sa">f</span><span class="s2">"Tick obs: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'tick_observations_ytd'</span><span class="p">])</span><span class="si">}</span><span class="s2">  |  Mosq obs: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'mosquito_observations_ytd'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
 
-    <span class="c1"># Precipitation</span>
-    <span class="k">if</span> <span class="s1">'precip_mm'</span> <span class="ow">in</span> <span class="n">df_clim</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">df_clim</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clim</span><span class="p">[</span><span class="s1">'precip_mm'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-                    <span class="n">color</span><span class="o">=</span><span class="s1">'#3182ce'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Precip (mm)'</span><span class="p">)</span>
-        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Precipitation (mm)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Date'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-
-    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">'wnv_climate_90d.png'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">'tight'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Source: </span><span class="si">{</span><span class="n">climate_source</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+    <span class="c1"># Use scatter_geo so no token is needed</span>
+    <span class="n">fig_map</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_geo</span><span class="p">(</span>
+        <span class="n">map_df</span><span class="p">,</span>
+        <span class="n">lat</span><span class="o">=</span><span class="s1">'lat'</span><span class="p">,</span>
+        <span class="n">lon</span><span class="o">=</span><span class="s1">'lon'</span><span class="p">,</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">map_df</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span>  <span class="c1"># min size for zero-case counties</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">'cases_per_100k'</span><span class="p">,</span>
+        <span class="n">color_continuous_scale</span><span class="o">=</span><span class="s1">'OrRd'</span><span class="p">,</span>
+        <span class="n">hover_name</span><span class="o">=</span><span class="s1">'county'</span><span class="p">,</span>
+        <span class="n">custom_data</span><span class="o">=</span><span class="p">[</span><span class="s1">'hover'</span><span class="p">],</span>
+        <span class="n">size_max</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s1">'2026 YTD Vector-Borne Disease Cases — Colorado Counties'</span><span class="p">,</span>
+        <span class="n">scope</span><span class="o">=</span><span class="s1">'usa'</span><span class="p">,</span>
+        <span class="n">projection</span><span class="o">=</span><span class="s1">'albers usa'</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">fig_map</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">hovertemplate</span><span class="o">=</span><span class="s1">'%</span><span class="si">{customdata[0]}</span><span class="s1">&lt;extra&gt;&lt;/extra&gt;'</span><span class="p">)</span>
+    <span class="n">fig_map</span><span class="o">.</span><span class="n">update_geos</span><span class="p">(</span>
+        <span class="n">center</span><span class="o">=</span><span class="p">{</span><span class="s1">'lat'</span><span class="p">:</span> <span class="mf">39.0</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="o">-</span><span class="mf">105.5</span><span class="p">},</span>
+        <span class="n">lataxis_range</span><span class="o">=</span><span class="p">[</span><span class="mf">36.9</span><span class="p">,</span> <span class="mf">41.1</span><span class="p">],</span>
+        <span class="n">lonaxis_range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">109.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">102.0</span><span class="p">],</span>
+        <span class="n">showland</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">landcolor</span><span class="o">=</span><span class="s1">'#f0f4e8'</span><span class="p">,</span>
+        <span class="n">showsubunits</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">subunitcolor</span><span class="o">=</span><span class="s1">'#aaaaaa'</span><span class="p">,</span>
+        <span class="n">showcoastlines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">fig_map</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">margin</span><span class="o">=</span><span class="p">{</span><span class="s1">'l'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+        <span class="n">coloraxis_colorbar</span><span class="o">=</span><span class="p">{</span><span class="s1">'title'</span><span class="p">:</span> <span class="s1">'Cases / 100k'</span><span class="p">},</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">fig_map</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'Skipping climate chart (data unavailable)'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"⚠ No lat/lon coordinates available for map rendering"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8155,25 +8147,21 @@ Days above 18°C (WNV transmission threshold): 4
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Source: NASA POWER
-</pre>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=68076cc7">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=94cf2c02">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="3.-iNaturalist-Mosquito-Observations">3. iNaturalist Mosquito Observations<a class="anchor-link" href="#3.-iNaturalist-Mosquito-Observations">¶</a></h2>
+<h2 id="3.-Regional-Bar-Chart-%E2%80%94-Disease-Breakdown">3. Regional Bar Chart — Disease Breakdown<a class="anchor-link" href="#3.-Regional-Bar-Chart-%E2%80%94-Disease-Breakdown">¶</a></h2>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2275283c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=75a1ce3f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8181,35 +8169,33 @@ Days above 18°C (WNV transmission threshold): 4
 <div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="n">raw_inat</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s1">'inaturalist_mosquitoes_colorado.json'</span><span class="p">)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Grouped bar: WNV + Lyme + RMSF by region</span>
+<span class="n">fig_bar</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
 
-<span class="k">if</span> <span class="n">raw_inat</span> <span class="ow">and</span> <span class="n">raw_inat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_inat</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">df_inat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">raw_inat</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span>
-    <span class="n">df_inat</span><span class="p">[</span><span class="s1">'observed_on'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_inat</span><span class="p">[</span><span class="s1">'observed_on'</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span>
-    <span class="n">df_inat</span> <span class="o">=</span> <span class="n">df_inat</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'observed_on'</span><span class="p">])</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="s1">'#e53e3e'</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="s1">'#38a169'</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="s1">'#d97706'</span><span class="p">}</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'wnv_cases'</span><span class="p">:</span> <span class="s1">'West Nile Virus'</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">:</span> <span class="s1">'Lyme Disease'</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">:</span> <span class="s1">'RMSF'</span><span class="p">}</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'iNaturalist mosquito observations (Colorado): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_inat</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Source: </span><span class="si">{</span><span class="n">raw_inat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"source"</span><span class="p">,</span><span class="w"> </span><span class="s2">"iNaturalist"</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s1">'taxon'</span> <span class="ow">in</span> <span class="n">df_inat</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Top species observed:'</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">df_inat</span><span class="p">[</span><span class="s1">'taxon'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">disease</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">colors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">fig_bar</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">disease</span><span class="p">],</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">region_summary</span><span class="p">[</span><span class="s1">'region_label'</span><span class="p">],</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">region_summary</span><span class="p">[</span><span class="n">disease</span><span class="p">],</span>
+        <span class="n">marker_color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+    <span class="p">))</span>
 
-    <span class="c1"># Monthly distribution</span>
-    <span class="n">df_inat</span><span class="p">[</span><span class="s1">'month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_inat</span><span class="p">[</span><span class="s1">'observed_on'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
-    <span class="n">monthly</span> <span class="o">=</span> <span class="n">df_inat</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'month'</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-    <span class="n">month_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Jan'</span><span class="p">,</span><span class="s1">'Feb'</span><span class="p">,</span><span class="s1">'Mar'</span><span class="p">,</span><span class="s1">'Apr'</span><span class="p">,</span><span class="s1">'May'</span><span class="p">,</span><span class="s1">'Jun'</span><span class="p">,</span><span class="s1">'Jul'</span><span class="p">,</span><span class="s1">'Aug'</span><span class="p">,</span><span class="s1">'Sep'</span><span class="p">,</span><span class="s1">'Oct'</span><span class="p">,</span><span class="s1">'Nov'</span><span class="p">,</span><span class="s1">'Dec'</span><span class="p">]</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-    <span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">month_names</span><span class="p">,</span> <span class="n">monthly</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2f855a'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'iNaturalist Mosquito Observations by Month (Colorado)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Observations'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">'inat_mosquitoes_monthly.png'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">'tight'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Fetched: </span><span class="si">{</span><span class="n">raw_inat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fetched"</span><span class="p">,</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'No iNaturalist data available (API unavailable or no observations returned)'</span><span class="p">)</span>
+<span class="n">fig_bar</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">'2026 YTD Cases by Region and Disease (Colorado)'</span><span class="p">,</span>
+    <span class="n">barmode</span><span class="o">=</span><span class="s1">'group'</span><span class="p">,</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">'Region'</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">'Cases YTD'</span><span class="p">,</span>
+    <span class="n">legend_title</span><span class="o">=</span><span class="s1">'Disease'</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span>
+    <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="p">{</span><span class="s1">'gridcolor'</span><span class="p">:</span> <span class="s1">'#edf2f7'</span><span class="p">},</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="p">{</span><span class="s1">'gridcolor'</span><span class="p">:</span> <span class="s1">'#edf2f7'</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">fig_bar</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -8221,25 +8207,21 @@ Days above 18°C (WNV transmission threshold): 4
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>No iNaturalist data available (API unavailable or no observations returned)
-</pre>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=83de8aff">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=657676b0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="4.-Early-Warning-Summary">4. Early Warning Summary<a class="anchor-link" href="#4.-Early-Warning-Summary">¶</a></h2>
+<h2 id="4.-Vector-Observation-Density-vs.-Case-Count">4. Vector Observation Density vs. Case Count<a class="anchor-link" href="#4.-Vector-Observation-Density-vs.-Case-Count">¶</a></h2>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=53ca51d2">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=67366d3f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8247,52 +8229,98 @@ Days above 18°C (WNV transmission threshold): 4
 <div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">calendar</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Scatter: tick observations (x) vs lyme+rmsf cases (y)</span>
+<span class="n">scatter_df</span> <span class="o">=</span> <span class="n">county_df</span><span class="p">[</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'tick_observations_ytd'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="n">current_month</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">month</span>
-<span class="n">current_month_name</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">month_name</span><span class="p">[</span><span class="n">current_month</span><span class="p">]</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scatter_df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># Show all counties even with zero observations</span>
+    <span class="n">scatter_df</span> <span class="o">=</span> <span class="n">county_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="c1"># Seasonal risk by month (based on Colorado WNV surveillance history)</span>
-<span class="n">monthly_risk</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="mi">1</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Low'</span><span class="p">,</span>      <span class="s1">'#48bb78'</span><span class="p">),</span>
-    <span class="mi">2</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Low'</span><span class="p">,</span>      <span class="s1">'#48bb78'</span><span class="p">),</span>
-    <span class="mi">3</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Low'</span><span class="p">,</span>      <span class="s1">'#48bb78'</span><span class="p">),</span>
-    <span class="mi">4</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Low'</span><span class="p">,</span>      <span class="s1">'#48bb78'</span><span class="p">),</span>
-    <span class="mi">5</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Low'</span><span class="p">,</span>      <span class="s1">'#48bb78'</span><span class="p">),</span>
-    <span class="mi">6</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Moderate'</span><span class="p">,</span> <span class="s1">'#ed8936'</span><span class="p">),</span>
-    <span class="mi">7</span><span class="p">:</span> <span class="p">(</span><span class="s1">'High'</span><span class="p">,</span>     <span class="s1">'#e53e3e'</span><span class="p">),</span>
-    <span class="mi">8</span><span class="p">:</span> <span class="p">(</span><span class="s1">'High'</span><span class="p">,</span>     <span class="s1">'#e53e3e'</span><span class="p">),</span>
-    <span class="mi">9</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Moderate'</span><span class="p">,</span> <span class="s1">'#ed8936'</span><span class="p">),</span>
-    <span class="mi">10</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Low'</span><span class="p">,</span>     <span class="s1">'#48bb78'</span><span class="p">),</span>
-    <span class="mi">11</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Low'</span><span class="p">,</span>     <span class="s1">'#48bb78'</span><span class="p">),</span>
-    <span class="mi">12</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Low'</span><span class="p">,</span>     <span class="s1">'#48bb78'</span><span class="p">),</span>
-<span class="p">}</span>
+<span class="n">scatter_df</span><span class="p">[</span><span class="s1">'tick_borne_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="n">scatter_df</span><span class="p">[</span><span class="s1">'lyme_cases'</span><span class="p">]</span> <span class="o">+</span> <span class="n">scatter_df</span><span class="p">[</span><span class="s1">'rmsf_cases'</span><span class="p">]</span>
 
-<span class="n">risk_level</span><span class="p">,</span> <span class="n">risk_color</span> <span class="o">=</span> <span class="n">monthly_risk</span><span class="p">[</span><span class="n">current_month</span><span class="p">]</span>
+<span class="n">fig_scatter</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">scatter_df</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s1">'tick_observations_ytd'</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s1">'tick_borne_cases'</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s1">'county'</span><span class="p">,</span>
+    <span class="n">size</span><span class="o">=</span><span class="s1">'population'</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">'region'</span><span class="p">,</span>
+    <span class="n">color_discrete_map</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">'front_range'</span><span class="p">:</span> <span class="s1">'#3182ce'</span><span class="p">,</span>
+        <span class="s1">'western_slope'</span><span class="p">:</span> <span class="s1">'#38a169'</span><span class="p">,</span>
+        <span class="s1">'eastern_plains'</span><span class="p">:</span> <span class="s1">'#d97706'</span><span class="p">,</span>
+        <span class="s1">'southern'</span><span class="p">:</span> <span class="s1">'#e53e3e'</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">'Tick Observation Density vs. Tick-Borne Disease Cases (2026 YTD)'</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">'tick_observations_ytd'</span><span class="p">:</span> <span class="s1">'iNaturalist Tick Observations (YTD)'</span><span class="p">,</span>
+        <span class="s1">'tick_borne_cases'</span><span class="p">:</span> <span class="s1">'Confirmed Tick-Borne Cases (YTD)'</span><span class="p">,</span>
+        <span class="s1">'region'</span><span class="p">:</span> <span class="s1">'Region'</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig_scatter</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">textposition</span><span class="o">=</span><span class="s1">'top center'</span><span class="p">,</span> <span class="n">marker_opacity</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">fig_scatter</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span>
+    <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s1">'white'</span><span class="p">,</span>
+    <span class="n">xaxis</span><span class="o">=</span><span class="p">{</span><span class="s1">'gridcolor'</span><span class="p">:</span> <span class="s1">'#edf2f7'</span><span class="p">},</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="p">{</span><span class="s1">'gridcolor'</span><span class="p">:</span> <span class="s1">'#edf2f7'</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">fig_scatter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=03b48a2d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="5.-Historical-Hotspot-Comparison">5. Historical Hotspot Comparison<a class="anchor-link" href="#5.-Historical-Hotspot-Comparison">¶</a></h2>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3d018952">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Flag counties that are historically high-risk</span>
+<span class="n">wnv_hotspots</span>  <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">HOTSPOTS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'wnv_hotspot_counties'</span><span class="p">,</span> <span class="p">[]))</span>
+<span class="n">lyme_hotspots</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">HOTSPOTS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'lyme_hotspot_counties'</span><span class="p">,</span> <span class="p">[]))</span>
+<span class="n">rmsf_hotspots</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">HOTSPOTS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'rmsf_hotspot_counties'</span><span class="p">,</span> <span class="p">[]))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">52</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  AEDES Early Warning Summary — </span><span class="si">{</span><span class="n">current_month_name</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">52</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Seasonal WNV Risk Level : </span><span class="si">{</span><span class="n">risk_level</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Peak transmission months: July–September'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Primary vector          : Culex tarsalis'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Key amplifying hosts    : Corvids, house finches'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">()</span>
+<span class="n">county_df</span><span class="p">[</span><span class="s1">'wnv_hotspot'</span><span class="p">]</span>  <span class="o">=</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'county'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">wnv_hotspots</span><span class="p">)</span>
+<span class="n">county_df</span><span class="p">[</span><span class="s1">'lyme_hotspot'</span><span class="p">]</span> <span class="o">=</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'county'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">lyme_hotspots</span><span class="p">)</span>
+<span class="n">county_df</span><span class="p">[</span><span class="s1">'rmsf_hotspot'</span><span class="p">]</span> <span class="o">=</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'county'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">rmsf_hotspots</span><span class="p">)</span>
+<span class="n">county_df</span><span class="p">[</span><span class="s1">'is_hotspot'</span><span class="p">]</span>   <span class="o">=</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'wnv_hotspot'</span><span class="p">]</span> <span class="o">|</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'lyme_hotspot'</span><span class="p">]</span> <span class="o">|</span> <span class="n">county_df</span><span class="p">[</span><span class="s1">'rmsf_hotspot'</span><span class="p">]</span>
 
-<span class="k">if</span> <span class="n">have_climate</span><span class="p">:</span>
-    <span class="n">recent_mean_temp</span> <span class="o">=</span> <span class="n">df_clim</span><span class="p">[</span><span class="s1">'temp_c'</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  14-day mean temperature : </span><span class="si">{</span><span class="n">recent_mean_temp</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">°C'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">recent_mean_temp</span> <span class="o">&gt;</span> <span class="mi">18</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  ⚠  Temperature above WNV transmission threshold (18°C)'</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  ✓  Temperature below WNV transmission threshold (18°C)'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Historical hotspot counties with 2026 YTD cases:"</span><span class="p">)</span>
+<span class="n">hotspot_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'county'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">,</span> <span class="s1">'wnv_cases'</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">,</span>
+                <span class="s1">'tick_observations_ytd'</span><span class="p">,</span> <span class="s1">'wnv_hotspot'</span><span class="p">,</span> <span class="s1">'lyme_hotspot'</span><span class="p">,</span> <span class="s1">'rmsf_hotspot'</span><span class="p">]</span>
+<span class="n">display_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">hotspot_cols</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">county_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'is_hotspot'</span><span class="p">]][</span><span class="n">display_cols</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Report: Colorado West Nile Virus: </span><span class="si">{</span><span class="n">df_wnv</span><span class="p">[</span><span class="s2">"neuroinvasive"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1"> neuroinvasive cases'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'          and </span><span class="si">{</span><span class="n">df_wnv</span><span class="p">[</span><span class="s2">"deaths"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1"> deaths recorded 2010–2024'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">52</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Data sources: CDC NNDSS | NASA POWER | iNaturalist'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Generated   : </span><span class="si">{</span><span class="n">TODAY</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Summary:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Historical WNV hotspot counties monitored: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">wnv_hotspots</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Historical Lyme hotspot counties monitored: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">lyme_hotspots</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Historical RMSF hotspot counties monitored: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rmsf_hotspots</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Total statewide YTD cases: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8305,22 +8333,95 @@ Days above 18°C (WNV transmission threshold): 4
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>====================================================
-  AEDES Early Warning Summary — May
-====================================================
-  Seasonal WNV Risk Level : Low
-  Peak transmission months: July–September
-  Primary vector          : Culex tarsalis
-  Key amplifying hosts    : Corvids, house finches
+<pre>Historical hotspot counties with 2026 YTD cases:
+   county         region  wnv_cases  lyme_cases  rmsf_cases  tick_observations_ytd  wnv_hotspot  lyme_hotspot  rmsf_hotspot
+   Denver    front_range          0           1           0                      0        False          True         False
+Jefferson    front_range          0           0           0                      0        False          True         False
+    Adams    front_range          0           0           0                      0         True         False         False
+  Larimer    front_range          0           0           0                      0         True          True         False
+     Weld    front_range          0           0           0                      0         True         False         False
+  Boulder    front_range          0           0           0                      0        False          True         False
+  El Paso    front_range          0           0           0                      0        False         False          True
+   Pueblo       southern          0           0           1                      0        False         False          True
+   Morgan eastern_plains          0           0           0                      0         True         False         False
+     Weld eastern_plains          0           0           0                      0         True         False         False
 
-  14-day mean temperature : -204.6°C
-  ✓  Temperature below WNV transmission threshold (18°C)
+Summary:
+  Historical WNV hotspot counties monitored: 5
+  Historical Lyme hotspot counties monitored: 4
+  Historical RMSF hotspot counties monitored: 3
+  Total statewide YTD cases: 3
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dedc4c4a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="6.-Export-Regional-Summary-JSON">6. Export Regional Summary JSON<a class="anchor-link" href="#6.-Export-Regional-Summary-JSON">¶</a></h2>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=98f00232">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 
-  Report: Colorado West Nile Virus: 426 neuroinvasive cases
-          and 20 deaths recorded 2010–2024
-====================================================
-  Data sources: CDC NNDSS | NASA POWER | iNaturalist
-  Generated   : 2026-05-18
+<span class="c1"># Export processed regional summary for downstream use</span>
+<span class="n">region_export</span> <span class="o">=</span> <span class="n">region_summary</span><span class="p">[[</span><span class="s1">'region'</span><span class="p">,</span> <span class="s1">'region_label'</span><span class="p">,</span> <span class="s1">'counties'</span><span class="p">,</span> <span class="s1">'population'</span><span class="p">,</span>
+                                 <span class="s1">'wnv_cases'</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">,</span>
+                                 <span class="s1">'total_cases'</span><span class="p">,</span> <span class="s1">'cases_per_100k'</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">export_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">,</span> <span class="s1">'processed'</span><span class="p">,</span> <span class="s1">'Dashboard'</span><span class="p">,</span> <span class="s1">'current_season'</span><span class="p">,</span> <span class="s1">'regional_summary.json'</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">export_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">export_payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'generated'</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+    <span class="s1">'season'</span><span class="p">:</span> <span class="s1">'2026'</span><span class="p">,</span>
+    <span class="s1">'regions'</span><span class="p">:</span> <span class="n">region_export</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">'records'</span><span class="p">),</span>
+    <span class="s1">'top_counties_by_cases'</span><span class="p">:</span> <span class="p">(</span>
+        <span class="n">county_df</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'total_cases'</span><span class="p">)</span>
+        <span class="p">[[</span><span class="s1">'county'</span><span class="p">,</span> <span class="s1">'region'</span><span class="p">,</span> <span class="s1">'total_cases'</span><span class="p">,</span> <span class="s1">'cases_per_100k'</span><span class="p">]]</span>
+        <span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">'records'</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="s1">'statewide_totals'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'wnv'</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'wnv_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+        <span class="s1">'lyme'</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'lyme_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+        <span class="s1">'rmsf'</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">county_df</span><span class="p">[</span><span class="s1">'rmsf_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">export_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">export_payload</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Regional summary exported to </span><span class="si">{</span><span class="n">export_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Regions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">export_payload</span><span class="p">[</span><span class="s1">'regions'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Statewide totals: </span><span class="si">{</span><span class="n">export_payload</span><span class="p">[</span><span class="s1">'statewide_totals'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>✓ Regional summary exported to /home/runner/work/aedesproject-uif/aedesproject-uif/processed/Dashboard/current_season/regional_summary.json
+  Regions: 4
+  Statewide totals: {'wnv': 0, 'lyme': 2, 'rmsf': 1}
 </pre>
 </div>
 </div>
