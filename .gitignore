@@ -1,1 +1,8 @@
 _site/
+
+# Notebook runtime outputs
+notebooks/*.png
+notebooks/wnv_*.png
+
+# Surveillance snapshot history (runtime data; tracked separately if desired)
+data/surveillance/history/notebook_snapshots.csv
