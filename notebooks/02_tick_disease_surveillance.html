@@ -7871,6 +7871,162 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 </div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9ff7c093">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="Platform-Overview:-Ecological-Surveillance-for-Tick-Borne-Diseases">Platform Overview: Ecological Surveillance for Tick-Borne Diseases<a class="anchor-link" href="#Platform-Overview:-Ecological-Surveillance-for-Tick-Borne-Diseases">¶</a></h2><p>This platform is designed to support:</p>
+<ul>
+<li><strong>Environmental risk forecasting</strong> for tick-borne and other vector-borne diseases</li>
+<li><strong>Ecological surveillance</strong> of tick habitat suitability and phenology</li>
+<li><strong>Vector habitat suitability</strong> modeling (Ixodes, Dermacentor, and other Colorado ticks)</li>
+<li><strong>Climate anomaly detection</strong> (temperature, precipitation, drought, seasonality)</li>
+<li><strong>Public health early warning</strong> and operational support</li>
+<li><strong>Probabilistic risk estimation</strong> with uncertainty quantification</li>
+</ul>
+<p><strong>Colorado-relevant tick-borne diseases prioritized:</strong></p>
+<ul>
+<li>Lyme disease (<em>Ixodes scapularis</em>, <em>Ixodes pacificus</em>)</li>
+<li>Rocky Mountain spotted fever (<em>Dermacentor andersoni</em>, <em>Dermacentor variabilis</em>)</li>
+<li>Colorado tick fever (<em>Dermacentor andersoni</em>)</li>
+<li>Tick-borne relapsing fever (soft ticks, <em>Ornithodoros</em>)</li>
+<li>Tularemia (multiple tick vectors)</li>
+<li>Babesiosis (<em>Ixodes</em>)</li>
+<li>Anaplasmosis (<em>Ixodes</em>, <em>Dermacentor</em>)</li>
+<li>Powassan virus (<em>Ixodes</em>)</li>
+</ul>
+<p><strong>One Health integration:</strong></p>
+<ul>
+<li>Human health, animal reservoirs (deer, small mammals, birds), tick ecology, climate, land use, and public health operations are jointly modeled.</li>
+</ul>
+<hr/>
+<h2 id="Data-Sources-and-Integration">Data Sources and Integration<a class="anchor-link" href="#Data-Sources-and-Integration">¶</a></h2><p><strong>Primary Data Sources:</strong></p>
+<ul>
+<li><strong>CDC ArboNET:</strong> Human case surveillance for tick-borne diseases</li>
+<li><strong>CDPHE Vector Surveillance:</strong> Colorado-specific tick surveillance, trap data, pool testing</li>
+<li><strong>NOAA:</strong> Climate anomalies, drought, precipitation, temperature</li>
+<li><strong>NASA MODIS/EarthData:</strong> Vegetation (NDVI), land surface temperature, land cover, phenology</li>
+<li><strong>USGS:</strong> Hydrology, habitat suitability models, wildlife/tick distribution data</li>
+<li><strong>CDC Tick Distribution Maps:</strong> Official <em>Ixodes</em> and <em>Dermacentor</em> presence/absence maps</li>
+<li><strong>Colorado Department of Public Health &amp; Environment:</strong> Local case reports, vector surveillance, hospital data</li>
+<li><strong>iNaturalist:</strong> Research-grade tick observations (citizen science)</li>
+<li><strong>Migratory Bird Datasets:</strong> eBird, USGS, state data (tick hosts)</li>
+<li><strong>Land Cover/Ecological Zones:</strong> USGS, NASA, state sources</li>
+<li><strong>Drought Severity:</strong> US Drought Monitor, NOAA</li>
+</ul>
+<p><strong>Integration Strategy:</strong></p>
+<ul>
+<li>Modular ETL pipelines for each source</li>
+<li>Automated data validation and harmonization</li>
+<li>Metadata and provenance tracking for all datasets</li>
+</ul>
+<p><strong>CDC ArboNET for Tick-Borne Diseases:</strong></p>
+<ul>
+<li>Human case reports (county, disease, onset date)</li>
+<li>Entomological data where available (tick pool testing, vector distribution)</li>
+<li>Used for both model training and validation</li>
+</ul>
+<hr/>
+<h2 id="Tick-Ecological-&amp;-Habitat-Feature-Engineering">Tick Ecological &amp; Habitat Feature Engineering<a class="anchor-link" href="#Tick-Ecological-&amp;-Habitat-Feature-Engineering">¶</a></h2><p>The system models:</p>
+<ul>
+<li><strong>Tick habitat suitability</strong> (vegetation, humidity, host presence, host-seeking behavior)</li>
+<li><strong>Phenology and life cycle</strong> (temperature-dependent development, seasonal activity windows, diapause)</li>
+<li><strong>Host availability</strong> (deer, small mammals, birds, humans; by season)</li>
+<li><strong>Tick behavioral ecology</strong> (questing height, microhabitat preference, human contact risk)</li>
+<li><strong>Vegetation and land cover</strong> (deciduous/mixed forest, understory structure, NDVI)</li>
+<li><strong>Humidity conditions</strong> (relative humidity, soil moisture from MODIS/NOAA)</li>
+<li><strong>Temperature-dependent development</strong> (accumulated degree days, cold injury thresholds, thermal constraints)</li>
+<li><strong>Drought and precipitation</strong> (impacts on host populations and tick survival)</li>
+<li><strong>Wildfire ecological disruption</strong> (habitat loss, host displacement, tick population impacts)</li>
+<li><strong>Human recreational exposure risk</strong> (hiking areas, campgrounds, trail density from OSM/land cover)</li>
+<li><strong>Urban-wildlife interface</strong> (suburban tick habitat, yard-level exposure)</li>
+</ul>
+<p>All features are engineered to support ecological, entomological, and epidemiological modeling specific to tick vectors.</p>
+<hr/>
+<h2 id="One-Health-System-Framing-for-Tick-Borne-Diseases">One Health System Framing for Tick-Borne Diseases<a class="anchor-link" href="#One-Health-System-Framing-for-Tick-Borne-Diseases">¶</a></h2><p>This platform explicitly connects:</p>
+<ul>
+<li><strong>Human health:</strong> Case surveillance, exposure risk (occupational, recreational), intervention targeting</li>
+<li><strong>Animal reservoirs:</strong> Deer (primary reservoir), small mammals, birds; habitat and population dynamics</li>
+<li><strong>Tick ecology:</strong> Vector phenology, questing behavior, host-seeking, development rates, survival</li>
+<li><strong>Climate systems:</strong> Temperature (drives development and activity), humidity (survival and questing), precipitation (impacts hosts and habitat)</li>
+<li><strong>Land use:</strong> Forest type, deciduous/coniferous mix, edge effects, urbanization, hiking/recreation density</li>
+<li><strong>Public health operations:</strong> Early warning, surveillance strategy, public education, intervention planning</li>
+</ul>
+<p>The One Health approach ensures robust, actionable, and scientifically defensible public health interventions for tick-borne disease prevention.</p>
+<hr/>
+<h2 id="Validation-Methodology">Validation Methodology<a class="anchor-link" href="#Validation-Methodology">¶</a></h2><p><strong>Validation Layers:</strong></p>
+<ul>
+<li><strong>Ecological validation:</strong> Tick habitat suitability vs. CDC/USGS tick distribution maps, phenology vs. published models</li>
+<li><strong>Entomological validation:</strong> Tick pool testing results, spatial/temporal expansion of vectors</li>
+<li><strong>Epidemiological validation:</strong> Outbreak detection, lead time, spatial accuracy for human cases</li>
+<li><strong>Operational validation:</strong> Actionable lead time, false alert rate, intervention/resource allocation efficiency</li>
+</ul>
+<p><strong>Validation Methods:</strong></p>
+<ul>
+<li>Rolling historical backtesting (train on past, test on future)</li>
+<li>Geographic holdout (hold out counties/ecological zones)</li>
+<li>Climate drift testing (pre/post anomaly periods, pre/post-pandemic)</li>
+<li>Outbreak lead-time analysis (weeks of warning before peak activity)</li>
+<li>False positive/negative analysis</li>
+<li>Uncertainty estimation (confidence intervals, probability bands)</li>
+<li>Baseline comparison (seasonal averages, persistence, official alerts)</li>
+<li>Host population proxy indicators (deer density, road-kill trends where available)</li>
+</ul>
+<hr/>
+<h2 id="Testing-Strategy">Testing Strategy<a class="anchor-link" href="#Testing-Strategy">¶</a></h2><p>Tests validate:</p>
+<ul>
+<li>Tick habitat prediction accuracy (vs. CDC/USGS distribution maps, iNaturalist observations)</li>
+<li>Phenology prediction accuracy (emergence timing, peak activity, diapause timing)</li>
+<li>Environmental anomaly detection (drought, temperature extremes, unusual precipitation)</li>
+<li>Tick pool correlation (spatial/temporal distribution of positive pools)</li>
+<li>Outbreak forecasting (lead time, sensitivity, specificity)</li>
+<li>Robustness to incomplete/missing surveillance data</li>
+<li>Regional generalization (urban/rural, ecological zones, elevation gradients)</li>
+<li>Host availability proxy validation (where available)</li>
+</ul>
+<hr/>
+<h2 id="Risk-Scoring-and-Uncertainty">Risk Scoring and Uncertainty<a class="anchor-link" href="#Risk-Scoring-and-Uncertainty">¶</a></h2><ul>
+<li>Risk is modeled as a probability surface, not a binary hotspot.</li>
+<li>Scores reflect:<ul>
+<li>Probability of tick presence and human exposure</li>
+<li>Probability of tick-borne pathogen circulation</li>
+<li>Confidence/uncertainty intervals</li>
+<li>Environmental anomaly modifiers (drought stress, temperature extremes)</li>
+<li>Phenological stage (questing activity level)</li>
+</ul>
+</li>
+<li>Visualizations include probability bands, phenology timelines, and uncertainty overlays.</li>
+</ul>
+<hr/>
+<h2 id="Limitations">Limitations<a class="anchor-link" href="#Limitations">¶</a></h2><ul>
+<li>Uneven surveillance coverage (spatial gaps, some counties have minimal tick surveillance)</li>
+<li>Underreporting of human cases (many infections go unreported or are asymptomatic)</li>
+<li>Tick pool testing is limited and geographically sparse</li>
+<li>Ecological complexity: host populations fluctuate; landscape changes affect tick habitat</li>
+<li>Climate and ecological uncertainty</li>
+<li>Sparse rural data; urban-focused surveillance bias</li>
+<li>Public health response limitations (capacity, resources for prevention/intervention)</li>
+<li>Ecological non-stationarity (climate change, habitat shifts, range expansion)</li>
+</ul>
+<hr/>
+<h2 id="Data-Signal-Prioritization">Data Signal Prioritization<a class="anchor-link" href="#Data-Signal-Prioritization">¶</a></h2><ul>
+<li><strong>Primary:</strong> Ecological habitat suitability, CDC tick distribution, official epidemiological data, entomological (pool) data</li>
+<li><strong>Secondary:</strong> iNaturalist observations, host proxy indicators, search trends (supporting, not leading)</li>
+</ul>
+<hr/>
+<h2 id="Open-Science-&amp;-Digital-Public-Goods-Principles">Open Science &amp; Digital Public Goods Principles<a class="anchor-link" href="#Open-Science-&amp;-Digital-Public-Goods-Principles">¶</a></h2><ul>
+<li>All code, data, and models are open-source and reproducible</li>
+<li>Modular architecture for easy extension and integration</li>
+<li>Transparent methods and provenance for all data and forecasts</li>
+<li>Designed for public-sector interoperability and scientific review</li>
+</ul>
+<hr/>
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2d4d77a9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
