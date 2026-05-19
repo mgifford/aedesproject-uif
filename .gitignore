@@ -1,8 +1,45 @@
 _site/
 
+# Python runtime
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
 # Notebook runtime outputs
 notebooks/*.png
 notebooks/wnv_*.png
+notebooks/docs/climate-analysis/*.html
+notebooks/docs/climate-analysis/*.csv
 
 # Surveillance snapshot history (runtime data; tracked separately if desired)
 data/surveillance/history/notebook_snapshots.csv
+
+# Processed dashboard outputs (generated)
+processed/Dashboard/current_season/
