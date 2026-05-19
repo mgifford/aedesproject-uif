@@ -1,3 +1,18 @@
+# ---
+title: "Dengue Forecasting"
+nav:
+	- Home: index.md
+	- Prerequisites: prerequisites.md
+	- Initialization: initialization.md
+	- Data Extraction: data_extraction.md
+	- Data Preparation: data_preparation.md
+	- Machine Learning: ml.md
+	- Prediction: predict.md
+	- Dengue Forecasting: dengue_forecasting.md
+	- Dengue Hotspot Detection: dengue_hotspot_detection.md
+	- Multidimensional Risk Scoring: multidimensional_risk_scoring.md
+	- Changelog: changelog.md
+# ---
 # Forecasting Dengue Cases
 
 The increasing incidence of dengue fever across various geographical regions necessitates the development of robust forecasting models to aid in public health planning and intervention. Accurate and timely forecasts can significantly contribute to the effective allocation of resources and implementation of preventive measures. In this context, AEDES aims to provide a comprehensive forecasting pipeline for predicting dengue cases. Utilizing a multi-faceted approach that incorporates advanced statistical methods and machine learning algorithms, the pipeline is designed to optimize the accuracy and reliability of the forecasts. Specifically, the pipeline is built upon the Scalecast Python package [[Keith (2021)]](https://github.com/mikekeith52/scalecast), a versatile time series forecasting tool that includes automated model selection, model optimization, pipelines, visualization, and reporting. This methodology section elucidates the rationale behind the choice of data sources, preprocessing steps, and machine learning models.

@@ -1,3 +1,18 @@
+# ---
+title: "Dengue Hotspot Detection"
+nav:
+	- Home: index.md
+	- Prerequisites: prerequisites.md
+	- Initialization: initialization.md
+	- Data Extraction: data_extraction.md
+	- Data Preparation: data_preparation.md
+	- Machine Learning: ml.md
+	- Prediction: predict.md
+	- Dengue Forecasting: dengue_forecasting.md
+	- Dengue Hotspot Detection: dengue_hotspot_detection.md
+	- Multidimensional Risk Scoring: multidimensional_risk_scoring.md
+	- Changelog: changelog.md
+# ---
 # Detecting Stagnant Water as Dengue Hotspots
 
 Dengue fever, a mosquito-borne viral infection, poses significant public health risks, particularly in tropical and subtropical regions (Gubler, 1998). One of the primary breeding grounds for the Aedes aegypti mosquito, the vector for dengue, is stagnant water bodies. Traditional methods of identifying these hotspots often involve labor-intensive field surveys, which are not scalable and may lack temporal relevance. Remote sensing technologies offer a more efficient, scalable, and timely approach to identifying these critical areas (Wood et al., 2017). This paper outlines a comprehensive methodology for detecting stagnant water bodies as potential dengue hotspots using a threshold-based method applied on satellite images.

@@ -1,3 +1,18 @@
+# ---
+title: "Prediction"
+nav:
+	- Home: index.md
+	- Prerequisites: prerequisites.md
+	- Initialization: initialization.md
+	- Data Extraction: data_extraction.md
+	- Data Preparation: data_preparation.md
+	- Machine Learning: ml.md
+	- Prediction: predict.md
+	- Dengue Forecasting: dengue_forecasting.md
+	- Dengue Hotspot Detection: dengue_hotspot_detection.md
+	- Multidimensional Risk Scoring: multidimensional_risk_scoring.md
+	- Changelog: changelog.md
+# ---
 # Prediction
 
 ## Overview

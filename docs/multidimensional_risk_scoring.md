@@ -1,3 +1,18 @@
+# ---
+title: "Multidimensional Risk Scoring"
+nav:
+	- Home: index.md
+	- Prerequisites: prerequisites.md
+	- Initialization: initialization.md
+	- Data Extraction: data_extraction.md
+	- Data Preparation: data_preparation.md
+	- Machine Learning: ml.md
+	- Prediction: predict.md
+	- Dengue Forecasting: dengue_forecasting.md
+	- Dengue Hotspot Detection: dengue_hotspot_detection.md
+	- Multidimensional Risk Scoring: multidimensional_risk_scoring.md
+	- Changelog: changelog.md
+# ---
 # Multidimensional Risk Scoring
 
 Dengue fever, a mosquito-borne viral infection, poses a significant public health challenge, affecting millions of people worldwide. Effective management of the dengue crisis requires a comprehensive understanding of various risk factors, which can be complex and multidimensional. The INFORM (Index for Risk Management) framework offers a robust methodology for assessing such risks by considering multiple dimensions, including hazards, vulnerabilities, and lack of coping capacities (Promentilla, 2020; UNISDR, 2019). This paper presents a modified INFORM framework tailored for dengue crisis risk assessment, incorporating a wide array of variables and utilizing Sparse Principal Component (SPC) regression to handle high-dimensionality in the data.
