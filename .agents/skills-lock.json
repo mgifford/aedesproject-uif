@@ -1,0 +1,37 @@
+{
+  "version": "1.0",
+  "description": "Skills registry for AEDES project accessibility and code quality standards",
+  "skills": {
+    "python-code-style": {
+      "source": "wshobson/agents",
+      "path": "skills/python-code-style",
+      "description": "Python code style, linting, formatting, naming conventions, and documentation standards"
+    },
+    "charts-graphs": {
+      "source": "mgifford/accessibility-skills",
+      "path": "skills/charts-graphs",
+      "description": "Accessible data visualization patterns for charts, graphs, dashboards using Plotly, Matplotlib, D3.js"
+    },
+    "image-alt-text": {
+      "source": "mgifford/accessibility-skills",
+      "path": "skills/image-alt-text",
+      "description": "Write descriptive alt text for images, charts, diagrams, and visual elements"
+    },
+    "tables": {
+      "source": "mgifford/accessibility-skills",
+      "path": "skills/tables",
+      "description": "Accessible table patterns with proper semantic HTML and data structure"
+    },
+    "plain-language": {
+      "source": "mgifford/accessibility-skills",
+      "path": "skills/plain-language",
+      "description": "Write clear, concise, and accessible descriptions for data and analysis"
+    },
+    "color-contrast": {
+      "source": "mgifford/accessibility-skills",
+      "path": "skills/color-contrast",
+      "description": "Ensure sufficient color contrast ratios and colorblind-safe palettes"
+    }
+  },
+  "last_updated": "2026-05-19"
+}
