@@ -8181,12 +8181,250 @@ Southern Colorado         1      168424          0           0           1      
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2c8217a6">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Multi-State-Bubble-Map:-County-Level-Cases-Across-Colorado-and-Surrounding-States">Multi-State Bubble Map: County-Level Cases Across Colorado and Surrounding States<a class="anchor-link" href="#Multi-State-Bubble-Map:-County-Level-Cases-Across-Colorado-and-Surrounding-States">¶</a></h3><p>If county-level data for surrounding states is available, the map below will show cases per 100k for all included counties. This enables cross-border hotspot detection and regional situational awareness.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f68530ca">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Multi-state bubble map: include surrounding states if present</span>
+<span class="k">if</span> <span class="s1">'lat'</span> <span class="ow">in</span> <span class="n">county_df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s1">'lon'</span> <span class="ow">in</span> <span class="n">county_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">map_df</span> <span class="o">=</span> <span class="n">county_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">map_df</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">map_df</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span>
+    <span class="n">map_df</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">map_df</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span>
+    <span class="n">map_df</span> <span class="o">=</span> <span class="n">map_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">])</span>
+
+    <span class="c1"># Detect unique states (assume FIPS or county name encodes state)</span>
+    <span class="k">if</span> <span class="s1">'state'</span> <span class="ow">in</span> <span class="n">map_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="n">map_df</span><span class="p">[</span><span class="s1">'state'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="s1">'fips'</span> <span class="ow">in</span> <span class="n">map_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="n">map_df</span><span class="p">[</span><span class="s1">'fips'</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span>
+
+    <span class="c1"># Adjust map scope and axis for multi-state</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">states</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="s1">'usa'</span>
+        <span class="n">lat_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">map_df</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">map_df</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">lon_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">map_df</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">map_df</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"2026 YTD Vector-Borne Disease Cases — </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">states</span><span class="p">)</span><span class="si">}</span><span class="s2"> Counties"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="s1">'usa'</span>
+        <span class="n">lat_range</span> <span class="o">=</span> <span class="p">[</span><span class="mf">36.9</span><span class="p">,</span> <span class="mf">41.1</span><span class="p">]</span>
+        <span class="n">lon_range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">109.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">102.0</span><span class="p">]</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="s1">'2026 YTD Vector-Borne Disease Cases — Colorado Counties'</span>
+
+    <span class="n">map_df</span><span class="p">[</span><span class="s1">'hover'</span><span class="p">]</span> <span class="o">=</span> <span class="n">map_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"&lt;b&gt;</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">'county'</span><span class="p">]</span><span class="si">}</span><span class="s2"> County&lt;/b&gt;&lt;br&gt;"</span>
+            <span class="sa">f</span><span class="s2">"WNV: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'wnv_cases'</span><span class="p">])</span><span class="si">}</span><span class="s2">  |  Lyme: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'lyme_cases'</span><span class="p">])</span><span class="si">}</span><span class="s2">  |  RMSF: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'rmsf_cases'</span><span class="p">])</span><span class="si">}</span><span class="s2">&lt;br&gt;"</span>
+            <span class="sa">f</span><span class="s2">"Total: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">])</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">'cases_per_100k'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> per 100k)&lt;br&gt;"</span>
+            <span class="sa">f</span><span class="s2">"Tick obs: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'tick_observations_ytd'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="si">}</span><span class="s2">  |  Mosq obs: </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'mosquito_observations_ytd'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+    <span class="p">)</span>
+
+    <span class="n">fig_map_multi</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_geo</span><span class="p">(</span>
+        <span class="n">map_df</span><span class="p">,</span>
+        <span class="n">lat</span><span class="o">=</span><span class="s1">'lat'</span><span class="p">,</span>
+        <span class="n">lon</span><span class="o">=</span><span class="s1">'lon'</span><span class="p">,</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">map_df</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span>
+        <span class="n">color</span><span class="o">=</span><span class="s1">'cases_per_100k'</span><span class="p">,</span>
+        <span class="n">color_continuous_scale</span><span class="o">=</span><span class="s1">'OrRd'</span><span class="p">,</span>
+        <span class="n">hover_name</span><span class="o">=</span><span class="s1">'county'</span><span class="p">,</span>
+        <span class="n">custom_data</span><span class="o">=</span><span class="p">[</span><span class="s1">'hover'</span><span class="p">],</span>
+        <span class="n">size_max</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+        <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span>
+        <span class="n">projection</span><span class="o">=</span><span class="s1">'albers usa'</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">fig_map_multi</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">hovertemplate</span><span class="o">=</span><span class="s1">'%</span><span class="si">{customdata[0]}</span><span class="s1">&lt;extra&gt;&lt;/extra&gt;'</span><span class="p">)</span>
+    <span class="n">fig_map_multi</span><span class="o">.</span><span class="n">update_geos</span><span class="p">(</span>
+        <span class="n">center</span><span class="o">=</span><span class="p">{</span><span class="s1">'lat'</span><span class="p">:</span> <span class="n">map_df</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s1">'lon'</span><span class="p">:</span> <span class="n">map_df</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()},</span>
+        <span class="n">lataxis_range</span><span class="o">=</span><span class="n">lat_range</span><span class="p">,</span>
+        <span class="n">lonaxis_range</span><span class="o">=</span><span class="n">lon_range</span><span class="p">,</span>
+        <span class="n">showland</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">landcolor</span><span class="o">=</span><span class="s1">'#f0f4e8'</span><span class="p">,</span>
+        <span class="n">showsubunits</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">subunitcolor</span><span class="o">=</span><span class="s1">'#aaaaaa'</span><span class="p">,</span>
+        <span class="n">showcoastlines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">fig_map_multi</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">margin</span><span class="o">=</span><span class="p">{</span><span class="s1">'l'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+        <span class="n">coloraxis_colorbar</span><span class="o">=</span><span class="p">{</span><span class="s1">'title'</span><span class="p">:</span> <span class="s1">'Cases / 100k'</span><span class="p">},</span>
+        <span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">fig_map_multi</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"⚠ No lat/lon coordinates available for map rendering"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ef3d0ac7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Accessibility/Export:-SVG-Map-Snapshot">Accessibility/Export: SVG Map Snapshot<a class="anchor-link" href="#Accessibility/Export:-SVG-Map-Snapshot">¶</a></h3><p>This cell exports the interactive bubble map as a static SVG for accessibility, print, and sharing.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f144701b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Export the bubble map as SVG for accessibility/print</span>
+<span class="k">if</span> <span class="s1">'fig_map'</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">svg_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="s1">'county_bubble_map.svg'</span><span class="p">)</span>
+        <span class="n">fig_map</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">svg_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">'svg'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ SVG map exported: </span><span class="si">{</span><span class="n">svg_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"⚠ Could not export SVG: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"⚠ Bubble map figure not found. Run the map cell first."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>⚠ Could not export SVG: 
+Image export using the "kaleido" engine requires the Kaleido package,
+which can be installed using pip:
+
+    $ pip install --upgrade kaleido
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=94cf2c02">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="3.-Regional-Bar-Chart-%E2%80%94-Disease-Breakdown">3. Regional Bar Chart — Disease Breakdown<a class="anchor-link" href="#3.-Regional-Bar-Chart-%E2%80%94-Disease-Breakdown">¶</a></h2>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=838ff322">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Historical-Hotspot-Comparison:-County-Level-Trends">Historical Hotspot Comparison: County-Level Trends<a class="anchor-link" href="#Historical-Hotspot-Comparison:-County-Level-Trends">¶</a></h3><p>The following chart(s) compare this year's county-level case counts to previous years, highlighting historical hotspots and current trends.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=cf5e3124">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Line chart: County-level hotspot comparison (historical + current year)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+
+<span class="k">if</span> <span class="n">HOTSPOTS</span><span class="p">:</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+    <span class="n">season_label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'season'</span><span class="p">,</span> <span class="s1">'2026'</span><span class="p">))</span> <span class="k">if</span> <span class="s1">'regional_raw'</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="k">else</span> <span class="s1">'2026'</span>
+
+    <span class="c1"># Case 1: rich format {county: {year: cases}}</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">HOTSPOTS</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="n">counties</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">HOTSPOTS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">years</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">({</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">HOTSPOTS</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()})</span>
+        <span class="k">for</span> <span class="n">county</span> <span class="ow">in</span> <span class="n">counties</span><span class="p">:</span>
+            <span class="n">yvals</span> <span class="o">=</span> <span class="p">[</span><span class="n">HOTSPOTS</span><span class="p">[</span><span class="n">county</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">HOTSPOTS</span><span class="p">[</span><span class="n">county</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">years</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">yvals</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'lines+markers'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">county</span><span class="p">))</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">'County-Level Historical Hotspot Comparison'</span><span class="p">,</span>
+            <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">'Year'</span><span class="p">,</span>
+            <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">'Cases'</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="mi">420</span><span class="p">,</span>
+            <span class="n">hovermode</span><span class="o">=</span><span class="s1">'x unified'</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Case 2: list format {'wnv_hotspot_counties': [...], ...} + current county YTD</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">disease_hotspots</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'WNV'</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">HOTSPOTS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'wnv_hotspot_counties'</span><span class="p">,</span> <span class="p">[])),</span>
+            <span class="s1">'Lyme'</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">HOTSPOTS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'lyme_hotspot_counties'</span><span class="p">,</span> <span class="p">[])),</span>
+            <span class="s1">'RMSF'</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">HOTSPOTS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'rmsf_hotspot_counties'</span><span class="p">,</span> <span class="p">[])),</span>
+        <span class="p">}</span>
+        <span class="n">county_current</span> <span class="o">=</span> <span class="n">county_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'county'</span><span class="p">)[[</span><span class="s1">'wnv_cases'</span><span class="p">,</span> <span class="s1">'lyme_cases'</span><span class="p">,</span> <span class="s1">'rmsf_cases'</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">county_current</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="n">county_current</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Focus on counties that are historical hotspots in any disease</span>
+        <span class="n">hotspot_counties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="n">disease_hotspots</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">hotspot_counties</span><span class="p">:</span>
+            <span class="n">hotspot_counties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">county_current</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[:</span><span class="mi">8</span><span class="p">])</span>
+
+        <span class="n">x_axis</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Historical Hotspot Flag'</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">season_label</span><span class="si">}</span><span class="s1"> YTD Cases'</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">county</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">hotspot_counties</span><span class="p">):</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">county</span> <span class="ow">in</span> <span class="n">hotspot_counties</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">current_cases</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">county_current</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">county</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">x_axis</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">flag</span><span class="p">,</span> <span class="n">current_cases</span><span class="p">],</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s1">'lines+markers'</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">county</span>
+            <span class="p">))</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s1">'Historical Hotspots vs Current-Year County Burden'</span><span class="p">,</span>
+            <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">'Comparison Dimension'</span><span class="p">,</span>
+            <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">'Value'</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="mi">420</span><span class="p">,</span>
+            <span class="n">hovermode</span><span class="o">=</span><span class="s1">'closest'</span>
+        <span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'No historical hotspot data available for county-level comparison.'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
 </div>
 </div>
 </div>
