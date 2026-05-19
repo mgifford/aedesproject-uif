@@ -60,6 +60,8 @@ Skills are reusable capabilities that guide development practices and coding sta
 - Climate-disease correlation heatmaps
 - Weekly case count visualizations
 - Risk scoring indicators (🟢🟡🟠🔴 color patterns)
+- Semantic anchor links (`#summary`, `#annual-trends`, `#early-warning`) for direct section linking
+- Collapsible query cells (Show/Hide code toggle) focusing on results over query mechanics
 
 **Reference:** [mgifford/accessibility-skills](https://github.com/mgifford/accessibility-skills) — Source repository
 
@@ -83,18 +85,25 @@ Automation workflows in [`.github/workflows/`](.github/workflows/) run scheduled
 - Manual workflow dispatch via GitHub Actions UI
 
 **Pipeline Steps:**
-1. Fetch CDC WNV/Lyme data (annual summaries from CDC NNDSS)
-2. Fetch NASA POWER climate data (90-day rolling window for Colorado)
+1. Fetch CDC WNV/Lyme data (annual summaries from CDC NNDSS + weekly YTD provisional)
+2. Fetch NASA POWER climate data (90-day rolling window for Colorado, excluding sentinel values)
 3. Fetch iNaturalist tick/mosquito observations (real-time)
-4. Execute Jupyter notebooks (`.ipynb` → `.html`)
-5. Generate dashboard landing page
-6. Deploy to GitHub Pages (`gh-pages` branch)
+4. Execute Jupyter notebooks (`.ipynb` → `.html`) with executable Python cells
+5. Post-process HTML: inject CSS/JS to collapse query cells by default, add Show/Hide toggles
+6. Generate dashboard landing page with accessible navigation
+7. Deploy to GitHub Pages (`gh-pages` branch)
 
-**Output:** Surveillance dashboard accessible at GitHub Pages URL
+**Output:** Evergreen surveillance dashboard with:
+- Semantic section anchors for direct linking
+- Collapsible code cells (results-first presentation)
+- Current-year (2026) YTD focus with historical context (2010–2024)
+- Validated climate data (sentinel value filtering: `-999` excluded)
+- Accessible at GitHub Pages URL with keyboard navigation support
 
 **Key Scripts:**
-- `scripts/fetch_surveillance_data.py` — Data ingestion from public APIs
-- `scripts/generate_dashboard.py` — Dashboard HTML generation
+- `scripts/fetch_surveillance_data.py` — Data ingestion from public APIs (CDC, NASA POWER, iNaturalist)
+- `scripts/generate_dashboard.py` — Dashboard HTML generation with notebook cards and index
+- Workflow step: Post-processing HTML injection for collapsible query cells (universal JS/CSS toggle)
 
 ---
 
