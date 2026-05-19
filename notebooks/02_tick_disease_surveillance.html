@@ -7844,16 +7844,30 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="%F0%9F%95%B7%EF%B8%8F-Tick-Borne-Disease-Surveillance-%E2%80%94-Colorado">🕷️ Tick-Borne Disease Surveillance — Colorado<a class="anchor-link" href="#%F0%9F%95%B7%EF%B8%8F-Tick-Borne-Disease-Surveillance-%E2%80%94-Colorado">¶</a></h1><p><strong>AEDES | Advanced Early Disease Prediction and Exploration Service</strong></p>
-<p>This notebook tracks tick-borne diseases in Colorado using:</p>
+<h1 id="Colorado-Tick-Borne-Disease-Situation-Brief">Colorado Tick-Borne Disease Situation Brief<a class="anchor-link" href="#Colorado-Tick-Borne-Disease-Situation-Brief">¶</a></h1><p><a id="top"></a></p>
+<p><strong>AEDES | Advanced Early Disease Prediction and Exploration Service</strong></p>
+<p>This report is designed to answer first: <strong>How common is tick-borne disease right now, and what is my risk?</strong></p>
+<p>Data used here:</p>
 <ul>
-<li>CDC NNDSS Lyme disease case reports</li>
-<li>iNaturalist citizen-science tick observations</li>
-<li>NASA POWER climate data for tick activity modelling</li>
+<li>CDC finalized annual Lyme history (currently through 2024)</li>
+<li>CDC provisional in-season weekly indicators (2025/2026 YTD where available)</li>
+<li>iNaturalist research-grade tick observations</li>
+<li>Published Colorado tick phenology and seasonality patterns</li>
 </ul>
-<p><strong>Diseases covered</strong>: Lyme disease, Rocky Mountain Spotted Fever (RMSF), Colorado Tick Fever (CTF), Anaplasmosis, Tularemia<br/>
-<strong>Primary vectors</strong>: <em>Ixodes scapularis</em>, <em>Dermacentor andersoni</em>, <em>Dermacentor variabilis</em><br/>
-<strong>Peak transmission</strong>: March–September (varies by species)</p>
+<p><strong>Project Navigation</strong></p>
+<ul>
+<li><a href="https://mgifford.github.io/aedesproject-uif/">Home</a></li>
+<li><a href="https://mgifford.github.io/aedesproject-uif/notebooks/">Notebook Hub</a></li>
+<li><a href="https://mgifford.github.io/aedesproject-uif/dashboards/">Surveillance Dashboard</a></li>
+</ul>
+<h2 id="Quick-Links">Quick Links<a class="anchor-link" href="#Quick-Links">¶</a></h2><ul>
+<li><a href="#current-situation">Current Situation (Today)</a></li>
+<li><a href="#summary">Summary of the Analysis</a></li>
+<li><a href="#annual-trends">Lyme Disease Case Trends (Finalized 2015-2024)</a></li>
+<li><a href="#seasonal-risk">Seasonal Risk Calendar</a></li>
+<li><a href="#vector-observations">iNaturalist Tick Observations</a></li>
+<li><a href="#early-warning">Early Warning Summary</a></li>
+</ul>
 </div>
 </div>
 </div>
@@ -7864,8 +7878,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">calendar</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
@@ -7878,18 +7892,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
 
-<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">'..'</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">,</span> <span class="s1">'surveillance'</span><span class="p">)</span>
 <span class="n">TODAY</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
 
+<span class="c1"># Resolve project root whether notebook runs from repo root or notebooks/.</span>
+<span class="n">PROJECT_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">PROJECT_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">"data"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="n">PROJECT_ROOT</span> <span class="o">=</span> <span class="n">PROJECT_ROOT</span><span class="o">.</span><span class="n">parent</span>
+
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">PROJECT_ROOT</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"surveillance"</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">load_json</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Load a surveillance JSON file from common execution locations."""</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">DATA_DIR</span> <span class="o">/</span> <span class="n">filename</span><span class="p">,</span>
+        <span class="n">Path</span><span class="p">(</span><span class="s2">"data/surveillance"</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename</span><span class="p">,</span>
+        <span class="n">Path</span><span class="p">(</span><span class="s2">"../data/surveillance"</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">None</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Analysis date: </span><span class="si">{</span><span class="n">TODAY</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Data directory exists: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Data directory: </span><span class="si">{</span><span class="n">DATA_DIR</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Data directory exists: </span><span class="si">{</span><span class="n">DATA_DIR</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7902,7 +7930,137 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Analysis date: 2026-05-19
+Data directory: /home/runner/work/aedesproject-uif/aedesproject-uif/data/surveillance
 Data directory exists: True
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7c8735ab">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p><a id="current-situation"></a></p>
+<h2 id="Current-Situation-(Today)">Current Situation (Today)<a class="anchor-link" href="#Current-Situation-(Today)">¶</a></h2><p>This section prioritizes current-season risk and recency over historical context.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f667ee4a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Current conditions briefing (today + near-term risk)</span>
+<span class="n">year_now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
+<span class="n">month_now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">month</span>
+<span class="n">month_name</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">month_name</span><span class="p">[</span><span class="n">month_now</span><span class="p">]</span>
+
+<span class="c1"># Provisional in-season weekly indicators (current year and prior year)</span>
+<span class="n">raw_season_this</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">year_now</span><span class="si">}</span><span class="s2">_season_ytd.json"</span><span class="p">)</span>
+<span class="n">raw_season_prev</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">year_now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">_season_ytd.json"</span><span class="p">)</span>
+
+<span class="n">lyme_ytd_this</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">lyme_ytd_prev</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">wnv_ytd_this</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">if</span> <span class="n">raw_season_this</span> <span class="ow">and</span> <span class="n">raw_season_this</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">):</span>
+    <span class="n">season_this_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">raw_season_this</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">"lyme_cases"</span> <span class="ow">in</span> <span class="n">season_this_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">lyme_ytd_this</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">season_this_df</span><span class="p">[</span><span class="s2">"lyme_cases"</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"coerce"</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="k">if</span> <span class="s2">"wnv_cases"</span> <span class="ow">in</span> <span class="n">season_this_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">wnv_ytd_this</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">season_this_df</span><span class="p">[</span><span class="s2">"wnv_cases"</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"coerce"</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+<span class="k">if</span> <span class="n">raw_season_prev</span> <span class="ow">and</span> <span class="n">raw_season_prev</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">):</span>
+    <span class="n">season_prev_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">raw_season_prev</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">"lyme_cases"</span> <span class="ow">in</span> <span class="n">season_prev_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">lyme_ytd_prev</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">season_prev_df</span><span class="p">[</span><span class="s2">"lyme_cases"</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"coerce"</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+<span class="c1"># Most recent iNaturalist signal</span>
+<span class="n">raw_ticks_now</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s1">'inaturalist_ticks_colorado.json'</span><span class="p">)</span>
+<span class="n">inat_tick_obs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_ticks_now</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="p">[]))</span> <span class="k">if</span> <span class="n">raw_ticks_now</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="n">inat_fetched</span> <span class="o">=</span> <span class="n">raw_ticks_now</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fetched"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span> <span class="k">if</span> <span class="n">raw_ticks_now</span> <span class="k">else</span> <span class="s2">"unknown"</span>
+
+<span class="c1"># Practical risk signal for communication</span>
+<span class="n">risk_points</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">if</span> <span class="n">month_now</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="n">risk_points</span> <span class="o">+=</span> <span class="mi">2</span>
+<span class="k">elif</span> <span class="n">month_now</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">risk_points</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">if</span> <span class="n">lyme_ytd_this</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">lyme_ytd_this</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">risk_points</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">if</span> <span class="n">inat_tick_obs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">inat_tick_obs</span> <span class="o">&gt;=</span> <span class="mi">50</span><span class="p">:</span>
+    <span class="n">risk_points</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">elif</span> <span class="n">inat_tick_obs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">inat_tick_obs</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="n">risk_points</span> <span class="o">+=</span> <span class="mf">0.5</span>
+
+<span class="k">if</span> <span class="n">risk_points</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="n">current_risk</span> <span class="o">=</span> <span class="s2">"HIGH"</span>
+<span class="k">elif</span> <span class="n">risk_points</span> <span class="o">&gt;=</span> <span class="mf">1.5</span><span class="p">:</span>
+    <span class="n">current_risk</span> <span class="o">=</span> <span class="s2">"MODERATE"</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">current_risk</span> <span class="o">=</span> <span class="s2">"LOW"</span>
+
+<span class="n">yoy_lyme_ytd</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">if</span> <span class="n">lyme_ytd_this</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">lyme_ytd_prev</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">yoy_lyme_ytd</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(((</span><span class="n">lyme_ytd_this</span> <span class="o">-</span> <span class="n">lyme_ytd_prev</span><span class="p">)</span> <span class="o">/</span> <span class="n">lyme_ytd_prev</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">68</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CURRENT TICK-BORNE RISK BRIEF (</span><span class="si">{</span><span class="n">month_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">year_now</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">68</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Current public risk signal: </span><span class="si">{</span><span class="n">current_risk</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">current_risk</span> <span class="o">==</span> <span class="s2">"LOW"</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Interpretation: Risk appears low right now for most people, though personal exposure still depends on activity and location."</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">current_risk</span> <span class="o">==</span> <span class="s2">"MODERATE"</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Interpretation: Conditions support meaningful exposure risk, especially with outdoor activity in brush/grass."</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Interpretation: Conditions are favorable for higher exposure risk; prevention behavior is strongly recommended."</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Most current indicators:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">year_now</span><span class="si">}</span><span class="s2"> YTD provisional Lyme cases: </span><span class="si">{</span><span class="n">lyme_ytd_this</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">lyme_ytd_this</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'unavailable'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">year_now</span><span class="si">}</span><span class="s2"> YTD provisional WNV cases (context): </span><span class="si">{</span><span class="n">wnv_ytd_this</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">wnv_ytd_this</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'unavailable'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">yoy_lyme_ytd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- Lyme YTD YoY change vs </span><span class="si">{</span><span class="n">year_now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">yoy_lyme_ytd</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- iNaturalist research-grade tick observations loaded: </span><span class="si">{</span><span class="n">inat_tick_obs</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">inat_tick_obs</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'unavailable'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- iNaturalist data fetched: </span><span class="si">{</span><span class="n">inat_fetched</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Data recency and source note:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"- Finalized annual CDC Lyme tables typically lag and are used for validated historical trend context."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"- In-season provisional weekly data is more current for 2025/2026 risk tracking."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"- Additional useful sources for Colorado context include CDPHE updates, county public health reports, and veterinary tick surveillance where available."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>====================================================================
+CURRENT TICK-BORNE RISK BRIEF (May 2026)
+====================================================================
+Current public risk signal: HIGH
+Interpretation: Conditions are favorable for higher exposure risk; prevention behavior is strongly recommended.
+
+Most current indicators:
+- 2026 YTD provisional Lyme cases: 2
+- 2026 YTD provisional WNV cases (context): 0
+- iNaturalist research-grade tick observations loaded: 100
+- iNaturalist data fetched: 2026-05-19
+
+Data recency and source note:
+- Finalized annual CDC Lyme tables typically lag and are used for validated historical trend context.
+- In-season provisional weekly data is more current for 2025/2026 risk tracking.
+- Additional useful sources for Colorado context include CDPHE updates, county public health reports, and veterinary tick surveillance where available.
 </pre>
 </div>
 </div>
@@ -7914,7 +8072,8 @@ Data directory exists: True
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="1.-Lyme-Disease-Case-Trends-(2015%E2%80%932024)">1. Lyme Disease Case Trends (2015–2024)<a class="anchor-link" href="#1.-Lyme-Disease-Case-Trends-(2015%E2%80%932024)">¶</a></h2>
+<p><a id="annual-trends"></a></p>
+<h2 id="1.-Lyme-Disease-Case-Trends-(Finalized-2015-2024)">1. Lyme Disease Case Trends (Finalized 2015-2024)<a class="anchor-link" href="#1.-Lyme-Disease-Case-Trends-(Finalized-2015-2024)">¶</a></h2><p><a href="https://mgifford.github.io/aedesproject-uif/">Back to Home</a> | <a href="#top">Back to Top</a></p>
 </div>
 </div>
 </div>
@@ -7940,13 +8099,16 @@ Data directory exists: True
     <span class="p">})</span>
 
 <span class="n">df_lyme</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_lyme</span><span class="p">[</span><span class="s1">'confirmed'</span><span class="p">]</span> <span class="o">+</span> <span class="n">df_lyme</span><span class="p">[</span><span class="s1">'probable'</span><span class="p">]</span>
-<span class="n">df_lyme</span><span class="p">[</span><span class="s1">'yoy_change'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_lyme</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">df_lyme</span><span class="p">[</span><span class="s1">'yoy_change'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_lyme</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span><span class="o">.</span><span class="n">pct_change</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Source: </span><span class="si">{</span><span class="n">source_label</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Total cases (2015–2024): </span><span class="si">{</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"total"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'5-year trend (2020–2024): </span><span class="si">{</span><span class="n">df_lyme</span><span class="p">[</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2020</span><span class="p">][</span><span class="s2">"total"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1"> cases'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Avg annual growth rate: </span><span class="si">{</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"yoy_change"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%'</span><span class="p">)</span>
-<span class="n">df_lyme</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Total cases (2015-2024): </span><span class="si">{</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"total"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'5-year trend (2020-2024): </span><span class="si">{</span><span class="n">df_lyme</span><span class="p">[</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2020</span><span class="p">][</span><span class="s2">"total"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1"> cases'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Avg annual growth rate: </span><span class="si">{</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"yoy_change"</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Note: finalized annual CDC Lyme data is currently through 2024; newer signals appear in provisional in-season feeds.'</span><span class="p">)</span>
+
+<span class="n">display_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'year'</span><span class="p">,</span> <span class="s1">'confirmed'</span><span class="p">,</span> <span class="s1">'probable'</span><span class="p">,</span> <span class="s1">'total'</span><span class="p">,</span> <span class="s1">'yoy_change'</span><span class="p">]</span>
+<span class="n">df_lyme</span><span class="p">[</span><span class="n">display_cols</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7959,9 +8121,10 @@ Data directory exists: True
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Source: CDC Lyme Data Tables (historical)
-Total cases (2015–2024): 806
-5-year trend (2020–2024): 491 cases
+Total cases (2015-2024): 806
+5-year trend (2020-2024): 491 cases
 Avg annual growth rate: 10.4%
+Note: finalized annual CDC Lyme data is currently through 2024; newer signals appear in provisional in-season feeds.
 </pre>
 </div>
 </div>
@@ -7986,7 +8149,6 @@ Avg annual growth rate: 10.4%
 <tr style="text-align: right;">
 <th></th>
 <th>year</th>
-<th>state</th>
 <th>confirmed</th>
 <th>probable</th>
 <th>total</th>
@@ -7997,47 +8159,42 @@ Avg annual growth rate: 10.4%
 <tr>
 <th>5</th>
 <td>2020</td>
-<td>Colorado</td>
 <td>38</td>
 <td>28</td>
 <td>66</td>
-<td>-16.455696</td>
+<td>-16.5</td>
 </tr>
 <tr>
 <th>6</th>
 <td>2021</td>
-<td>Colorado</td>
 <td>52</td>
 <td>41</td>
 <td>93</td>
-<td>40.909091</td>
+<td>40.9</td>
 </tr>
 <tr>
 <th>7</th>
 <td>2022</td>
-<td>Colorado</td>
 <td>57</td>
 <td>46</td>
 <td>103</td>
-<td>10.752688</td>
+<td>10.8</td>
 </tr>
 <tr>
 <th>8</th>
 <td>2023</td>
-<td>Colorado</td>
 <td>61</td>
 <td>49</td>
 <td>110</td>
-<td>6.796117</td>
+<td>6.8</td>
 </tr>
 <tr>
 <th>9</th>
 <td>2024</td>
-<td>Colorado</td>
 <td>65</td>
 <td>54</td>
 <td>119</td>
-<td>8.181818</td>
+<td>8.2</td>
 </tr>
 </tbody>
 </table>
@@ -8106,7 +8263,8 @@ Avg annual growth rate: 10.4%
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="2.-Seasonal-Risk-Calendar">2. Seasonal Risk Calendar<a class="anchor-link" href="#2.-Seasonal-Risk-Calendar">¶</a></h2>
+<p><a id="seasonal-risk"></a></p>
+<h2 id="2.-Seasonal-Risk-Calendar">2. Seasonal Risk Calendar<a class="anchor-link" href="#2.-Seasonal-Risk-Calendar">¶</a></h2><p><a href="https://mgifford.github.io/aedesproject-uif/">Back to Home</a> | <a href="#top">Back to Top</a></p>
 </div>
 </div>
 </div>
@@ -8121,7 +8279,7 @@ Avg annual growth rate: 10.4%
 <span class="c1"># Based on published phenology data from state and CDC surveillance programs</span>
 <span class="n">months</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Jan'</span><span class="p">,</span><span class="s1">'Feb'</span><span class="p">,</span><span class="s1">'Mar'</span><span class="p">,</span><span class="s1">'Apr'</span><span class="p">,</span><span class="s1">'May'</span><span class="p">,</span><span class="s1">'Jun'</span><span class="p">,</span><span class="s1">'Jul'</span><span class="p">,</span><span class="s1">'Aug'</span><span class="p">,</span><span class="s1">'Sep'</span><span class="p">,</span><span class="s1">'Oct'</span><span class="p">,</span><span class="s1">'Nov'</span><span class="p">,</span><span class="s1">'Dec'</span><span class="p">]</span>
 
-<span class="c1"># Risk scores 0–3: 0=none, 1=low, 2=moderate, 3=high</span>
+<span class="c1"># Risk scores 0-3: 0=none, 1=low, 2=moderate, 3=high</span>
 <span class="n">risk_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">'Lyme (I. scapularis)'</span><span class="p">:</span>    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
     <span class="s1">'RMSF (D. variabilis)'</span><span class="p">:</span>    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
@@ -8132,36 +8290,39 @@ Avg annual growth rate: 10.4%
 
 <span class="n">df_risk</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">risk_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">months</span><span class="p">)</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlGn_r</span>
-<span class="n">heatmap</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                    <span class="n">interpolation</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">empty</span> <span class="ow">or</span> <span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Seasonal risk calendar skipped: no risk values available for this run.'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlGn_r</span>
+    <span class="n">heatmap</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">'auto'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                        <span class="n">interpolation</span><span class="o">=</span><span class="s1">'nearest'</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">months</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">columns</span><span class="p">)))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Colorado Tick-Borne Disease Seasonal Risk Calendar'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">months</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">columns</span><span class="p">)))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Colorado Tick-Borne Disease Seasonal Risk Calendar'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
-<span class="c1"># Annotate cells</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'—'</span><span class="p">,</span> <span class="s1">'Low'</span><span class="p">,</span> <span class="s1">'Mod'</span><span class="p">,</span> <span class="s1">'High'</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
-        <span class="n">txt</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">val</span><span class="p">]</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">7.5</span><span class="p">,</span>
-                <span class="n">color</span><span class="o">=</span><span class="s1">'white'</span> <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="p">(</span><span class="s1">'black'</span> <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">'black'</span><span class="p">),</span>
-                <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span> <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s1">'normal'</span><span class="p">)</span>
+    <span class="c1"># Annotate cells</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-'</span><span class="p">,</span> <span class="s1">'Low'</span><span class="p">,</span> <span class="s1">'Mod'</span><span class="p">,</span> <span class="s1">'High'</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span>
+            <span class="n">txt</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">val</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">7.5</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s1">'white'</span> <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s1">'black'</span><span class="p">,</span>
+                    <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span> <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s1">'normal'</span><span class="p">)</span>
 
-<span class="c1"># Mark current month</span>
-<span class="n">current_month_idx</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">current_month_idx</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#3182ce'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Current month'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+    <span class="c1"># Mark current month</span>
+    <span class="n">current_month_idx</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">current_month_idx</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#3182ce'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Current month'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">heatmap</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Risk Level'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">'tick_seasonal_risk.png'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">'tight'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">heatmap</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Risk Level'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">'tick_seasonal_risk.png'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">'tight'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -8173,7 +8334,8 @@ Avg annual growth rate: 10.4%
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="3.-iNaturalist-Tick-Observations">3. iNaturalist Tick Observations<a class="anchor-link" href="#3.-iNaturalist-Tick-Observations">¶</a></h2>
+<p><a id="vector-observations"></a></p>
+<h2 id="3.-iNaturalist-Tick-Observations">3. iNaturalist Tick Observations<a class="anchor-link" href="#3.-iNaturalist-Tick-Observations">¶</a></h2><p><a href="https://mgifford.github.io/aedesproject-uif/">Back to Home</a> | <a href="#top">Back to Top</a></p>
 </div>
 </div>
 </div>
@@ -8186,12 +8348,14 @@ Avg annual growth rate: 10.4%
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="n">raw_ticks</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="s1">'inaturalist_ticks_colorado.json'</span><span class="p">)</span>
 
+<span class="n">df_ticks</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">raw_ticks</span> <span class="ow">and</span> <span class="n">raw_ticks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_ticks</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
     <span class="n">df_ticks</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">raw_ticks</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span>
     <span class="n">df_ticks</span><span class="p">[</span><span class="s1">'observed_on'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_ticks</span><span class="p">[</span><span class="s1">'observed_on'</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span>
     <span class="n">df_ticks</span> <span class="o">=</span> <span class="n">df_ticks</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'observed_on'</span><span class="p">])</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Total research-grade tick observations: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_ticks</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">df_ticks</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Total research-grade tick observations in file: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_ticks</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Fetched: </span><span class="si">{</span><span class="n">raw_ticks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fetched"</span><span class="p">,</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">)</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="s1">'taxon'</span> <span class="ow">in</span> <span class="n">df_ticks</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="n">df_ticks</span><span class="p">[</span><span class="s1">'taxon'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
@@ -8226,7 +8390,8 @@ Avg annual growth rate: 10.4%
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">'inat_ticks.png'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">'tight'</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'No iNaturalist tick data available (API unavailable or no observations returned)'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'No iNaturalist tick data available (API unavailable or no observations returned).'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'Section intentionally left without chart to avoid empty visuals.'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8238,7 +8403,7 @@ Avg annual growth rate: 10.4%
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Total research-grade tick observations: 100
+<pre>Total research-grade tick observations in file: 100
 Fetched: 2026-05-19
 </pre>
 </div>
@@ -8251,7 +8416,8 @@ Fetched: 2026-05-19
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="4.-Early-Warning-Summary">4. Early Warning Summary<a class="anchor-link" href="#4.-Early-Warning-Summary">¶</a></h2>
+<p><a id="early-warning"></a></p>
+<h2 id="4.-Early-Warning-Summary">4. Early Warning Summary<a class="anchor-link" href="#4.-Early-Warning-Summary">¶</a></h2><p><a href="https://mgifford.github.io/aedesproject-uif/">Back to Home</a> | <a href="#top">Back to Top</a></p>
 </div>
 </div>
 </div>
@@ -8264,39 +8430,74 @@ Fetched: 2026-05-19
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="n">current_month</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">month</span>
 <span class="n">current_month_name</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">month_name</span><span class="p">[</span><span class="n">current_month</span><span class="p">]</span>
+<span class="n">year_now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
 
 <span class="c1"># Overall tick risk this month (max across all diseases)</span>
-<span class="n">max_risk</span> <span class="o">=</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">current_month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">max_risk</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">current_month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="k">if</span> <span class="s1">'df_risk'</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">empty</span> <span class="k">else</span> <span class="mi">0</span>
 <span class="n">risk_labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">'None'</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">'Low'</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">'Moderate'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">'High'</span><span class="p">}</span>
 <span class="n">risk_label</span> <span class="o">=</span> <span class="n">risk_labels</span><span class="p">[</span><span class="n">max_risk</span><span class="p">]</span>
 
 <span class="c1"># Which tick species most active this month</span>
-<span class="n">active</span> <span class="o">=</span> <span class="p">[</span><span class="n">disease</span> <span class="k">for</span> <span class="n">disease</span> <span class="ow">in</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">current_month_name</span><span class="p">,</span> <span class="n">disease</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">active</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">if</span> <span class="s1">'df_risk'</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">empty</span> <span class="ow">and</span> <span class="n">current_month_name</span> <span class="ow">in</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="p">[</span><span class="n">disease</span> <span class="k">for</span> <span class="n">disease</span> <span class="ow">in</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">df_risk</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">current_month_name</span><span class="p">,</span> <span class="n">disease</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  AEDES Tick Surveillance Summary — </span><span class="si">{</span><span class="n">current_month_name</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Overall tick risk level : </span><span class="si">{</span><span class="n">risk_label</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="c1"># Current year provisional Lyme and prior-year comparison</span>
+<span class="n">raw_season_this</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">year_now</span><span class="si">}</span><span class="s2">_season_ytd.json"</span><span class="p">)</span>
+<span class="n">raw_season_prev</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">year_now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">_season_ytd.json"</span><span class="p">)</span>
+
+<span class="n">lyme_ytd_this</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">lyme_ytd_prev</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">if</span> <span class="n">raw_season_this</span> <span class="ow">and</span> <span class="n">raw_season_this</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">):</span>
+    <span class="n">_df_this</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">raw_season_this</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">'lyme_cases'</span> <span class="ow">in</span> <span class="n">_df_this</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">lyme_ytd_this</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">_df_this</span><span class="p">[</span><span class="s1">'lyme_cases'</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="k">if</span> <span class="n">raw_season_prev</span> <span class="ow">and</span> <span class="n">raw_season_prev</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">):</span>
+    <span class="n">_df_prev</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">raw_season_prev</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s1">'lyme_cases'</span> <span class="ow">in</span> <span class="n">_df_prev</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">lyme_ytd_prev</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">_df_prev</span><span class="p">[</span><span class="s1">'lyme_cases'</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'coerce'</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+<span class="n">yoy_hist</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">df_lyme</span><span class="p">[</span><span class="s1">'yoy_change'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="s1">'df_lyme'</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_lyme</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">None</span>
+<span class="n">yoy_provisional</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">if</span> <span class="n">lyme_ytd_this</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">lyme_ytd_prev</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">yoy_provisional</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(((</span><span class="n">lyme_ytd_this</span> <span class="o">-</span> <span class="n">lyme_ytd_prev</span><span class="p">)</span> <span class="o">/</span> <span class="n">lyme_ytd_prev</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">inat_obs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_ticks</span><span class="p">)</span> <span class="k">if</span> <span class="s1">'df_ticks'</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_ticks</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  AEDES Tick Surveillance Summary — </span><span class="si">{</span><span class="n">current_month_name</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">year_now</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Current seasonal risk level : </span><span class="si">{</span><span class="n">risk_label</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">active</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">'  Active disease risks this month:'</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">active</span><span class="p">:</span>
-        <span class="n">lvl</span> <span class="o">=</span> <span class="n">risk_labels</span><span class="p">[</span><span class="n">df_risk</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">current_month_name</span><span class="p">,</span> <span class="n">d</span><span class="p">]]</span>
+        <span class="n">lvl</span> <span class="o">=</span> <span class="n">risk_labels</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">df_risk</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">current_month_name</span><span class="p">,</span> <span class="n">d</span><span class="p">])]</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'    • </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">lvl</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'  No diseases at moderate/high risk this month'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'  No diseases at moderate/high seasonal risk this month'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Lyme cases (2024)       : </span><span class="si">{</span><span class="n">df_lyme</span><span class="p">[</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2024</span><span class="p">][</span><span class="s2">"total"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1"> (confirmed + probable)'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Lyme 10-year total      : </span><span class="si">{</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"total"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1"> cases'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  YoY trend (2023→2024)   : +</span><span class="si">{</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"yoy_change"</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%'</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="n">raw_ticks</span> <span class="ow">and</span> <span class="n">raw_ticks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  iNaturalist tick obs    : </span><span class="si">{</span><span class="n">raw_ticks</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"count"</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">raw_ticks</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]))</span><span class="si">}</span><span class="s1"> (research-grade, CO)'</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">lyme_ytd_this</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  </span><span class="si">{</span><span class="n">year_now</span><span class="si">}</span><span class="s1"> YTD provisional Lyme : </span><span class="si">{</span><span class="n">lyme_ytd_this</span><span class="si">}</span><span class="s1"> cases'</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">lyme_ytd_prev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  </span><span class="si">{</span><span class="n">year_now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1"> YTD provisional Lyme : </span><span class="si">{</span><span class="n">lyme_ytd_prev</span><span class="si">}</span><span class="s1"> cases'</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">yoy_provisional</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Provisional YTD YoY change  : </span><span class="si">{</span><span class="n">yoy_provisional</span><span class="si">:</span><span class="s1">+.1f</span><span class="si">}</span><span class="s1">%'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">df_lyme</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Finalized Lyme (2024)       : </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">df_lyme</span><span class="p">[</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"year"</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2024</span><span class="p">][</span><span class="s2">"total"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s1"> (confirmed + probable)'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Finalized Lyme total        : </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">df_lyme</span><span class="p">[</span><span class="s2">"total"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">}</span><span class="s1"> cases (2015-2024)'</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">yoy_hist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Finalized YoY (2023→2024)   : </span><span class="si">{</span><span class="n">yoy_hist</span><span class="si">:</span><span class="s1">+.1f</span><span class="si">}</span><span class="s1">%'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">inat_obs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  iNaturalist tick obs loaded : </span><span class="si">{</span><span class="n">inat_obs</span><span class="si">}</span><span class="s1"> (research-grade, CO)'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Key prevention: Tick checks after outdoor activity,'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  permethrin-treated clothing, avoid tall grass/leaf litter'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Data: CDC NNDSS | iNaturalist | Published phenology data'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'  Key prevention: tick checks after outdoor activity,'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'  permethrin-treated clothing, avoid tall grass/leaf litter'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'='</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'  Data: CDC NNDSS finalized tables | CDC provisional weekly | iNaturalist | published phenology'</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  Generated: </span><span class="si">{</span><span class="n">TODAY</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8309,10 +8510,10 @@ Fetched: 2026-05-19
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>=======================================================
-  AEDES Tick Surveillance Summary — May
-=======================================================
-  Overall tick risk level : High
+<pre>============================================================
+  AEDES Tick Surveillance Summary — May 2026
+============================================================
+  Current seasonal risk level : High
 
   Active disease risks this month:
     • Lyme (I. scapularis): High
@@ -8321,15 +8522,16 @@ Fetched: 2026-05-19
     • Anaplasmosis (Ixodes): High
     • Tularemia (multi): Moderate
 
-  Lyme cases (2024)       : 119 (confirmed + probable)
-  Lyme 10-year total      : 806 cases
-  YoY trend (2023→2024)   : +8.2%
-  iNaturalist tick obs    : 100 (research-grade, CO)
+  2026 YTD provisional Lyme : 2 cases
+  Finalized Lyme (2024)       : 119 (confirmed + probable)
+  Finalized Lyme total        : 806 cases (2015-2024)
+  Finalized YoY (2023→2024)   : +8.2%
+  iNaturalist tick obs loaded : 100 (research-grade, CO)
 
-  Key prevention: Tick checks after outdoor activity,
+  Key prevention: tick checks after outdoor activity,
   permethrin-treated clothing, avoid tall grass/leaf litter
-=======================================================
-  Data: CDC NNDSS | iNaturalist | Published phenology data
+============================================================
+  Data: CDC NNDSS finalized tables | CDC provisional weekly | iNaturalist | published phenology
   Generated: 2026-05-19
 </pre>
 </div>
