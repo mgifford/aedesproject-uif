@@ -121,8 +121,36 @@ class DiseaseVectorRegistry:
                 phenology_description="Primarily nymphal & adult active spring/early summer; less questing in high heat; peaks April-May in Colorado"
             ),
         },
+        VectorType.RODENT: {
+            "peromyscus_maniculatus": VectorEcology(
+                vector_type=VectorType.RODENT,
+                scientific_names=["Peromyscus maniculatus", "Cynomys spp.", "Spermophilus spp."],
+                primary_habitat="grassland, semi-arid shrub, prairie dog towns, agricultural edges",
+                activity_season=(1, 12),  # Year-round; peak contact risk spring–fall
+                temperature_min_c=-10.0,
+                temperature_max_c=38.0,
+                temperature_peak_c=18.0,
+                humidity_min_percent=10.0,
+                primary_hosts=["rodents", "humans (incidental)"],
+                phenology_description="Year-round activity; human exposure peaks spring–fall via aerosolized droppings, contact with nesting material, or flea bites"
+            ),
+        },
+        VectorType.BIRD: {
+            "corvus_brachyrhynchos": VectorEcology(
+                vector_type=VectorType.BIRD,
+                scientific_names=["Corvus brachyrhynchos", "Passer domesticus", "Sturnus vulgaris"],
+                primary_habitat="urban/suburban, riparian corridors, agricultural fields",
+                activity_season=(4, 10),  # Peak amplification season
+                temperature_min_c=5.0,
+                temperature_max_c=40.0,
+                temperature_peak_c=22.0,
+                humidity_min_percent=20.0,
+                primary_hosts=["birds (amplifying hosts)", "mammals (dead-end)"],
+                phenology_description="Bridge vector amplification via Culex mosquitoes; corvid die-offs are a leading WNV sentinel event"
+            ),
+        },
     }
-    
+
     # Disease characteristics
     DISEASE_CHARACTERISTICS = {
         DiseaseType.WEST_NILE_VIRUS: DiseaseCharacteristics(
