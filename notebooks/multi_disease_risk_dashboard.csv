@@ -1,0 +1,11 @@
+,disease,disease_type,vector,ytd_cases,risk_pct,low_ci_pct,high_ci_pct,risk_category,cfr,colorado_endemic
+0,Lyme Disease,DiseaseType.LYME_DISEASE,Tick,10,45.1,30.5,59.6,MODERATE,0.0,True
+1,West Nile Virus,DiseaseType.WEST_NILE_VIRUS,Mosquito,15,43.1,28.5,57.6,MODERATE,0.003,True
+2,Plague,DiseaseType.PLAGUE,Rodent,0,31.0,16.1,45.9,MODERATE,0.1,True
+3,Hantavirus,DiseaseType.HANTAVIRUS,Rodent,0,31.0,16.1,45.9,MODERATE,0.38,True
+4,Rocky Mountain Spotted Fever,DiseaseType.ROCKY_MOUNTAIN_SPOTTED_FEVER,Tick,0,25.1,10.5,39.6,LOW,0.01,True
+5,Colorado Tick Fever,DiseaseType.COLORADO_TICK_FEVER,Tick,0,25.1,10.5,39.6,LOW,0.001,True
+6,Babesiosis,DiseaseType.BABESIOSIS,Tick,0,25.1,10.5,39.6,LOW,0.005,True
+7,Anaplasmosis,DiseaseType.ANAPLASMOSIS,Tick,0,25.1,10.5,39.6,LOW,0.005,True
+8,Tularemia,DiseaseType.TULAREMIA,Tick,0,25.1,10.5,39.6,LOW,0.005,True
+9,Tick Borne Relapsing Fever,DiseaseType.TICK_BORNE_RELAPSING_FEVER,Tick,0,25.1,10.5,39.6,LOW,0.005,True
