@@ -179,6 +179,51 @@ class DiseaseVectorRegistry:
             reportable=True,
             description="Zoonotic viral infection from aerosolized rodent secretions; hantavirus pulmonary syndrome (HPS) is severe"
         ),
+        DiseaseType.COLORADO_TICK_FEVER: DiseaseCharacteristics(
+            disease_type=DiseaseType.COLORADO_TICK_FEVER,
+            vector_types=[VectorType.TICK],
+            incubation_days=(1, 14),
+            case_fatality_rate=0.001,  # <0.1%; rare fatalities
+            colorado_endemic=True,
+            reportable=True,
+            description="Arboviral infection (Coltivirus) transmitted by Dermacentor andersoni; endemic Rocky Mountain region; peak spring-early summer"
+        ),
+        DiseaseType.ANAPLASMOSIS: DiseaseCharacteristics(
+            disease_type=DiseaseType.ANAPLASMOSIS,
+            vector_types=[VectorType.TICK],
+            incubation_days=(1, 14),
+            case_fatality_rate=0.005,  # <1% with treatment
+            colorado_endemic=True,
+            reportable=True,
+            description="Tick-borne bacterial infection (Anaplasma phagocytophilum); transmitted by Ixodes ticks; fever, headache, thrombocytopenia"
+        ),
+        DiseaseType.BABESIOSIS: DiseaseCharacteristics(
+            disease_type=DiseaseType.BABESIOSIS,
+            vector_types=[VectorType.TICK],
+            incubation_days=(1, 9),
+            case_fatality_rate=0.005,
+            colorado_endemic=True,
+            reportable=True,
+            description="Tick-borne protozoan infection; co-transmitted with Lyme disease by Ixodes ticks; hemolytic anemia"
+        ),
+        DiseaseType.POWASSAN_VIRUS: DiseaseCharacteristics(
+            disease_type=DiseaseType.POWASSAN_VIRUS,
+            vector_types=[VectorType.TICK],
+            incubation_days=(1, 36),
+            case_fatality_rate=0.10,  # ~10% case fatality
+            colorado_endemic=False,
+            reportable=True,
+            description="Rare tick-borne flavivirus; encephalitis; transmitted within minutes of tick attachment"
+        ),
+        DiseaseType.TICK_BORNE_RELAPSING_FEVER: DiseaseCharacteristics(
+            disease_type=DiseaseType.TICK_BORNE_RELAPSING_FEVER,
+            vector_types=[VectorType.TICK],
+            incubation_days=(4, 18),
+            case_fatality_rate=0.005,
+            colorado_endemic=True,
+            reportable=True,
+            description="Soft-tick (Ornithodoros) transmitted spirochete infection; Colorado mountain cabins; recurring fever episodes"
+        ),
     }
     
     # Disease-to-vector mapping
