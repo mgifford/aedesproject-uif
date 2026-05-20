@@ -33,10 +33,13 @@ PROCESSED_DIR = REPO_ROOT / "processed"
 EXPECTED_NOTEBOOKS = [
     "01_west_nile_virus_surveillance",
     "02_tick_disease_surveillance",
+    "03_multi_disease_dashboard",
     "04_climate_disease_correlation",
     "05_climate_change_impact_analysis",
     "06_current_season_monitoring",
     "07_regional_tracking",
+    "08_comprehensive_surveillance_dashboard",
+    "09_model_validation_report",
 ]
 
 # ---------------------------------------------------------------------------
