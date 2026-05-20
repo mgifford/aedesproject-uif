@@ -11,7 +11,7 @@ import json
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Optional, Tuple
 
 import numpy as np
@@ -57,7 +57,7 @@ def fetch_open_meteo_climate(
             date, temp_max_c, temp_min_c, temp_mean_c,
             humidity_mean_pct, precip_mm
     """
-    end_date = datetime.utcnow().date()
+    end_date = datetime.now(timezone.utc).date()
     start_date = end_date - timedelta(days=past_days)
 
     url = (

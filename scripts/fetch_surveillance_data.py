@@ -28,6 +28,9 @@ TODAY = datetime.date.today().isoformat()
 # Colorado bounding box for iNaturalist spatial filter
 _CO_BBOX = {"nelat": 41.0, "nelng": -102.0, "swlat": 37.0, "swlng": -109.1}
 
+# NASA POWER uses -999 (and values below -998) as a missing-data sentinel
+NASA_POWER_SENTINEL = -999
+
 
 def save(filename: str, data: object) -> None:
     path = os.path.join(OUTPUT_DIR, filename)
@@ -150,7 +153,7 @@ def fetch_nasa_power_colorado() -> None:
             records = [
                 {"date": d, "temp_c": t2m.get(d), "precip_mm": precip.get(d)}
                 for d in sorted(t2m.keys())
-                if t2m.get(d) is not None and float(t2m.get(d, -999)) > -998
+                if t2m.get(d) is not None and float(t2m.get(d, NASA_POWER_SENTINEL)) > (NASA_POWER_SENTINEL + 1)
             ]
             save(
                 "climate_colorado_90d.json",

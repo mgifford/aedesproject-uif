@@ -15,7 +15,7 @@ import gzip
 import io
 import json
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import urllib.error
@@ -203,7 +203,6 @@ class SurveillanceDataLoader:
                 self.data_dir / f"{disease}_{region}_cases.json",
                 self.data_dir / f"cdc_arbonet_{disease}_{region}.csv",
                 self.data_dir / f"{disease}_{region}.json",
-                self.data_dir / f"{disease}_{region}.json",
             ]
             for path in candidates:
                 if path.exists():
@@ -272,7 +271,7 @@ class SurveillanceDataLoader:
             DataFrame with columns: date, temp_max_c, temp_min_c, temp_mean_c,
                                     humidity_mean_pct, precip_mm
         """
-        end_date = datetime.utcnow().date()
+        end_date = datetime.now(timezone.utc).date()
         start_date = end_date - timedelta(days=past_days)
 
         url = (
