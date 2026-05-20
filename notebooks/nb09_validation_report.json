@@ -1,0 +1,20 @@
+{
+  "date": "2026-05-20",
+  "title": "Surveillance Module Validation Report \u2014 Phase 4",
+  "baselines": {
+    "seasonal_average_wnv": "28.4 cases/year",
+    "seasonal_average_lyme": "45.5 cases/year",
+    "persistence_wnv": "29.6 cases/year",
+    "persistence_lyme": "43.3 cases/year"
+  },
+  "ytd_2026": {
+    "wnv_neuroinvasive": 426,
+    "lyme_confirmed": 455
+  },
+  "next_steps": [
+    "Compare module risk scores against YTD cases as they accumulate",
+    "Validate directional accuracy (increase/decrease agreement)",
+    "Compute 95% bootstrap confidence intervals",
+    "Assess lead-time (does early-season risk predict year-end counts?)"
+  ]
+}
