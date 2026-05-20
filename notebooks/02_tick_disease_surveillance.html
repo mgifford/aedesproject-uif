@@ -8436,6 +8436,11 @@ Avg annual growth rate: 10.4%
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Year'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="c1"># Export data table alongside chart</span>
+<span class="n">lyme_export</span> <span class="o">=</span> <span class="n">df_lyme</span><span class="p">[[</span><span class="s1">'year'</span><span class="p">,</span><span class="s1">'confirmed'</span><span class="p">,</span><span class="s1">'probable'</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">lyme_export</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lyme_export</span><span class="p">[</span><span class="s1">'confirmed'</span><span class="p">]</span> <span class="o">+</span> <span class="n">lyme_export</span><span class="p">[</span><span class="s1">'probable'</span><span class="p">]</span>
+<span class="n">lyme_export</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'lyme_trend.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  → lyme_trend.csv (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">lyme_export</span><span class="p">)</span><span class="si">}</span><span class="s1"> rows)'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">'lyme_trend.png'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">'tight'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Source: </span><span class="si">{</span><span class="n">source_label</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
@@ -8448,6 +8453,12 @@ Avg annual growth rate: 10.4%
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  → lyme_trend.csv (10 rows)
+</pre>
+</div>
+</div>
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Source: CDC Lyme Data Tables (built-in reference)
@@ -8467,7 +8478,7 @@ Avg annual growth rate: 10.4%
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1ed1b904">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1ed1b904">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8520,9 +8531,26 @@ Avg annual growth rate: 10.4%
 
     <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">heatmap</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Risk Level'</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="c1"># Export data table alongside chart</span>
+    <span class="n">tick_risk_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">risk_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">months</span><span class="p">)</span>
+    <span class="n">tick_risk_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'month'</span>
+    <span class="n">tick_risk_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'tick_seasonal_risk.csv'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  → tick_seasonal_risk.csv'</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">'tick_seasonal_risk.png'</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">'tight'</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  → tick_seasonal_risk.csv
+</pre>
 </div>
 </div>
 </div>
@@ -8588,6 +8616,11 @@ Avg annual growth rate: 10.4%
             <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">patches</span><span class="p">[</span><span class="n">current_month_idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="c1"># Export data table alongside chart</span>
+        <span class="n">export_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'observed_on'</span><span class="p">,</span><span class="s1">'species_guess'</span><span class="p">,</span><span class="s1">'quality_grade'</span><span class="p">,</span>
+                                   <span class="s1">'latitude'</span><span class="p">,</span><span class="s1">'longitude'</span><span class="p">,</span><span class="s1">'month'</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df_ticks</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+        <span class="n">df_ticks</span><span class="p">[</span><span class="n">export_cols</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'inat_ticks.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  → inat_ticks.csv (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_ticks</span><span class="p">)</span><span class="si">}</span><span class="s1"> rows)'</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"inat_ticks.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="k">else</span><span class="p">:</span>

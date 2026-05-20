@@ -8222,6 +8222,9 @@ Rocky Mountain Spotted Fever     Tick          0      25.7           LOW 0.010
     <span class="n">ax2</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">"linear"</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="c1"># Export data table alongside chart</span>
+    <span class="n">risk_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'multi_disease_risk_dashboard.csv'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  → multi_disease_risk_dashboard.csv (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">risk_df</span><span class="p">)</span><span class="si">}</span><span class="s1"> rows)'</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"multi_disease_risk_dashboard.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Dashboard saved: multi_disease_risk_dashboard.png"</span><span class="p">)</span>
@@ -8234,6 +8237,12 @@ Rocky Mountain Spotted Fever     Tick          0      25.7           LOW 0.010
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  → multi_disease_risk_dashboard.csv (10 rows)
+</pre>
+</div>
+</div>
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Dashboard saved: multi_disease_risk_dashboard.png
@@ -8309,6 +8318,20 @@ Rocky Mountain Spotted Fever     Tick          0      25.7           LOW 0.010
         <span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Date"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+        <span class="c1"># Export data table alongside chart</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">hab_export</span> <span class="o">=</span> <span class="n">clim</span><span class="p">[[</span><span class="s2">"temp_c"</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">hab_export</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"date"</span>
+            <span class="n">hab_export</span><span class="p">[</span><span class="s2">"mosquito_habitat"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mosq_suit</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">hab_export</span><span class="p">[</span><span class="s2">"tick_habitat"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tick_suit</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">hab_export</span><span class="p">[</span><span class="s2">"mosquito_gdd"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mosq_gdd</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">hab_export</span><span class="p">[</span><span class="s2">"tick_gdd"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tick_gdd</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">hab_export</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"vector_habitat_suitability.csv"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"  → vector_habitat_suitability.csv"</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"vector_habitat_suitability.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"Chart saved: vector_habitat_suitability.png"</span><span class="p">)</span>
@@ -8324,6 +8347,12 @@ Rocky Mountain Spotted Fever     Tick          0      25.7           LOW 0.010
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  → vector_habitat_suitability.csv
+</pre>
+</div>
+</div>
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Chart saved: vector_habitat_suitability.png
@@ -8392,6 +8421,11 @@ Rocky Mountain Spotted Fever     Tick          0      25.7           LOW 0.010
 
     <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Risk Probability (%)"</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="c1"># Export data table alongside chart</span>
+    <span class="n">cal_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">calendar_rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">months</span><span class="p">)</span>
+    <span class="n">cal_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'disease'</span><span class="p">,</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="s1">'value'</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="ow">in</span> <span class="n">DISEASE_CONFIG</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">calendar_rows</span><span class="p">)]])</span>
+    <span class="n">cal_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'multi_disease_seasonal_calendar.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'  → multi_disease_seasonal_calendar.csv (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cal_df</span><span class="p">)</span><span class="si">}</span><span class="s1"> rows)'</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"multi_disease_seasonal_calendar.png"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"Seasonal calendar saved: multi_disease_seasonal_calendar.png"</span><span class="p">)</span>
@@ -8404,6 +8438,12 @@ Rocky Mountain Spotted Fever     Tick          0      25.7           LOW 0.010
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  → multi_disease_seasonal_calendar.csv (10 rows)
+</pre>
+</div>
+</div>
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Seasonal calendar saved: multi_disease_seasonal_calendar.png
