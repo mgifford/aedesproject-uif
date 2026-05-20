@@ -1,0 +1,154 @@
+name: Tick Surveillance Weekly
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'   # Every Monday at 07:00 UTC (01:00 Mountain)
+  workflow_dispatch:        # Manual trigger from Actions tab
+
+permissions:
+  contents: write           # Needed to push to gh-pages branch
+
+jobs:
+  tick-surveillance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Python environment ─────────────────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install \
+            jupyter \
+            nbconvert \
+            nbformat \
+            nbclient \
+            pandas \
+            numpy \
+            requests \
+            plotly \
+            scipy \
+            scikit-learn
+          pip install -e . --no-deps
+
+      # ── 3. Restore cached surveillance data ──────────────────────────────────
+      - name: Restore surveillance data cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: surveillance-cache-${{ runner.os }}-${{ hashFiles('data/surveillance/*.json') }}
+          restore-keys: |
+            surveillance-cache-${{ runner.os }}-
+
+      # ── 4. Fetch fresh data ────────────────────────────────────────────────────
+      - name: Fetch surveillance data (CDC, Open-Meteo, iNaturalist)
+        run: python scripts/fetch_surveillance_data.py
+        continue-on-error: true   # Dashboard still builds with cached data if APIs are down
+
+      # ── 5. Execute tick surveillance notebook ─────────────────────────────────
+      - name: Execute tick surveillance notebook
+        run: |
+          mkdir -p _site/notebooks
+          jupyter nbconvert \
+            --to html \
+            --execute \
+            --no-prompt \
+            --ExecutePreprocessor.timeout=600 \
+            --output-dir _site/notebooks \
+            notebooks/02_tick_disease_surveillance.ipynb
+        continue-on-error: false
+
+      # ── 6. Make query cells collapsible ───────────────────────────────────────
+      - name: Inject collapsible query-cell toggle
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          snippet = """
+          <style>
+          .code-toggle-btn {
+            margin: 0.4rem 0 0.2rem;
+            padding: 0.25rem 0.55rem;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            background: #f6f8fa;
+            color: #24292f;
+            font-size: 0.82rem;
+            cursor: pointer;
+          }
+          .code-toggle-btn:hover { background: #eef2f6; }
+          .jp-InputArea.jp-Cell-inputArea.collapsed-query { display: none; }
+          </style>
+          <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.jp-CodeCell').forEach(function (cell) {
+              const input = cell.querySelector('.jp-InputArea.jp-Cell-inputArea');
+              if (!input) return;
+              input.classList.add('collapsed-query');
+              const button = document.createElement('button');
+              button.className = 'code-toggle-btn';
+              button.type = 'button';
+              button.textContent = 'Show query';
+              button.addEventListener('click', function () {
+                const isCollapsed = input.classList.contains('collapsed-query');
+                if (isCollapsed) {
+                  input.classList.remove('collapsed-query');
+                  button.textContent = 'Hide query';
+                } else {
+                  input.classList.add('collapsed-query');
+                  button.textContent = 'Show query';
+                }
+              });
+              input.parentNode.insertBefore(button, input);
+            });
+          });
+          </script>
+          """
+
+          html_path = Path('_site/notebooks/02_tick_disease_surveillance.html')
+          if html_path.exists():
+              html = html_path.read_text(encoding='utf-8')
+              if 'code-toggle-btn' not in html:
+                  html = html.replace('</head>', f'{snippet}\n</head>', 1)
+                  html_path.write_text(html, encoding='utf-8')
+                  print(f'Updated {html_path}')
+          PY
+
+      # ── 7. Generate dashboard index (refresh card for notebook 02) ────────────
+      - name: Regenerate dashboard index
+        run: python scripts/generate_dashboard.py
+        continue-on-error: true
+
+      # ── 8. Commit updated data cache back to main branch ──────────────────────
+      - name: Commit updated surveillance data cache
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/surveillance/ data/cache/ || true
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "data: tick surveillance weekly cache update [skip ci]"
+            git push
+          fi
+
+      # ── 9. Deploy updated HTML to gh-pages ────────────────────────────────────
+      - name: Deploy to GitHub Pages (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          keep_files: true      # Preserve other notebooks from the main dashboard build
+          commit_message: >
+            tick-surveillance: weekly update
+            run=${{ github.run_number }} [skip ci]
