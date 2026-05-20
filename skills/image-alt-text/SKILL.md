@@ -244,13 +244,8 @@ The following values are flagged as errors by multiple accessibility checkers:
 ### Draft/placeholder text — Serious
 
 ```html
-<!-- WRONG -->
-<img src="portrait.jpg" alt="TBD">
-<img src="portrait.jpg" alt="TODO">
-<img src="portrait.jpg" alt="placeholder">
-<img src="portrait.jpg" alt="null">
-<img src="portrait.jpg" alt="undefined">
 ```
+
 
 ### "Type" prefix phrases — Moderate
 
@@ -329,24 +324,7 @@ Automated tools such as axe-core detect structural issues. Human review is alway
 
 ## Definition of Done Checklist
 
-- [ ] Every `<img>` element has an `alt` attribute (even decorative images use `alt=""`)
-- [ ] Decorative images use `alt=""` and are confirmed to add no meaning
-- [ ] Functional images (links, buttons) describe the action or destination
-- [ ] Alt text does not begin with "image of", "picture of", or "photo of"
-- [ ] Alt text does not repeat the file name or generic label ("image", "photo", "graphic", "chart")
-- [ ] Alt text is not a draft placeholder ("TBD", "TODO", "null", "none", "undefined", "placeholder")
-- [ ] Alt text is not a machine-generated code or CMS-injected message
-- [ ] Complex images (charts, diagrams) have both a short alt and a long description
-- [ ] Images of text reproduce the exact text in the `alt` attribute
-- [ ] Grouped images convey combined meaning via one image's alt (others are `alt=""`)
-- [ ] Linked images with adjacent link text use `alt=""` on the image
-- [ ] Figures with a `<figcaption>` do not duplicate the caption verbatim in the `alt`
-- [ ] Portrait images include the person's role and context, not just their name
-- [ ] CSS background images are decorative (meaningful images use `<img>`)
-- [ ] Alt text has been reviewed in context, not just in isolation
-- [ ] Alt text has been tested with a screen reader (NVDA + Firefox or VoiceOver + Safari)
 
----
 
 ## Key WCAG Criteria
 
