@@ -189,6 +189,7 @@ class TestFetchINaturalist:
 # ---------------------------------------------------------------------------
 
 import generate_dashboard as gd
+import postprocess_notebook_html as pnh
 
 
 class TestBuildNotebookCards:
@@ -261,3 +262,35 @@ class TestBuildIndex:
         gd.build_index()
         content = (tmp_path / "index.html").read_text()
         assert "2026-05-18" in content
+
+
+class TestPostProcessNotebookHtml:
+    def test_inject_ui_adds_home_navigation_and_query_toggle(self):
+        html = "<html><head></head><body><main>Notebook body</main></body></html>"
+        updated = pnh.inject_ui(
+            html,
+            current_stem="01_west_nile_virus_surveillance",
+            available_stems=[
+                "01_west_nile_virus_surveillance",
+                "02_tick_disease_surveillance",
+            ],
+        )
+        assert "aedes-notebook-nav" in updated
+        assert 'href="../index.html"' in updated
+        assert "code-toggle-btn" in updated
+        assert "Show query" in updated
+
+    def test_process_directory_adds_prev_next_links(self, tmp_path):
+        nb1 = tmp_path / "01_west_nile_virus_surveillance.html"
+        nb2 = tmp_path / "02_tick_disease_surveillance.html"
+        raw = "<html><head></head><body><main>Notebook</main></body></html>"
+        nb1.write_text(raw, encoding="utf-8")
+        nb2.write_text(raw, encoding="utf-8")
+
+        updated_count = pnh.process_directory(tmp_path)
+        assert updated_count == 2
+
+        nb1_html = nb1.read_text(encoding="utf-8")
+        nb2_html = nb2.read_text(encoding="utf-8")
+        assert 'href="02_tick_disease_surveillance.html"' in nb1_html
+        assert 'href="01_west_nile_virus_surveillance.html"' in nb2_html

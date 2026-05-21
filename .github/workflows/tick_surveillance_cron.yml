@@ -69,60 +69,8 @@ jobs:
         continue-on-error: false
 
       # ── 6. Make query cells collapsible ───────────────────────────────────────
-      - name: Inject collapsible query-cell toggle
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          snippet = """
-          <style>
-          .code-toggle-btn {
-            margin: 0.4rem 0 0.2rem;
-            padding: 0.25rem 0.55rem;
-            border: 1px solid #d0d7de;
-            border-radius: 6px;
-            background: #f6f8fa;
-            color: #24292f;
-            font-size: 0.82rem;
-            cursor: pointer;
-          }
-          .code-toggle-btn:hover { background: #eef2f6; }
-          .jp-InputArea.jp-Cell-inputArea.collapsed-query { display: none; }
-          </style>
-          <script>
-          document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.jp-CodeCell').forEach(function (cell) {
-              const input = cell.querySelector('.jp-InputArea.jp-Cell-inputArea');
-              if (!input) return;
-              input.classList.add('collapsed-query');
-              const button = document.createElement('button');
-              button.className = 'code-toggle-btn';
-              button.type = 'button';
-              button.textContent = 'Show query';
-              button.addEventListener('click', function () {
-                const isCollapsed = input.classList.contains('collapsed-query');
-                if (isCollapsed) {
-                  input.classList.remove('collapsed-query');
-                  button.textContent = 'Hide query';
-                } else {
-                  input.classList.add('collapsed-query');
-                  button.textContent = 'Show query';
-                }
-              });
-              input.parentNode.insertBefore(button, input);
-            });
-          });
-          </script>
-          """
-
-          html_path = Path('_site/notebooks/02_tick_disease_surveillance.html')
-          if html_path.exists():
-              html = html_path.read_text(encoding='utf-8')
-              if 'code-toggle-btn' not in html:
-                  html = html.replace('</head>', f'{snippet}\n</head>', 1)
-                  html_path.write_text(html, encoding='utf-8')
-                  print(f'Updated {html_path}')
-          PY
+      - name: Post-process notebook HTML (navigation + collapsible query cells)
+        run: python scripts/postprocess_notebook_html.py --directory _site/notebooks
 
       # ── 7. Generate dashboard index (refresh card for notebook 02) ────────────
       - name: Regenerate dashboard index
