@@ -277,8 +277,14 @@ class TestPostProcessNotebookHtml:
         )
         assert "aedes-notebook-nav" in updated
         assert 'href="../index.html"' in updated
+        assert 'href="#notebook-content-start"' in updated
         assert "code-toggle-btn" in updated
         assert "Show query" in updated
+        assert "aria-expanded" in updated
+        assert "aria-controls" in updated
+        assert "setAttribute('aria-expanded', 'false')" in updated
+        assert "input.id = 'aedes-query-'" in updated
+        assert "button.setAttribute('aria-controls', input.id)" in updated
 
     def test_process_directory_adds_prev_next_links(self, tmp_path):
         nb1 = tmp_path / "01_west_nile_virus_surveillance.html"
@@ -294,3 +300,23 @@ class TestPostProcessNotebookHtml:
         nb2_html = nb2.read_text(encoding="utf-8")
         assert 'href="02_tick_disease_surveillance.html"' in nb1_html
         assert 'href="01_west_nile_virus_surveillance.html"' in nb2_html
+
+    def test_build_nav_html_first_middle_last_states(self):
+        stems = [
+            "01_west_nile_virus_surveillance",
+            "02_tick_disease_surveillance",
+            "04_climate_disease_correlation",
+        ]
+
+        first = pnh.build_nav_html(stems[0], stems)
+        middle = pnh.build_nav_html(stems[1], stems)
+        last = pnh.build_nav_html(stems[2], stems)
+
+        assert "is-disabled" in first
+        assert 'href="02_tick_disease_surveillance.html"' in first
+
+        assert 'href="01_west_nile_virus_surveillance.html"' in middle
+        assert 'href="04_climate_disease_correlation.html"' in middle
+
+        assert 'href="02_tick_disease_surveillance.html"' in last
+        assert "is-disabled" in last

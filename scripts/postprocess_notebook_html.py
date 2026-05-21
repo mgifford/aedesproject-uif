@@ -44,26 +44,31 @@ def build_nav_html(current_stem: str, available_stems: list[str]) -> str:
     prev_link = (
         f'<a class="aedes-nav-link" href="{prev_stem}.html" rel="prev">← Previous</a>'
         if prev_stem
-        else '<span class="aedes-nav-link is-disabled" aria-disabled="true">← Previous</span>'
+        else '<span class="aedes-nav-link is-disabled">← Previous</span>'
     )
     next_link = (
         f'<a class="aedes-nav-link" href="{next_stem}.html" rel="next">Next →</a>'
         if next_stem
-        else '<span class="aedes-nav-link is-disabled" aria-disabled="true">Next →</span>'
+        else '<span class="aedes-nav-link is-disabled">Next →</span>'
     )
 
     return f"""
+    <!-- AEDES_NOTEBOOK_NAV_START -->
     <nav class="aedes-notebook-nav" aria-label="Notebook navigation">
+      <a class="aedes-skip-link" href="#notebook-content-start">Skip to notebook content</a>
       <a class="aedes-nav-link aedes-home-link" href="../index.html">🏠 Home</a>
       {prev_link}
       <span class="aedes-nav-current" aria-current="page">{notebook_title(current_stem)}</span>
       {next_link}
     </nav>
+    <div id="notebook-content-start" tabindex="-1" role="region" aria-label="Notebook content"></div>
+    <!-- AEDES_NOTEBOOK_NAV_END -->
     """
 
 
 def build_head_snippet() -> str:
     return """
+<!-- AEDES_NOTEBOOK_HEAD_START -->
 <style>
 .aedes-notebook-nav {
   position: sticky;
@@ -93,6 +98,25 @@ def build_head_snippet() -> str:
   color: #24292f;
 }
 .aedes-nav-link:hover { background: #eef2f6; }
+.aedes-nav-link:focus-visible {
+  outline: 2px solid #2b6cb0;
+  outline-offset: 2px;
+}
+.aedes-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+}
+.aedes-skip-link:focus {
+  position: static;
+  left: auto;
+  top: auto;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid #2b6cb0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #2b6cb0;
+}
 .aedes-home-link { font-weight: 600; }
 .aedes-nav-current {
   border-color: #2b6cb0;
@@ -100,7 +124,7 @@ def build_head_snippet() -> str:
   background: #ebf8ff;
 }
 .aedes-nav-link.is-disabled {
-  color: #8c959f;
+  color: #57606a;
   background: #f6f8fa;
 }
 
@@ -119,24 +143,34 @@ def build_head_snippet() -> str:
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('.jp-CodeCell').forEach(function (cell) {
+  document.querySelectorAll('.jp-CodeCell').forEach(function (cell, index) {
     const input = cell.querySelector('.jp-InputArea.jp-Cell-inputArea');
     if (!input) return;
 
+    if (!input.id) {
+      const baseId = cell.getAttribute('id') || cell.getAttribute('data-cell-id') || String(index);
+      const safeId = String(baseId).replace(/[^a-zA-Z0-9_-]/g, '-');
+      input.id = 'aedes-query-' + safeId;
+    }
     input.classList.add('collapsed-query');
+
     const button = document.createElement('button');
     button.className = 'code-toggle-btn';
     button.type = 'button';
     button.textContent = 'Show query';
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-controls', input.id);
 
     button.addEventListener('click', function () {
       const isCollapsed = input.classList.contains('collapsed-query');
       if (isCollapsed) {
         input.classList.remove('collapsed-query');
         button.textContent = 'Hide query';
+        button.setAttribute('aria-expanded', 'true');
       } else {
         input.classList.add('collapsed-query');
         button.textContent = 'Show query';
+        button.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -144,23 +178,28 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+<!-- AEDES_NOTEBOOK_HEAD_END -->
 """
 
 
 def inject_ui(html: str, current_stem: str, available_stems: list[str]) -> str:
-    if "aedes-notebook-nav" in html:
-        return html
-
     head_snippet = build_head_snippet()
     nav_html = build_nav_html(current_stem, available_stems)
 
-    if "</head>" in html:
+    if "AEDES_NOTEBOOK_HEAD_START" not in html and "</head>" in html:
         html = html.replace("</head>", f"{head_snippet}\n</head>", 1)
 
-    body_match = re.search(r"<body[^>]*>", html, flags=re.IGNORECASE)
-    if body_match:
-        insertion_point = body_match.end()
-        html = f"{html[:insertion_point]}\n{nav_html}\n{html[insertion_point:]}"
+    nav_pattern = re.compile(
+        r"<!-- AEDES_NOTEBOOK_NAV_START -->.*?<!-- AEDES_NOTEBOOK_NAV_END -->",
+        flags=re.DOTALL,
+    )
+    if "AEDES_NOTEBOOK_NAV_START" in html:
+        html = nav_pattern.sub(nav_html.strip(), html, count=1)
+    else:
+        body_match = re.search(r"<body[^>]*>", html, flags=re.IGNORECASE)
+        if body_match:
+            insertion_point = body_match.end()
+            html = f"{html[:insertion_point]}\n{nav_html}\n{html[insertion_point:]}"
     return html
 
 
