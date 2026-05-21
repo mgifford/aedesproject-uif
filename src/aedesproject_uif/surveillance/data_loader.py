@@ -139,7 +139,7 @@ class SurveillanceDataLoader:
             f"https://data.cdc.gov/resource/{dataset_id}.json"
             f"?$where=lower(reporting_area)='{state.lower()}'"
             f"&$limit=2000"
-            f"&$order=mmwr_year DESC"
+            f"&$order=mmwr_year%20DESC"
         )
         raw = self._fetch_url(url, timeout=25)
         if raw is None:
