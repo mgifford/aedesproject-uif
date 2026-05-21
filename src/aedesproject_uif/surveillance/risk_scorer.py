@@ -27,6 +27,22 @@ class ProbabilisticRiskScorer:
         """Initialize the risk scorer."""
         pass
 
+    def _align_series_to_reference(
+        self,
+        reference: pd.Series,
+        component: pd.Series,
+    ) -> pd.Series:
+        """Align a risk component series to the reference index."""
+        if reference.index.equals(component.index):
+            return component
+
+        # If lengths match but index dtypes differ (e.g., RangeIndex vs DatetimeIndex),
+        # align positionally to avoid all-NaN arithmetic and index comparison warnings.
+        if len(reference) == len(component):
+            return pd.Series(component.to_numpy(), index=reference.index, name=component.name)
+
+        return component.reindex(reference.index)
+
     def compute_vector_presence_probability(
         self,
         habitat_suitability: pd.Series,
@@ -257,6 +273,11 @@ class ProbabilisticRiskScorer:
                 'exposure': 0.3,
                 'outbreak': 0.2
             }
+
+        vector_prob = vector_prob.astype(float)
+        transmission_prob = self._align_series_to_reference(vector_prob, transmission_prob.astype(float))
+        exposure_prob = self._align_series_to_reference(vector_prob, exposure_prob.astype(float))
+        outbreak_prob = self._align_series_to_reference(vector_prob, outbreak_prob.astype(float))
 
         point_score = (
             weights['vector'] * vector_prob +
