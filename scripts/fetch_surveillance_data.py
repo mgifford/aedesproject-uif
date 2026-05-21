@@ -4,12 +4,19 @@ Fetch surveillance data from public APIs for the AEDES dashboard.
 
 Data is saved to data/surveillance/ for use by notebooks.
 All fetches are best-effort: notebooks fall back to sample data if unavailable.
+
+Sources (all free / keyless):
+- CDC NNDSS historical reference data (embedded)
+- NASA POWER API — climate data for Denver, CO
+- Open-Meteo API — current 30-day climate (temperature, humidity, precipitation)
+- iNaturalist API — research-grade tick observations in Colorado (with retry)
 """
 
 import json
 import os
 import sys
 import datetime
+import time
 import urllib.request
 import urllib.error
 
@@ -17,6 +24,12 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "surveillance
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 TODAY = datetime.date.today().isoformat()
+
+# Colorado bounding box for iNaturalist spatial filter
+_CO_BBOX = {"nelat": 41.0, "nelng": -102.0, "swlat": 37.0, "swlng": -109.1}
+
+# NASA POWER uses -999 (and values below -998) as a missing-data sentinel
+NASA_POWER_SENTINEL = -999
 
 
 def save(filename: str, data: object) -> None:
@@ -28,12 +41,25 @@ def save(filename: str, data: object) -> None:
 
 def fetch_url(url: str, timeout: int = 20) -> bytes | None:
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "AEDES-Surveillance/1.0"})
+        req = urllib.request.Request(url, headers={"User-Agent": "AEDES-Surveillance/2.0"})
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return resp.read()
     except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as exc:
         print(f"  WARNING: {url} — {exc}")
         return None
+
+
+def _fetch_with_retry(url: str, timeout: int = 20, retries: int = 3, backoff: float = 2.0) -> bytes | None:
+    """Fetch URL with exponential back-off retry."""
+    for attempt in range(retries):
+        raw = fetch_url(url, timeout=timeout)
+        if raw is not None:
+            return raw
+        if attempt < retries - 1:
+            wait = backoff ** attempt
+            print(f"  Retry {attempt + 1}/{retries - 1} in {wait:.0f}s…")
+            time.sleep(wait)
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -74,6 +100,10 @@ def fetch_cdc_wonder_lyme() -> None:
     """
     Lyme disease confirmed + probable cases for Colorado.
     Source: CDC Lyme Disease Data Tables (public annual summaries).
+
+    NOTE: Ixodes scapularis is NOT established in Colorado; cases reported here
+    are almost exclusively travel-associated.  These counts serve as a
+    travel-exposure signal only, not a local environmental risk indicator.
     """
     print("Fetching CDC Lyme data...")
     historical = [
@@ -90,6 +120,10 @@ def fetch_cdc_wonder_lyme() -> None:
     ]
     save("lyme_colorado.json", {"fetched": TODAY, "source": "CDC Lyme Data Tables (historical)", "data": historical})
 
+
+# ---------------------------------------------------------------------------
+# NASA POWER — climate baseline (90-day rolling)
+# ---------------------------------------------------------------------------
 
 def fetch_nasa_power_colorado() -> None:
     """
@@ -119,6 +153,7 @@ def fetch_nasa_power_colorado() -> None:
             records = [
                 {"date": d, "temp_c": t2m.get(d), "precip_mm": precip.get(d)}
                 for d in sorted(t2m.keys())
+                if t2m.get(d) is not None and float(t2m.get(d, NASA_POWER_SENTINEL)) > (NASA_POWER_SENTINEL + 1)
             ]
             save(
                 "climate_colorado_90d.json",
@@ -133,21 +168,95 @@ def fetch_nasa_power_colorado() -> None:
     save("climate_colorado_90d.json", {"fetched": TODAY, "source": "unavailable", "data": []})
 
 
+# ---------------------------------------------------------------------------
+# Open-Meteo — free, keyless current 30-day climate (replaces heuristic)
+# ---------------------------------------------------------------------------
+
+def fetch_open_meteo_colorado() -> None:
+    """
+    Fetch the past 30 days of daily climate data for Colorado (Denver centroid)
+    from the Open-Meteo free API — no key required.
+
+    Provides temperature (min/max), precipitation, and relative humidity for
+    use in GDD computation and habitat-suitability risk scoring.
+    """
+    print("Fetching Open-Meteo 30-day climate data for Colorado...")
+    end = datetime.date.today()
+    start = end - datetime.timedelta(days=30)
+
+    url = (
+        "https://api.open-meteo.com/v1/forecast"
+        "?latitude=39.74&longitude=-104.99"
+        "&daily=temperature_2m_max,temperature_2m_min,"
+        "precipitation_sum,relative_humidity_2m_max,relative_humidity_2m_min"
+        f"&start_date={start}&end_date={end}"
+        "&timezone=America%2FDenver"
+        "&temperature_unit=celsius"
+    )
+
+    raw = _fetch_with_retry(url, timeout=20, retries=3, backoff=2.0)
+    if raw:
+        try:
+            payload = json.loads(raw)
+            daily = payload.get("daily", {})
+            dates = daily.get("time", [])
+            if dates:
+                records = []
+                for i, d in enumerate(dates):
+                    t_max = daily.get("temperature_2m_max", [None] * len(dates))[i]
+                    t_min = daily.get("temperature_2m_min", [None] * len(dates))[i]
+                    precip = daily.get("precipitation_sum", [None] * len(dates))[i]
+                    rh_max = daily.get("relative_humidity_2m_max", [None] * len(dates))[i]
+                    rh_min = daily.get("relative_humidity_2m_min", [None] * len(dates))[i]
+                    records.append({
+                        "date": d,
+                        "temp_max_c": t_max,
+                        "temp_min_c": t_min,
+                        "temp_mean_c": round((t_max + t_min) / 2, 2) if t_max is not None and t_min is not None else None,
+                        "precip_mm": precip,
+                        "humidity_max_pct": rh_max,
+                        "humidity_min_pct": rh_min,
+                        "humidity_mean_pct": round((rh_max + rh_min) / 2, 1) if rh_max is not None and rh_min is not None else None,
+                    })
+                save(
+                    "open_meteo_colorado_30d.json",
+                    {"fetched": TODAY, "source": "Open-Meteo API", "location": "Denver, CO", "data": records},
+                )
+                print(f"  Got {len(records)} days of Open-Meteo climate data")
+                return
+        except (KeyError, json.JSONDecodeError) as exc:
+            print(f"  WARNING: could not parse Open-Meteo response — {exc}")
+
+    save("open_meteo_colorado_30d.json", {"fetched": TODAY, "source": "unavailable", "data": []})
+
+
+# ---------------------------------------------------------------------------
+# iNaturalist — research-grade tick observations in Colorado with retry
+# ---------------------------------------------------------------------------
+
 def fetch_inaturalist_ticks() -> None:
     """
     Fetch recent tick observations in Colorado from iNaturalist API (free, no key).
-    Taxa: Ixodida (order containing all hard and soft ticks), taxon_id=47822
+
+    Uses:
+    - taxon_id=47822 (Ixodida — all hard and soft ticks)
+    - Explicit Colorado bounding box to avoid place_id mis-matching
+    - Exponential back-off retry for rate-limited GitHub Actions runners
+    - Date-window: only observations from the past 365 days are requested
     """
     print("Fetching iNaturalist tick observations (Colorado)...")
+    since = (datetime.date.today() - datetime.timedelta(days=365)).isoformat()
     url = (
         "https://api.inaturalist.org/v1/observations"
         "?taxon_id=47822"       # Ixodida — all ticks
-        "&place_id=17"          # Colorado
         "&quality_grade=research"
-        "&per_page=100"
-        "&order=desc&order_by=created_at"
+        f"&nelat={_CO_BBOX['nelat']}&nelng={_CO_BBOX['nelng']}"
+        f"&swlat={_CO_BBOX['swlat']}&swlng={_CO_BBOX['swlng']}"
+        f"&d1={since}"
+        "&per_page=200"
+        "&order=desc&order_by=observed_on"
     )
-    raw = fetch_url(url)
+    raw = _fetch_with_retry(url, timeout=25, retries=4, backoff=3.0)
     if raw:
         try:
             payload = json.loads(raw)
@@ -179,17 +288,22 @@ def fetch_inaturalist_mosquitoes() -> None:
     """
     Fetch recent mosquito observations in Colorado from iNaturalist API.
     Taxa: Culicidae (family), taxon_id=53522
+
+    Uses explicit Colorado bounding box and date-window to reduce API load.
     """
     print("Fetching iNaturalist mosquito observations (Colorado)...")
+    since = (datetime.date.today() - datetime.timedelta(days=365)).isoformat()
     url = (
         "https://api.inaturalist.org/v1/observations"
         "?taxon_id=53522"       # Culicidae — mosquitoes
-        "&place_id=17"          # Colorado
         "&quality_grade=research"
-        "&per_page=100"
-        "&order=desc&order_by=created_at"
+        f"&nelat={_CO_BBOX['nelat']}&nelng={_CO_BBOX['nelng']}"
+        f"&swlat={_CO_BBOX['swlat']}&swlng={_CO_BBOX['swlng']}"
+        f"&d1={since}"
+        "&per_page=200"
+        "&order=desc&order_by=observed_on"
     )
-    raw = fetch_url(url)
+    raw = _fetch_with_retry(url, timeout=25, retries=4, backoff=3.0)
     if raw:
         try:
             payload = json.loads(raw)
@@ -276,6 +390,7 @@ if __name__ == "__main__":
     fetch_cdc_wonder_wnv()
     fetch_cdc_wonder_lyme()
     fetch_nasa_power_colorado()
+    fetch_open_meteo_colorado()
     fetch_inaturalist_ticks()
     fetch_inaturalist_mosquitoes()
     update_regional_data()

@@ -106,7 +106,19 @@ class DiseaseVectorRegistry:
                 temperature_peak_c=15.0,  # Fall & spring peaks (cool months)
                 humidity_min_percent=70.0,  # High humidity requirement
                 primary_hosts=["deer", "small mammals", "birds", "humans"],
-                phenology_description="Larval (spring), nymphal (summer peak), adult (fall/spring); seeks hosts from leaf litter and vegetation; highest human contact risk in spring & fall"
+                phenology_description="NOT established in Colorado — all local 'Lyme' risk is travel-associated. I. scapularis is present in eastern US; CO cases are travel-acquired. Larval (spring), nymphal (summer peak), adult (fall/spring) in endemic areas."
+            ),
+            "dermacentor_variabilis": VectorEcology(
+                vector_type=VectorType.TICK,
+                scientific_names=["Dermacentor variabilis"],
+                primary_habitat="grassland, shrubland, forest edges, rural areas",
+                activity_season=(4, 9),  # April-September
+                temperature_min_c=10.0,
+                temperature_max_c=32.0,
+                temperature_peak_c=22.0,
+                humidity_min_percent=35.0,
+                primary_hosts=["dogs", "deer", "small mammals", "humans"],
+                phenology_description="American dog tick; RMSF primary vector; adult activity April–August; wide geographic range including eastern Colorado plains and foothills"
             ),
             "dermacentor_andersoni": VectorEcology(
                 vector_type=VectorType.TICK,
@@ -167,9 +179,9 @@ class DiseaseVectorRegistry:
             vector_types=[VectorType.TICK],
             incubation_days=(3, 30),
             case_fatality_rate=0.0,  # Rare, but serious if untreated
-            colorado_endemic=True,
+            colorado_endemic=False,  # I. scapularis NOT established in CO; cases are travel-associated
             reportable=True,
-            description="Tick-borne spirochete infection; peak transmission April-October (nymph & adult activity); erythema migrans rash in ~70% of cases"
+            description="Tick-borne spirochete infection; Ixodes scapularis is NOT established in Colorado. CO Lyme cases are travel-acquired from endemic eastern/northern US regions. Local risk is via I. pacificus (western slope, rare). Use case counts as travel-exposure signal only."
         ),
         DiseaseType.ROCKY_MOUNTAIN_SPOTTED_FEVER: DiseaseCharacteristics(
             disease_type=DiseaseType.ROCKY_MOUNTAIN_SPOTTED_FEVER,
