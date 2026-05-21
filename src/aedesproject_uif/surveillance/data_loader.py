@@ -135,13 +135,14 @@ class SurveillanceDataLoader:
         schema mapping so column renames don't break the pipeline.
         """
         normalized_state = state.strip()
-        if not re.fullmatch(r"[A-Za-z][A-Za-z\\s\\-]*", normalized_state):
+        if not re.fullmatch(r"[A-Za-z][A-Za-z\s-]*", normalized_state):
             return None
+        safe_state = normalized_state.replace("'", "''").lower()
 
         dataset_id = self._CDC_SOCRATA_DATASETS["nndss_weekly"]
         query = urllib.parse.urlencode(
             {
-                "$where": f"lower(reporting_area)='{normalized_state.lower()}'",
+                "$where": f"lower(reporting_area)='{safe_state}'",
                 "$limit": 2000,
                 "$order": "mmwr_year DESC",
             }
