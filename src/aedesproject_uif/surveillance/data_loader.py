@@ -14,11 +14,13 @@ Features:
 import gzip
 import io
 import json
+import re
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 import urllib.error
+import urllib.parse
 import urllib.request
 
 import pandas as pd
@@ -132,15 +134,20 @@ class SurveillanceDataLoader:
         Uses the public endpoint (no API key required).  Applies dynamic
         schema mapping so column renames don't break the pipeline.
         """
-        disease_filter = urllib.request.quote(disease.replace("_", " ").title())
-        state_filter = urllib.request.quote(state)
+        normalized_state = state.strip()
+        if not re.fullmatch(r"[A-Za-z][A-Za-z\s-]*", normalized_state):
+            return None
+        safe_state = normalized_state.replace("'", "''").lower()
+
         dataset_id = self._CDC_SOCRATA_DATASETS["nndss_weekly"]
-        url = (
-            f"https://data.cdc.gov/resource/{dataset_id}.json"
-            f"?$where=lower(reporting_area)='{state.lower()}'"
-            f"&$limit=2000"
-            f"&$order=mmwr_year DESC"
+        query = urllib.parse.urlencode(
+            {
+                "$where": f"lower(reporting_area)='{safe_state}'",
+                "$limit": 2000,
+                "$order": "mmwr_year DESC",
+            }
         )
+        url = f"https://data.cdc.gov/resource/{dataset_id}.json?{query}"
         raw = self._fetch_url(url, timeout=25)
         if raw is None:
             return None
