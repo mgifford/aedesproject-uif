@@ -14,6 +14,7 @@ Features:
 import gzip
 import io
 import json
+import re
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -133,10 +134,14 @@ class SurveillanceDataLoader:
         Uses the public endpoint (no API key required).  Applies dynamic
         schema mapping so column renames don't break the pipeline.
         """
+        normalized_state = state.strip()
+        if not re.fullmatch(r"[A-Za-z][A-Za-z\\s\\-]*", normalized_state):
+            return None
+
         dataset_id = self._CDC_SOCRATA_DATASETS["nndss_weekly"]
         query = urllib.parse.urlencode(
             {
-                "$where": f"lower(reporting_area)='{state.lower()}'",
+                "$where": f"lower(reporting_area)='{normalized_state.lower()}'",
                 "$limit": 2000,
                 "$order": "mmwr_year DESC",
             }
