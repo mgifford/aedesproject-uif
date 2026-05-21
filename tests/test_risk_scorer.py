@@ -19,6 +19,8 @@ def test_compute_integrated_risk_score_aligns_mismatched_indexes_by_position():
         outbreak_prob=outbreak_prob,
     )
 
+    # Weighted sum using default weights from ProbabilisticRiskScorer:
+    # 0.2*vector + 0.3*transmission + 0.3*exposure + 0.2*outbreak
     expected = pd.Series([0.13, 0.25, 0.37], index=dt_index)
 
     pd.testing.assert_series_equal(risk, expected)

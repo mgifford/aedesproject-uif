@@ -32,7 +32,16 @@ class ProbabilisticRiskScorer:
         reference: pd.Series,
         component: pd.Series,
     ) -> pd.Series:
-        """Align a risk component series to the reference index."""
+        """Align a risk component series to the reference index.
+
+        Args:
+            reference: Reference probability series whose index defines output alignment.
+            component: Component probability series to align against `reference`.
+
+        Returns:
+            A series aligned to the reference index by exact index match, positional
+            alignment when lengths match, or index-based reindexing otherwise.
+        """
         if reference.index.equals(component.index):
             return component
 
