@@ -7969,7 +7969,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Loaded regional data: 12 counties
-  Fetched: 2026-05-20
+  Fetched: 2026-05-21
   Total YTD cases statewide: WNV=0, Lyme=2, RMSF=1
 </pre>
 </div>
@@ -8022,7 +8022,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>✓ Tick observations by county: 37 counties with data
+<pre>✓ Tick observations by county: 131 counties with data
   Mosquito observations by county: 0 counties with data
 </pre>
 </div>
@@ -8091,9 +8091,9 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>     region_label  counties  population  wnv_cases  lyme_cases  rmsf_cases  total_cases  cases_per_100k  tick_obs  mosq_obs
    Eastern Plains         2      358049          0           0           0            0            0.00         0         0
-      Front Range         8     4217712          0           2           0            2            0.05         0         0
+      Front Range         8     4217712          0           2           0            2            0.05         8         0
 Southern Colorado         1      168424          0           0           1            1            0.59         0         0
-    Western Slope         1      155998          0           0           0            0            0.00         0         0
+    Western Slope         1      155998          0           0           0            0            0.00         6         0
 </pre>
 </div>
 </div>
@@ -8594,12 +8594,12 @@ which can be installed using pip:
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Historical hotspot counties with 2026 YTD cases:
    county         region  wnv_cases  lyme_cases  rmsf_cases  tick_observations_ytd  wnv_hotspot  lyme_hotspot  rmsf_hotspot
-   Denver    front_range          0           1           0                      0        False          True         False
+   Denver    front_range          0           1           0                      5        False          True         False
 Jefferson    front_range          0           0           0                      0        False          True         False
     Adams    front_range          0           0           0                      0         True         False         False
   Larimer    front_range          0           0           0                      0         True          True         False
      Weld    front_range          0           0           0                      0         True         False         False
-  Boulder    front_range          0           0           0                      0        False          True         False
+  Boulder    front_range          0           0           0                      3        False          True         False
   El Paso    front_range          0           0           0                      0        False         False          True
    Pueblo       southern          0           0           1                      0        False         False          True
    Morgan eastern_plains          0           0           0                      0         True         False         False
@@ -8678,6 +8678,35 @@ Summary:
 <pre>✓ Regional summary exported to /home/runner/work/aedesproject-uif/aedesproject-uif/processed/Dashboard/current_season/regional_summary.json
   Regions: 4
   Statewide totals: {'wnv': 0, 'lyme': 2, 'rmsf': 1}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=nb07_csv_export">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="sd">"""CSV Export: 07_regional_tracking"""</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Notebook </span><span class="si">{</span><span class="s1">'07'</span><span class="si">}</span><span class="s2"> execution complete"</span><span class="p">)</span>
+<span class="c1"># Data exports integrated throughout notebook cells above</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Refer to generated CSV files: *.csv in notebooks/ directory"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>✓ Notebook 07 execution complete
+  Refer to generated CSV files: *.csv in notebooks/ directory
 </pre>
 </div>
 </div>
