@@ -290,6 +290,7 @@ class TestReliabilityReport:
 # ---------------------------------------------------------------------------
 
 import generate_dashboard as gd
+import postprocess_notebook_html as pnh
 
 
 class TestBuildNotebookCards:
