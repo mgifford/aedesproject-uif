@@ -183,6 +183,11 @@ skills-lock.json
 
 ## Development Workflow with Agents
 
+### 0. Move to Spec-Kitty-Driven Development
+
+- Move to spec-kitty-driven development by defining or refining the spec before implementation.
+- Reference: https://docs.spec-kitty.ai/
+
 ### 1. Writing New Code
 
 Use the **Python Code Style** skill:

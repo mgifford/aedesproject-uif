@@ -31,12 +31,126 @@ _CO_BBOX = {"nelat": 41.0, "nelng": -102.0, "swlat": 37.0, "swlng": -109.1}
 # NASA POWER uses -999 (and values below -998) as a missing-data sentinel
 NASA_POWER_SENTINEL = -999
 
+RELIABILITY_REPORT_FILENAME = "reliability_report.json"
+
+RELIABILITY_SOURCES = [
+    ("cdc_wnv", "wnv_colorado.json"),
+    ("cdc_lyme", "lyme_colorado.json"),
+    ("nasa_power_90d", "climate_colorado_90d.json"),
+    ("open_meteo_30d", "open_meteo_colorado_30d.json"),
+    ("inaturalist_ticks", "inaturalist_ticks_colorado.json"),
+    ("inaturalist_mosquitoes", "inaturalist_mosquitoes_colorado.json"),
+    ("regional_counties", "regional_counties_2026.json"),
+]
+
+# If a critical source is missing, run mode is blocked.
+CRITICAL_SOURCE_IDS = {"cdc_wnv", "cdc_lyme"}
+
 
 def save(filename: str, data: object) -> None:
     path = os.path.join(OUTPUT_DIR, filename)
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
     print(f"  Saved {path}")
+
+
+def _load_json(path: str) -> dict | None:
+    try:
+        with open(path) as f:
+            payload = json.load(f)
+        if isinstance(payload, dict):
+            return payload
+        return None
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _has_required_schema(payload: dict) -> bool:
+    return all(key in payload for key in ("fetched", "source", "data"))
+
+
+def _source_status(source_id: str, filename: str) -> dict:
+    path = os.path.join(OUTPUT_DIR, filename)
+    payload = _load_json(path)
+    if payload is None:
+        return {
+            "source_id": source_id,
+            "artifact": filename,
+            "status": "missing",
+            "fetched": None,
+            "last_success_at": None,
+            "fallback_used": True,
+            "record_count": 0,
+            "status_reason": "artifact_missing_or_unreadable",
+            "integrity_critical_failure": source_id in CRITICAL_SOURCE_IDS,
+        }
+
+    if not _has_required_schema(payload):
+        return {
+            "source_id": source_id,
+            "artifact": filename,
+            "status": "invalid",
+            "fetched": None,
+            "last_success_at": None,
+            "fallback_used": True,
+            "record_count": 0,
+            "status_reason": "missing_required_schema_keys",
+            "integrity_critical_failure": True,
+        }
+
+    fetched = payload.get("fetched") if isinstance(payload.get("fetched"), str) else None
+    source = str(payload.get("source", ""))
+    data = payload.get("data", [])
+    if isinstance(data, list):
+        record_count = len(data)
+    elif isinstance(data, dict):
+        record_count = len(data)
+    else:
+        record_count = 0
+
+    fallback_used = source.lower() == "unavailable" or record_count == 0
+    status = "degraded" if fallback_used else "ok"
+
+    if status == "ok":
+        status_reason = "fresh_data"
+    elif source.lower() == "unavailable":
+        status_reason = "source_unavailable"
+    else:
+        status_reason = "empty_or_fallback_data"
+
+    return {
+        "source_id": source_id,
+        "artifact": filename,
+        "status": status,
+        "fetched": fetched,
+        "last_success_at": fetched if status == "ok" else None,
+        "fallback_used": fallback_used,
+        "record_count": record_count,
+        "status_reason": status_reason,
+        "integrity_critical_failure": False,
+    }
+
+
+def generate_reliability_report() -> dict:
+    """Generate per-source reliability metadata for the latest fetch run."""
+    sources = [_source_status(source_id, filename) for source_id, filename in RELIABILITY_SOURCES]
+
+    if any(s.get("integrity_critical_failure", False) for s in sources):
+        run_mode = "blocked"
+    elif any(s["status"] in {"degraded", "missing"} for s in sources):
+        run_mode = "degraded"
+    else:
+        run_mode = "normal"
+
+    report = {
+        "generated_at": datetime.datetime.now(datetime.UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "run_date": TODAY,
+        "schema_version": "1.0",
+        "run_mode": run_mode,
+        "sources": sources,
+    }
+    save(RELIABILITY_REPORT_FILENAME, report)
+    return report
 
 
 def fetch_url(url: str, timeout: int = 20) -> bytes | None:
@@ -394,5 +508,6 @@ if __name__ == "__main__":
     fetch_inaturalist_ticks()
     fetch_inaturalist_mosquitoes()
     update_regional_data()
+    report = generate_reliability_report()
     print("=" * 50)
-    print("Data fetch complete. Notebooks will use available data.")
+    print(f"Data fetch complete. Run mode: {report['run_mode']}")
