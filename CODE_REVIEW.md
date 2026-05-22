@@ -1,5 +1,16 @@
 # Code Review and Quality Improvements
 
+## Constitution Alignment Gate (Required for Review)
+
+Reviewers should verify that each PR aligns with the Constitution in `CHARTER.md` and the spec-kitty workflow (https://docs.spec-kitty.ai/).
+
+### Required Reviewer Checks
+1. Confirm the PR links to a spec.
+2. Confirm the spec includes a Constitution Alignment section.
+3. Confirm security, accessibility, reliability, and test impacts are explicitly addressed.
+4. Confirm any exception contains rationale, risk, owner, and expiration date.
+5. Block merge if alignment details are missing.
+
 ## Summary of Changes
 
 This document outlines the code review findings and improvements made to the AEDES project.

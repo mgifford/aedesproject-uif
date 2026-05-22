@@ -75,6 +75,75 @@ def get_last_fetched() -> str:
     return TODAY
 
 
+def get_reliability_report() -> dict | None:
+    report_path = os.path.join(DATA_DIR, "reliability_report.json")
+    if not os.path.exists(report_path):
+        return None
+    try:
+        with open(report_path) as f:
+            report = json.load(f)
+        if isinstance(report, dict):
+            return report
+    except json.JSONDecodeError:
+        pass
+    return None
+
+
+def build_reliability_section(report: dict | None) -> str:
+    if not report:
+        return """
+  <div class=\"reliability\">
+    <h3>Pipeline Reliability Status</h3>
+    <p>No reliability report found for this run yet.</p>
+  </div>
+"""
+
+    run_mode = str(report.get("run_mode", "unknown")).lower()
+    generated_at = report.get("generated_at", "unknown")
+    mode_label = {
+        "normal": "Normal",
+        "degraded": "Degraded",
+        "blocked": "Blocked",
+    }.get(run_mode, "Unknown")
+
+    sources = report.get("sources", [])
+    rows: list[str] = []
+    for source in sources:
+        if not isinstance(source, dict):
+            continue
+        source_id = source.get("source_id", "unknown")
+        status = source.get("status", "unknown")
+        status_reason = source.get("status_reason", "n/a")
+        last_success_at = source.get("last_success_at") or "n/a"
+        fallback_used = "Yes" if source.get("fallback_used", False) else "No"
+        rows.append(
+            f"<tr><td>{source_id}</td><td>{status}</td><td>{fallback_used}</td><td>{last_success_at}</td><td>{status_reason}</td></tr>"
+        )
+
+    rows_html = "\n".join(rows) if rows else "<tr><td colspan='5'>No source status data available.</td></tr>"
+
+    return f"""
+  <div class=\"reliability\">
+    <h3>Pipeline Reliability Status</h3>
+    <p><strong>Run mode:</strong> {mode_label} &nbsp;|&nbsp; <strong>Generated:</strong> {generated_at}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Status</th>
+          <th>Fallback Used</th>
+          <th>Last Success</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows_html}
+      </tbody>
+    </table>
+  </div>
+"""
+
+
 def build_notebook_cards(html_files: list[str]) -> str:
     if not html_files:
         return "<p class='no-data'>No analyses available yet. Check back after the first workflow run.</p>"
@@ -108,6 +177,7 @@ def build_index() -> None:
     html_files = glob.glob(os.path.join(NOTEBOOKS_DIR, "*.html"))
     cards_html = build_notebook_cards(html_files)
     last_fetched = get_last_fetched()
+    reliability_html = build_reliability_section(get_reliability_report())
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -191,6 +261,18 @@ def build_index() -> None:
       padding: 1.5rem;
       box-shadow: 0 2px 8px rgba(0,0,0,0.07);
     }}
+    .reliability {{
+      margin-top: 1.5rem;
+      background: white;
+      border-radius: 10px;
+      padding: 1.2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      font-size: 0.88rem;
+    }}
+    .reliability h3 {{ font-size: 1rem; margin-bottom: 0.5rem; color: #4a5568; }}
+    .reliability table {{ width: 100%; border-collapse: collapse; margin-top: 0.5rem; }}
+    .reliability th {{ background: #edf2f7; text-align: left; padding: 0.45rem 0.6rem; }}
+    .reliability td {{ padding: 0.4rem 0.6rem; border-bottom: 1px solid #edf2f7; }}
     .disease-key h3 {{ font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568; }}
     .disease-key table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; }}
     .disease-key th {{ background: #edf2f7; text-align: left; padding: 0.5rem 0.75rem; }}
@@ -230,6 +312,8 @@ def build_index() -> None:
   <div class="grid">
     {cards_html}
   </div>
+
+  {reliability_html}
 
   <div class="disease-key">
     <h3>Colorado Vector-Borne Disease Quick Reference</h3>

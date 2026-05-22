@@ -154,6 +154,107 @@ class TestFetchINaturalist:
         data = json.loads(out.read_text())
         assert data["source"] == "unavailable"
 
+
+class TestReliabilityReport:
+    @staticmethod
+    def _write_all_sources_ok() -> None:
+        fsd.save("wnv_colorado.json", {"fetched": "2026-05-22", "source": "CDC", "data": [{"year": 2024}]})
+        fsd.save("lyme_colorado.json", {"fetched": "2026-05-22", "source": "CDC", "data": [{"year": 2024}]})
+        fsd.save(
+            "climate_colorado_90d.json",
+            {"fetched": "2026-05-22", "source": "NASA POWER", "data": [{"date": "20260522"}]},
+        )
+        fsd.save(
+            "open_meteo_colorado_30d.json",
+            {"fetched": "2026-05-22", "source": "Open-Meteo API", "data": [{"date": "2026-05-22"}]},
+        )
+        fsd.save(
+            "inaturalist_ticks_colorado.json",
+            {"fetched": "2026-05-22", "source": "iNaturalist API", "data": [{"id": 1}]},
+        )
+        fsd.save(
+            "inaturalist_mosquitoes_colorado.json",
+            {"fetched": "2026-05-22", "source": "iNaturalist API", "data": [{"id": 2}]},
+        )
+        fsd.save("regional_counties_2026.json", {"fetched": "2026-05-22", "source": "generated", "data": [{"county": "Adams"}]})
+
+    def test_generates_reliability_report_with_required_fields(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+
+        # Create representative successful source artifacts.
+        self._write_all_sources_ok()
+
+        report = fsd.generate_reliability_report()
+        out = tmp_path / fsd.RELIABILITY_REPORT_FILENAME
+        assert out.exists()
+
+        data = json.loads(out.read_text())
+        assert data["schema_version"] == "1.0"
+        assert data["run_mode"] in {"normal", "degraded", "blocked"}
+        assert isinstance(data["sources"], list)
+        assert len(data["sources"]) == len(fsd.RELIABILITY_SOURCES)
+
+        for source in data["sources"]:
+            assert "source_id" in source
+            assert "status" in source
+            assert "last_success_at" in source
+            assert "fallback_used" in source
+            assert "status_reason" in source
+            assert "integrity_critical_failure" in source
+
+        assert report["run_mode"] == "normal"
+
+    def test_degraded_when_non_critical_source_missing(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        self._write_all_sources_ok()
+
+        # Remove a non-critical source artifact.
+        os.remove(tmp_path / "open_meteo_colorado_30d.json")
+
+        report = fsd.generate_reliability_report()
+        open_meteo = next(s for s in report["sources"] if s["source_id"] == "open_meteo_30d")
+        assert open_meteo["status"] == "missing"
+        assert open_meteo["integrity_critical_failure"] is False
+        assert report["run_mode"] == "degraded"
+
+    def test_blocked_when_critical_source_missing(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        self._write_all_sources_ok()
+
+        os.remove(tmp_path / "lyme_colorado.json")
+
+        report = fsd.generate_reliability_report()
+        lyme = next(s for s in report["sources"] if s["source_id"] == "cdc_lyme")
+        assert lyme["status"] == "missing"
+        assert lyme["integrity_critical_failure"] is True
+        assert report["run_mode"] == "blocked"
+
+    def test_blocked_when_source_schema_invalid(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        self._write_all_sources_ok()
+
+        # Corrupt required schema keys for one source.
+        fsd.save("climate_colorado_90d.json", {"fetched": "2026-05-22", "data": []})
+
+        report = fsd.generate_reliability_report()
+        climate = next(s for s in report["sources"] if s["source_id"] == "nasa_power_90d")
+        assert climate["status"] == "invalid"
+        assert climate["integrity_critical_failure"] is True
+        assert report["run_mode"] == "blocked"
+
+    def test_marks_unavailable_source_as_degraded(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+
+        # Only one source file exists and is unavailable; others are missing.
+        fsd.save("wnv_colorado.json", {"fetched": "2026-05-22", "source": "unavailable", "data": []})
+        report = fsd.generate_reliability_report()
+
+        wnv = next(s for s in report["sources"] if s["source_id"] == "cdc_wnv")
+        assert wnv["status"] == "degraded"
+        assert wnv["fallback_used"] is True
+        assert wnv["last_success_at"] is None
+        assert report["run_mode"] == "blocked"
+
     def test_ticks_parses_valid_inaturalist_response(self, tmp_path, monkeypatch):
         monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
         mock_results = {
@@ -261,3 +362,37 @@ class TestBuildIndex:
         gd.build_index()
         content = (tmp_path / "index.html").read_text()
         assert "2026-05-18" in content
+
+    def test_index_shows_reliability_section_from_report(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(gd, "SITE_DIR", str(tmp_path))
+        monkeypatch.setattr(gd, "NOTEBOOKS_DIR", str(tmp_path / "notebooks"))
+        monkeypatch.setattr(gd, "DATA_DIR", str(tmp_path))
+
+        report = {
+            "generated_at": "2026-05-22T10:00:00Z",
+            "run_date": "2026-05-22",
+            "schema_version": "1.0",
+            "run_mode": "degraded",
+            "sources": [
+                {
+                    "source_id": "open_meteo_30d",
+                    "status": "missing",
+                    "fetched": None,
+                    "last_success_at": None,
+                    "fallback_used": True,
+                    "record_count": 0,
+                    "status_reason": "artifact_missing_or_unreadable",
+                    "integrity_critical_failure": False,
+                }
+            ],
+        }
+        (tmp_path / "reliability_report.json").write_text(json.dumps(report))
+
+        gd.build_index()
+        content = (tmp_path / "index.html").read_text()
+
+        assert "Pipeline Reliability Status" in content
+        assert "Run mode:" in content
+        assert "Degraded" in content
+        assert "open_meteo_30d" in content
+        assert "artifact_missing_or_unreadable" in content

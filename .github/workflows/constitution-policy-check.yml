@@ -1,0 +1,52 @@
+name: Constitution Policy Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  pr-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR body sections
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${PR_BODY:-}" ]]; then
+            echo "PR description is empty. Fill out the PR template."
+            exit 1
+          fi
+
+          required_sections=(
+            "## Spec Link (Required)"
+            "## Constitution Alignment (Required)"
+            "## Validation Evidence"
+          )
+
+          for section in "${required_sections[@]}"; do
+            if [[ "$PR_BODY" != *"$section"* ]]; then
+              echo "Missing required PR section: $section"
+              exit 1
+            fi
+          done
+
+          required_checks=(
+            "- [x] Focused scope and mission boundaries"
+            "- [x] Secure by default"
+            "- [x] Accessible by default"
+            "- [x] Self-correcting delivery (tests/monitors)"
+            "- [x] Sustainable and maintainable operations"
+            "- [x] Energy-conservative computation"
+            "- [x] Reliable and resilient service"
+          )
+
+          for check in "${required_checks[@]}"; do
+            if [[ "$PR_BODY" != *"$check"* ]]; then
+              echo "Missing checked constitution item: $check"
+              exit 1
+            fi
+          done
+
+          echo "Constitution policy check passed."

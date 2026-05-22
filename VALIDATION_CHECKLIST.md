@@ -2,6 +2,48 @@
 
 **Expected Deployment**: https://mgifford.github.io/aedesproject-uif/
 
+## Constitution Alignment Validation (Required)
+
+Use this checklist for every new spec and pull request before merge.
+
+### A. Focus and Scope
+- [ ] Spec contains explicit in-scope and out-of-scope boundaries.
+- [ ] Spec states the public-health surveillance value of the change.
+
+### B. Security
+- [ ] Data sensitivity is identified (public/internal/restricted).
+- [ ] Secret handling and credential usage are reviewed.
+- [ ] External dependency or API risk is documented.
+
+### C. Accessibility
+- [ ] User-facing changes comply with project accessibility guidance in `ACCESSIBILITY.md`.
+- [ ] Charts provide text alternatives and/or tabular equivalents.
+- [ ] Keyboard and contrast impacts are checked where relevant.
+
+### D. Self-Correction
+- [ ] Tests or validation checks are added or updated.
+- [ ] Monitoring or post-merge verification steps are specified.
+- [ ] Failure modes and correction triggers are documented.
+
+### E. Sustainability and Maintainability
+- [ ] Owner/maintainer is named for the new artifact or workflow.
+- [ ] Ongoing maintenance cost and cadence are documented.
+- [ ] Simpler alternatives were considered and recorded.
+
+### F. Energy Conservation
+- [ ] Compute budget or runtime expectation is documented.
+- [ ] Data refresh cadence is justified (avoid unnecessary high-frequency jobs).
+- [ ] Efficiency impacts are estimated for heavy jobs.
+
+### G. Reliability
+- [ ] Reliability impact is stated (latency, freshness, availability, correctness).
+- [ ] Rollback/containment approach is documented for high-impact changes.
+- [ ] Degraded-mode behavior is specified when dependencies fail.
+
+### H. Exceptions
+- [ ] Any exception includes rationale, risk, owner, and expiration date.
+- [ ] Exception has a follow-up task/issue to remove or remediate.
+
 ## What Should Be Live
 
 ### Home Page

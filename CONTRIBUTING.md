@@ -9,6 +9,8 @@
 - Install the required packages using `pip install -r requirements.txt`.
 
 ## 3. **Making Changes**:
+- **Move to spec-kitty-driven development**: Define or update the spec first, then implement. Use the spec-kitty docs as the source of truth: https://docs.spec-kitty.ai/
+- **Use the project spec template**: Start each substantial change with `docs/specs/SPEC_TEMPLATE.md` and complete the Constitution Alignment section before coding.
 - **Open an Issue**: Before starting significant changes or new features, open an issue to discuss your ideas. This ensures alignment with the project's goals and can save both your time and the maintainers'.
 - **Create a New Branch**: Always create a new branch for your changes. This keeps the master branch clean and release-ready.
 - **Follow the Code Style**: Adhere to the Python PEP 8 style guide. Consider using tools like `flake8`, `black`, or `isort` to maintain consistent code formatting.

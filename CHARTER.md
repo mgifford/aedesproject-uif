@@ -41,6 +41,46 @@ Company Cirrolytix was formed to achieve social impact through big data.  AEDES 
 - Through big data, enhance root cause analysis, design, planning, and monitoring to achieve positive outcomes and minimize harms to humanity
 - Empower sustainable risk interventions towards quantifiable impacts to society
 
+## Constitution v1 (Normative)
+
+This Constitution defines non-negotiable engineering and governance principles for all new specs, features, and operational changes.
+
+Reference implementation method: https://docs.spec-kitty.ai/
+
+### 1) Focused Scope and Mission Boundaries
+- Every spec must declare what is in scope and out of scope.
+- Work that does not support AEDES public-health surveillance outcomes should not be merged.
+
+### 2) Secure by Default
+- Security controls are required by default, not optional after release.
+- Changes touching data access, credentials, or external APIs must include risk notes and mitigation.
+
+### 3) Accessible by Default
+- User-facing dashboards, notebooks, and documentation must remain aligned with project accessibility standards.
+- Changes that reduce accessibility require a documented exception with expiration.
+
+### 4) Self-Correcting Delivery
+- Every change must include verification signals (tests, validation checks, or monitors).
+- Regressions must feed back into specs, tests, and runbooks.
+
+### 5) Sustainable and Maintainable Operations
+- Prefer maintainable designs over one-off complexity.
+- Specs must identify lifecycle ownership and maintenance burden.
+
+### 6) Energy-Conservative Computation
+- Prefer efficient data refresh cadence, compute usage, and model/runtime choices.
+- Expensive processing must include a justification and measurable benefit.
+
+### 7) Reliable and Resilient Service
+- Changes must preserve reliability targets and include graceful degradation or fallback behavior where applicable.
+- Production-impacting changes should include rollback or containment guidance.
+
+## Constitution Enforcement
+
+- All implementation work starts with a spec under spec-kitty-driven development.
+- Every spec must include a Constitution Alignment section mapping requirements to the 7 principles.
+- Any exception must include rationale, risk, owner, and expiration date.
+
 ## Commitment Statement to the Open Source community
 
 We aim to empower experts, enthusiasts, and even beginners from any backgrounds to contribute to reducing inequalities in health through code, dialogue, and ethical use of data for the benefit of the society. This platform is created to bring people together in a community that fosters innovation, technology, and social development. Join us as we democratize data and push the limits of innovation to create a better life and to sustain the future of humanity.
