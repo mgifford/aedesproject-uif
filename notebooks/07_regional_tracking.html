@@ -7794,7 +7794,66 @@ a.anchor-link {
   }
 </style>
 <!-- End of mermaid configuration -->
+<!-- AEDES_NOTEBOOK_HEAD_START -->
 <style>
+.aedes-notebook-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #d0d7de;
+  background: #ffffff;
+}
+.aedes-nav-link,
+.aedes-nav-current {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  line-height: 1.2;
+}
+.aedes-nav-link {
+  text-decoration: none;
+  background: #f6f8fa;
+  color: #24292f;
+}
+.aedes-nav-link:hover { background: #eef2f6; }
+.aedes-nav-link:focus-visible {
+  outline: 2px solid #2b6cb0;
+  outline-offset: 2px;
+}
+.aedes-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+}
+.aedes-skip-link:focus {
+  position: static;
+  left: auto;
+  top: auto;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid #2b6cb0;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #2b6cb0;
+}
+.aedes-home-link { font-weight: 600; }
+.aedes-nav-current {
+  border-color: #2b6cb0;
+  color: #2b6cb0;
+  background: #ebf8ff;
+}
+.aedes-nav-link.is-disabled {
+  color: #57606a;
+  background: #f6f8fa;
+}
+
 .code-toggle-btn {
   margin: 0.4rem 0 0.2rem;
   padding: 0.25rem 0.55rem;
@@ -7810,24 +7869,34 @@ a.anchor-link {
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('.jp-CodeCell').forEach(function (cell) {
+  document.querySelectorAll('.jp-CodeCell').forEach(function (cell, index) {
     const input = cell.querySelector('.jp-InputArea.jp-Cell-inputArea');
     if (!input) return;
 
+    if (!input.id) {
+      const baseId = cell.getAttribute('id') || cell.getAttribute('data-cell-id') || String(index);
+      const safeId = String(baseId).replace(/[^a-zA-Z0-9_-]/g, '-');
+      input.id = 'aedes-query-' + safeId;
+    }
     input.classList.add('collapsed-query');
+
     const button = document.createElement('button');
     button.className = 'code-toggle-btn';
     button.type = 'button';
     button.textContent = 'Show query';
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-controls', input.id);
 
     button.addEventListener('click', function () {
       const isCollapsed = input.classList.contains('collapsed-query');
       if (isCollapsed) {
         input.classList.remove('collapsed-query');
         button.textContent = 'Hide query';
+        button.setAttribute('aria-expanded', 'true');
       } else {
         input.classList.add('collapsed-query');
         button.textContent = 'Show query';
+        button.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -7835,9 +7904,23 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+<!-- AEDES_NOTEBOOK_HEAD_END -->
 
 </head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
+
+    <!-- AEDES_NOTEBOOK_NAV_START -->
+    <nav class="aedes-notebook-nav" aria-label="Notebook navigation">
+      <a class="aedes-skip-link" href="#notebook-content-start">Skip to notebook content</a>
+      <a class="aedes-nav-link aedes-home-link" href="../index.html">🏠 Home</a>
+      <a class="aedes-nav-link" href="06_current_season_monitoring.html" rel="prev">← Previous</a>
+      <span class="aedes-nav-current" aria-current="page">Regional Tracking</span>
+      <a class="aedes-nav-link" href="08_comprehensive_surveillance_dashboard.html" rel="next">Next →</a>
+    </nav>
+    <div id="notebook-content-start" tabindex="-1" role="region" aria-label="Notebook content"></div>
+    <!-- AEDES_NOTEBOOK_NAV_END -->
+    
+
 <main>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a40b5839">
 <div class="jp-Cell-inputWrapper" tabindex="0">
