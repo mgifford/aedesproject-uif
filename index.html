@@ -80,6 +80,18 @@
       padding: 1.5rem;
       box-shadow: 0 2px 8px rgba(0,0,0,0.07);
     }
+    .reliability {
+      margin-top: 1.5rem;
+      background: white;
+      border-radius: 10px;
+      padding: 1.2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      font-size: 0.88rem;
+    }
+    .reliability h3 { font-size: 1rem; margin-bottom: 0.5rem; color: #4a5568; }
+    .reliability table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    .reliability th { background: #edf2f7; text-align: left; padding: 0.45rem 0.6rem; }
+    .reliability td { padding: 0.4rem 0.6rem; border-bottom: 1px solid #edf2f7; }
     .disease-key h3 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; color: #4a5568; }
     .disease-key table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     .disease-key th { background: #edf2f7; text-align: left; padding: 0.5rem 0.75rem; }
@@ -208,6 +220,33 @@
           </div>
         </div>
   </div>
+
+  
+  <div class="reliability">
+    <h3>Pipeline Reliability Status</h3>
+    <p><strong>Run mode:</strong> Blocked &nbsp;|&nbsp; <strong>Generated:</strong> 2026-05-22T08:35:10Z</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Status</th>
+          <th>Fallback Used</th>
+          <th>Last Success</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>cdc_wnv</td><td>ok</td><td>No</td><td>2026-05-22</td><td>fresh_data</td></tr>
+<tr><td>cdc_lyme</td><td>ok</td><td>No</td><td>2026-05-22</td><td>fresh_data</td></tr>
+<tr><td>nasa_power_90d</td><td>ok</td><td>No</td><td>2026-05-22</td><td>fresh_data</td></tr>
+<tr><td>open_meteo_30d</td><td>ok</td><td>No</td><td>2026-05-22</td><td>fresh_data</td></tr>
+<tr><td>inaturalist_ticks</td><td>ok</td><td>No</td><td>2026-05-22</td><td>fresh_data</td></tr>
+<tr><td>inaturalist_mosquitoes</td><td>degraded</td><td>Yes</td><td>n/a</td><td>empty_or_fallback_data</td></tr>
+<tr><td>regional_counties</td><td>invalid</td><td>Yes</td><td>n/a</td><td>missing_required_schema_keys</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 
   <div class="disease-key">
     <h3>Colorado Vector-Borne Disease Quick Reference</h3>
