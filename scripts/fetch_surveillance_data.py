@@ -9,6 +9,7 @@ Sources (all free / keyless):
 - CDC NNDSS historical reference data (embedded)
 - NASA POWER API — climate data for Denver, CO
 - Open-Meteo API — current 30-day climate (temperature, humidity, precipitation)
+- Google Trends (pytrends) — Colorado search interest for vector-borne disease terms
 - iNaturalist API — research-grade tick observations in Colorado (with retry)
 """
 
@@ -17,8 +18,14 @@ import os
 import sys
 import datetime
 import time
+import random
 import urllib.request
 import urllib.error
+
+try:
+    from pytrends.request import TrendReq
+except ImportError:  # pragma: no cover - optional dependency in local runs
+    TrendReq = None
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "surveillance")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -31,6 +38,17 @@ _CO_BBOX = {"nelat": 41.0, "nelng": -102.0, "swlat": 37.0, "swlng": -109.1}
 # NASA POWER uses -999 (and values below -998) as a missing-data sentinel
 NASA_POWER_SENTINEL = -999
 
+GOOGLE_TRENDS_KEYWORDS = [
+    "west nile virus",
+    "lyme disease",
+    "rocky mountain spotted fever",
+    "tularemia",
+    "plague symptoms",
+    "hantavirus",
+    "mosquito bite",
+    "tick bite",
+]
+
 RELIABILITY_REPORT_FILENAME = "reliability_report.json"
 
 RELIABILITY_SOURCES = [
@@ -38,6 +56,7 @@ RELIABILITY_SOURCES = [
     ("cdc_lyme", "lyme_colorado.json"),
     ("nasa_power_90d", "climate_colorado_90d.json"),
     ("open_meteo_30d", "open_meteo_colorado_30d.json"),
+    ("google_trends_co", "google_trends_colorado.json"),
     ("inaturalist_ticks", "inaturalist_ticks_colorado.json"),
     ("inaturalist_mosquitoes", "inaturalist_mosquitoes_colorado.json"),
     ("regional_counties", "regional_counties_2026.json"),
@@ -345,6 +364,132 @@ def fetch_open_meteo_colorado() -> None:
 
 
 # ---------------------------------------------------------------------------
+# Google Trends — Colorado state-level search signals
+# ---------------------------------------------------------------------------
+
+def _chunks(items: list[str], size: int) -> list[list[str]]:
+    return [items[i:i + size] for i in range(0, len(items), size)]
+
+
+def fetch_google_trends_colorado() -> None:
+    """
+    Fetch state-level Colorado Google Trends data for North American vector-borne terms.
+
+    Captures:
+    - Weekly interest-over-time in Colorado (`geo=US-CO`)
+    - DMA and city breakdowns where available
+    """
+    print("Fetching Google Trends data for Colorado...")
+    if TrendReq is None:
+        save(
+            "google_trends_colorado.json",
+            {
+                "fetched": TODAY,
+                "source": "unavailable",
+                "geo": "US-CO",
+                "keywords": GOOGLE_TRENDS_KEYWORDS,
+                "time_series": [],
+                "by_dma": [],
+                "by_city": [],
+            },
+        )
+        return
+
+    end_date = datetime.date.today()
+    start_date = end_date - datetime.timedelta(days=365)
+    timeframe = f"{start_date.isoformat()} {end_date.isoformat()}"
+
+    try:
+        pytrends = TrendReq(hl="en-US", tz=360, timeout=(10, 30), retries=2, backoff_factor=0.5)
+        time_series_records: list[dict] = []
+        by_dma_records: list[dict] = []
+        by_city_records: list[dict] = []
+
+        for keyword_group in _chunks(GOOGLE_TRENDS_KEYWORDS, 5):
+            pytrends.build_payload(keyword_group, timeframe=timeframe, geo="US-CO", gprop="")
+
+            interest_df = pytrends.interest_over_time()
+            if interest_df is not None and not interest_df.empty:
+                if "isPartial" in interest_df.columns:
+                    interest_df = interest_df.drop(columns=["isPartial"])
+                for date_value, row in interest_df.iterrows():
+                    for keyword in keyword_group:
+                        value = row.get(keyword)
+                        if value is not None:
+                            time_series_records.append(
+                                {
+                                    "date": date_value.date().isoformat(),
+                                    "keyword": keyword,
+                                    "value": int(value),
+                                }
+                            )
+
+            dma_df = pytrends.interest_by_region(resolution="DMA", inc_low_vol=True, inc_geo_code=False)
+            if dma_df is not None and not dma_df.empty:
+                for region_name, row in dma_df.iterrows():
+                    for keyword in keyword_group:
+                        value = row.get(keyword)
+                        if value is not None:
+                            by_dma_records.append(
+                                {
+                                    "region": str(region_name),
+                                    "keyword": keyword,
+                                    "value": int(value),
+                                }
+                            )
+
+            city_df = pytrends.interest_by_region(resolution="CITY", inc_low_vol=True, inc_geo_code=False)
+            if city_df is not None and not city_df.empty:
+                for region_name, row in city_df.iterrows():
+                    for keyword in keyword_group:
+                        value = row.get(keyword)
+                        if value is not None:
+                            by_city_records.append(
+                                {
+                                    "region": str(region_name),
+                                    "keyword": keyword,
+                                    "value": int(value),
+                                }
+                            )
+
+            time.sleep(random.randint(2, 4))
+
+        has_data = bool(time_series_records or by_dma_records or by_city_records)
+        source = "Google Trends API" if has_data else "unavailable"
+        payload = {
+            "fetched": TODAY,
+            "source": source,
+            "geo": "US-CO",
+            "timeframe": timeframe,
+            "keywords": GOOGLE_TRENDS_KEYWORDS,
+            "time_series": time_series_records,
+            "by_dma": by_dma_records,
+            "by_city": by_city_records,
+            "data": time_series_records,
+        }
+        save("google_trends_colorado.json", payload)
+        print(
+            f"  Got {len(time_series_records)} time points, "
+            f"{len(by_dma_records)} DMA rows, {len(by_city_records)} city rows"
+        )
+    except Exception as exc:
+        print(f"  WARNING: Google Trends fetch failed — {exc}")
+        save(
+            "google_trends_colorado.json",
+            {
+                "fetched": TODAY,
+                "source": "unavailable",
+                "geo": "US-CO",
+                "keywords": GOOGLE_TRENDS_KEYWORDS,
+                "time_series": [],
+                "by_dma": [],
+                "by_city": [],
+                "data": [],
+            },
+        )
+
+
+# ---------------------------------------------------------------------------
 # iNaturalist — research-grade tick observations in Colorado with retry
 # ---------------------------------------------------------------------------
 
@@ -505,6 +650,7 @@ if __name__ == "__main__":
     fetch_cdc_wonder_lyme()
     fetch_nasa_power_colorado()
     fetch_open_meteo_colorado()
+    fetch_google_trends_colorado()
     fetch_inaturalist_ticks()
     fetch_inaturalist_mosquitoes()
     update_regional_data()

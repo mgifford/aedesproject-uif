@@ -155,6 +155,69 @@ class TestFetchINaturalist:
         assert data["source"] == "unavailable"
 
 
+class TestFetchGoogleTrends:
+    def test_saves_fallback_when_pytrends_unavailable(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        monkeypatch.setattr(fsd, "TrendReq", None)
+
+        fsd.fetch_google_trends_colorado()
+
+        out = tmp_path / "google_trends_colorado.json"
+        assert out.exists()
+        payload = json.loads(out.read_text())
+        assert payload["source"] == "unavailable"
+        assert payload["geo"] == "US-CO"
+        assert payload["time_series"] == []
+
+    def test_parses_google_trends_payload(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+
+        class MockTrendReq:
+            def __init__(self, *args, **kwargs):
+                self._last_keywords = []
+
+            def build_payload(self, keywords, timeframe, geo, gprop):
+                self._last_keywords = keywords
+
+            def interest_over_time(self):
+                import pandas as pd
+
+                return pd.DataFrame(
+                    {"west nile virus": [42], "lyme disease": [31], "isPartial": [False]},
+                    index=pd.to_datetime(["2026-05-01"]),
+                )
+
+            def interest_by_region(self, resolution, inc_low_vol=True, inc_geo_code=False):
+                import pandas as pd
+
+                if resolution == "DMA":
+                    return pd.DataFrame(
+                        {"west nile virus": [55], "lyme disease": [40]},
+                        index=["Denver CO"],
+                    )
+                if resolution == "CITY":
+                    return pd.DataFrame(
+                        {"west nile virus": [60], "lyme disease": [33]},
+                        index=["Denver"],
+                    )
+                return pd.DataFrame()
+
+        monkeypatch.setattr(fsd, "TrendReq", MockTrendReq)
+        monkeypatch.setattr(fsd, "GOOGLE_TRENDS_KEYWORDS", ["west nile virus", "lyme disease"])
+        monkeypatch.setattr(fsd.random, "randint", lambda *_: 0)
+        monkeypatch.setattr(fsd.time, "sleep", lambda *_: None)
+
+        fsd.fetch_google_trends_colorado()
+
+        out = tmp_path / "google_trends_colorado.json"
+        payload = json.loads(out.read_text())
+        assert payload["source"] == "Google Trends API"
+        assert payload["geo"] == "US-CO"
+        assert len(payload["time_series"]) == 2
+        assert len(payload["by_dma"]) == 2
+        assert len(payload["by_city"]) == 2
+
+
 class TestReliabilityReport:
     @staticmethod
     def _write_all_sources_ok() -> None:
@@ -167,6 +230,14 @@ class TestReliabilityReport:
         fsd.save(
             "open_meteo_colorado_30d.json",
             {"fetched": "2026-05-22", "source": "Open-Meteo API", "data": [{"date": "2026-05-22"}]},
+        )
+        fsd.save(
+            "google_trends_colorado.json",
+            {
+                "fetched": "2026-05-22",
+                "source": "Google Trends API",
+                "data": [{"date": "2026-05-22", "keyword": "west nile virus", "value": 10}],
+            },
         )
         fsd.save(
             "inaturalist_ticks_colorado.json",
