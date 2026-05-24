@@ -245,6 +245,9 @@ class TestSurveillanceDataFiles:
     def test_inaturalist_ticks_schema(self):
         self._check_file("inaturalist_ticks_colorado.json", ["fetched", "source", "data"])
 
+    def test_google_trends_schema(self):
+        self._check_file("google_trends_colorado.json", ["fetched", "source", "geo", "data"])
+
     def test_no_negative_case_counts_in_season_ytd(self):
         path = DATA_DIR / "2026_season_ytd.json"
         if not path.exists():
@@ -351,4 +354,3 @@ class TestNotebookExecution:
 #   pytest --nbmake notebooks/
 # also executes all notebooks and is a simple alternative to the integration
 # tests above.  Both approaches can coexist.
-

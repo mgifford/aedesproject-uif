@@ -41,6 +41,7 @@ jobs:
             numpy \
             matplotlib \
             requests \
+            pytrends \
             plotly \
             scipy \
             scikit-learn
