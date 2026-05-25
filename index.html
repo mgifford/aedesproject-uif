@@ -42,6 +42,24 @@
       font-size: 0.9rem;
     }
 
+    .data-note {
+      background: #fffbeb;
+      border-left: 4px solid #d69e2e;
+      border-radius: 4px;
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 2rem;
+      font-size: 0.88rem;
+    }
+
+    .section-heading {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 1.5rem; }
 
     .card {
@@ -54,12 +72,23 @@
       transition: box-shadow 0.2s;
     }
     .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.13); }
+    .card-archive { opacity: 0.88; border: 1px solid #e2e8f0; box-shadow: none; }
     .card-icon { font-size: 2.5rem; flex-shrink: 0; line-height: 1; }
     .card-body h2 { font-size: 1.1rem; margin-bottom: 0.3rem; }
     .card-body h2 a { color: #2b6cb0; text-decoration: none; }
     .card-body h2 a:hover { text-decoration: underline; }
     .card-body .meta { font-size: 0.8rem; color: #718096; margin-bottom: 0.5rem; }
     .card-body p { font-size: 0.9rem; color: #4a5568; margin-bottom: 0.75rem; }
+    .archive-badge {
+      display: inline-block;
+      background: #faf5e4;
+      border: 1px solid #d69e2e;
+      border-radius: 12px;
+      padding: 0.15rem 0.6rem;
+      font-size: 0.78rem;
+      color: #744210;
+      margin-bottom: 0.5rem;
+    }
     .btn {
       display: inline-block;
       background: #2b6cb0;
@@ -72,6 +101,37 @@
     .btn:hover { background: #2c5282; }
 
     .no-data { color: #718096; font-style: italic; padding: 1rem 0; }
+
+    .archive-section {
+      margin-top: 2.5rem;
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .archive-section summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 0.25rem 0;
+    }
+    .archive-section summary::-webkit-details-marker { display: none; }
+    .archive-section summary::before {
+      content: '▶ ';
+      font-size: 0.8em;
+      color: #718096;
+    }
+    .archive-section[open] summary::before { content: '▼ '; }
+    .archive-heading {
+      display: inline;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #4a5568;
+    }
+    .archive-note {
+      font-size: 0.85rem;
+      color: #718096;
+      margin: 0.75rem 0 1.25rem;
+    }
 
     .disease-key {
       margin-top: 2.5rem;
@@ -128,14 +188,36 @@
     originally developed for dengue surveillance in the Philippines (Ligot &amp; Toledo, 2021).
   </div>
 
+  <div class="data-note">
+    <strong>ℹ️ About CDC data recency:</strong>
+    CDC's finalized annual case counts are published approximately 12–18 months after the end of each
+    calendar year, so the most recent <em>finalized</em> data is <strong>2024</strong>.
+    Current-season (2026) provisional weekly counts are available in the live monitoring reports below.
+    Reports that rely exclusively on finalized historical data are grouped in the
+    <em>Historical Archive</em> section at the bottom of this page.
+  </div>
+
+  <h2 class="section-heading">🔴 Current Season Reports (2026)</h2>
   <div class="grid">
     
+        <div class="card">
+          <div class="card-icon">📅</div>
+          <div class="card-body">
+            <h2><a href="notebooks/06_current_season_monitoring.html">2026 Season Monitoring</a></h2>
+            <p class="meta">Disease: <strong>WNV / Lyme / RMSF</strong> &nbsp;|&nbsp; Vector: <strong>Live monitoring</strong></p>
+            
+            <p>Real-time 2026 season tracking with weekly case counts, baseline comparisons, and early-warning alert levels.</p>
+            <a href="notebooks/06_current_season_monitoring.html" class="btn">View Analysis →</a>
+          </div>
+        </div>
+
         <div class="card">
           <div class="card-icon">🦟</div>
           <div class="card-body">
             <h2><a href="notebooks/01_west_nile_virus_surveillance.html">West Nile Virus Surveillance</a></h2>
             <p class="meta">Disease: <strong>West Nile Virus</strong> &nbsp;|&nbsp; Vector: <strong>Culex tarsalis</strong></p>
-            <p>Annual case trends, seasonal patterns, and climate correlates for WNV in Colorado.</p>
+            
+            <p>Current-season WNV risk, 90-day climate conditions, iNaturalist vector observations, and early warning signals. Historical trends (2010–2024) available below.</p>
             <a href="notebooks/01_west_nile_virus_surveillance.html" class="btn">View Analysis →</a>
           </div>
         </div>
@@ -145,48 +227,9 @@
           <div class="card-body">
             <h2><a href="notebooks/02_tick_disease_surveillance.html">Tick-Borne Disease Surveillance</a></h2>
             <p class="meta">Disease: <strong>Lyme / RMSF / CTF</strong> &nbsp;|&nbsp; Vector: <strong>Ixodes / Dermacentor</strong></p>
-            <p>Lyme disease trends, iNaturalist tick observations, and seasonal risk calendar for Colorado.</p>
+            
+            <p>Current tick activity, iNaturalist tick observations, and seasonal risk calendar for Colorado. Historical Lyme trends (2015–2024) available below.</p>
             <a href="notebooks/02_tick_disease_surveillance.html" class="btn">View Analysis →</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">📊</div>
-          <div class="card-body">
-            <h2><a href="notebooks/03_multi_disease_dashboard.html">03 Multi Disease Dashboard</a></h2>
-            <p class="meta">Disease: <strong>Unknown</strong> &nbsp;|&nbsp; Vector: <strong>Unknown</strong></p>
-            <p>Surveillance analysis notebook.</p>
-            <a href="notebooks/03_multi_disease_dashboard.html" class="btn">View Analysis →</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">🌡️</div>
-          <div class="card-body">
-            <h2><a href="notebooks/04_climate_disease_correlation.html">Climate–Disease Correlation</a></h2>
-            <p class="meta">Disease: <strong>WNV / Lyme</strong> &nbsp;|&nbsp; Vector: <strong>Climate-driven</strong></p>
-            <p>Feature engineering with Growing Degree Days, winter survival risk, and correlation between climate variables and disease incidence.</p>
-            <a href="notebooks/04_climate_disease_correlation.html" class="btn">View Analysis →</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">📈</div>
-          <div class="card-body">
-            <h2><a href="notebooks/05_climate_change_impact_analysis.html">Climate Change Impact Analysis</a></h2>
-            <p class="meta">Disease: <strong>WNV / Lyme / RMSF</strong> &nbsp;|&nbsp; Vector: <strong>Multi-vector</strong></p>
-            <p>Long-term climate trends, projected vector range expansion, and future risk scoring under warming scenarios.</p>
-            <a href="notebooks/05_climate_change_impact_analysis.html" class="btn">View Analysis →</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">📅</div>
-          <div class="card-body">
-            <h2><a href="notebooks/06_current_season_monitoring.html">2026 Season Monitoring</a></h2>
-            <p class="meta">Disease: <strong>WNV / Lyme / RMSF</strong> &nbsp;|&nbsp; Vector: <strong>Live monitoring</strong></p>
-            <p>Real-time 2026 season tracking with weekly case counts, baseline comparisons, and early-warning alert levels.</p>
-            <a href="notebooks/06_current_season_monitoring.html" class="btn">View Analysis →</a>
           </div>
         </div>
 
@@ -195,36 +238,89 @@
           <div class="card-body">
             <h2><a href="notebooks/07_regional_tracking.html">Regional County Tracking</a></h2>
             <p class="meta">Disease: <strong>WNV / Lyme / RMSF</strong> &nbsp;|&nbsp; Vector: <strong>County-level</strong></p>
+            
             <p>County-level breakdown for Colorado — choropleth map, Front Range hotspot analysis, and per-county iNaturalist vector observations.</p>
             <a href="notebooks/07_regional_tracking.html" class="btn">View Analysis →</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">📊</div>
-          <div class="card-body">
-            <h2><a href="notebooks/08_comprehensive_surveillance_dashboard.html">08 Comprehensive Surveillance Dashboard</a></h2>
-            <p class="meta">Disease: <strong>Unknown</strong> &nbsp;|&nbsp; Vector: <strong>Unknown</strong></p>
-            <p>Surveillance analysis notebook.</p>
-            <a href="notebooks/08_comprehensive_surveillance_dashboard.html" class="btn">View Analysis →</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">📊</div>
-          <div class="card-body">
-            <h2><a href="notebooks/09_model_validation_report.html">09 Model Validation Report</a></h2>
-            <p class="meta">Disease: <strong>Unknown</strong> &nbsp;|&nbsp; Vector: <strong>Unknown</strong></p>
-            <p>Surveillance analysis notebook.</p>
-            <a href="notebooks/09_model_validation_report.html" class="btn">View Analysis →</a>
           </div>
         </div>
   </div>
 
   
+  <section aria-label="Historical analysis archive">
+    <details class="archive-section">
+      <summary>
+        <h2 class="archive-heading">📂 Historical Analysis Archive (data through 2024)</h2>
+      </summary>
+      <p class="archive-note">
+        These notebooks use CDC finalized annual case data, which is published with a 12–18 month lag.
+        The most recent finalized year is <strong>2024</strong>.
+        They are preserved here for historical context and methodological reference.
+      </p>
+      <div class="grid">
+        
+        <div class="card  card-archive">
+          <div class="card-icon">🌡️</div>
+          <div class="card-body">
+            <h2><a href="notebooks/04_climate_disease_correlation.html">Climate–Disease Correlation</a></h2>
+            <p class="meta">Disease: <strong>WNV / Lyme</strong> &nbsp;|&nbsp; Vector: <strong>Climate-driven</strong></p>
+            <span class="archive-badge">📂 Historical data (through 2024)</span>
+            <p>Feature engineering with Growing Degree Days, winter survival risk, and correlation between climate variables and disease incidence.</p>
+            <a href="notebooks/04_climate_disease_correlation.html" class="btn">View Analysis →</a>
+          </div>
+        </div>
+
+        <div class="card  card-archive">
+          <div class="card-icon">📈</div>
+          <div class="card-body">
+            <h2><a href="notebooks/05_climate_change_impact_analysis.html">Climate Change Impact Analysis</a></h2>
+            <p class="meta">Disease: <strong>WNV / Lyme / RMSF</strong> &nbsp;|&nbsp; Vector: <strong>Multi-vector</strong></p>
+            <span class="archive-badge">📂 Historical data (through 2024)</span>
+            <p>Long-term climate trends, projected vector range expansion, and future risk scoring under warming scenarios.</p>
+            <a href="notebooks/05_climate_change_impact_analysis.html" class="btn">View Analysis →</a>
+          </div>
+        </div>
+
+        <div class="card  card-archive">
+          <div class="card-icon">📊</div>
+          <div class="card-body">
+            <h2><a href="notebooks/03_multi_disease_dashboard.html">03 Multi Disease Dashboard</a></h2>
+            <p class="meta">Disease: <strong>Unknown</strong> &nbsp;|&nbsp; Vector: <strong>Unknown</strong></p>
+            <span class="archive-badge">📂 Historical data (through 2024)</span>
+            <p>Surveillance analysis notebook.</p>
+            <a href="notebooks/03_multi_disease_dashboard.html" class="btn">View Analysis →</a>
+          </div>
+        </div>
+
+        <div class="card  card-archive">
+          <div class="card-icon">📊</div>
+          <div class="card-body">
+            <h2><a href="notebooks/09_model_validation_report.html">09 Model Validation Report</a></h2>
+            <p class="meta">Disease: <strong>Unknown</strong> &nbsp;|&nbsp; Vector: <strong>Unknown</strong></p>
+            <span class="archive-badge">📂 Historical data (through 2024)</span>
+            <p>Surveillance analysis notebook.</p>
+            <a href="notebooks/09_model_validation_report.html" class="btn">View Analysis →</a>
+          </div>
+        </div>
+
+        <div class="card  card-archive">
+          <div class="card-icon">📊</div>
+          <div class="card-body">
+            <h2><a href="notebooks/08_comprehensive_surveillance_dashboard.html">08 Comprehensive Surveillance Dashboard</a></h2>
+            <p class="meta">Disease: <strong>Unknown</strong> &nbsp;|&nbsp; Vector: <strong>Unknown</strong></p>
+            <span class="archive-badge">📂 Historical data (through 2024)</span>
+            <p>Surveillance analysis notebook.</p>
+            <a href="notebooks/08_comprehensive_surveillance_dashboard.html" class="btn">View Analysis →</a>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+
+  
   <div class="reliability">
     <h3>Pipeline Reliability Status</h3>
-    <p><strong>Run mode:</strong> Blocked &nbsp;|&nbsp; <strong>Generated:</strong> 2026-05-25T13:13:14Z</p>
+    <p><strong>Run mode:</strong> Blocked &nbsp;|&nbsp; <strong>Generated:</strong> 2026-05-25T13:45:45Z</p>
     <table>
       <thead>
         <tr>

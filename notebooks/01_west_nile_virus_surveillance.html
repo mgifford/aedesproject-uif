@@ -7946,236 +7946,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bb654899">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Platform-Overview:-Ecological-Surveillance-and-Risk-Forecasting">Platform Overview: Ecological Surveillance and Risk Forecasting<a class="anchor-link" href="#Platform-Overview:-Ecological-Surveillance-and-Risk-Forecasting">¶</a></h2><p>This platform is designed to support:</p>
-<ul>
-<li><strong>Environmental risk forecasting</strong> for vector-borne and zoonotic diseases</li>
-<li><strong>Ecological surveillance</strong> using open environmental, entomological, and epidemiological data</li>
-<li><strong>Vector habitat suitability</strong> modeling (mosquitoes, ticks, rodents, birds)</li>
-<li><strong>Climate anomaly detection</strong> (drought, precipitation, wildfire, temperature)</li>
-<li><strong>Public health early warning</strong> and operational support</li>
-<li><strong>Probabilistic risk estimation</strong> with uncertainty quantification</li>
-</ul>
-<p><strong>Colorado-relevant diseases prioritized:</strong></p>
-<ul>
-<li>West Nile Virus</li>
-<li>Lyme disease</li>
-<li>Colorado tick fever</li>
-<li>Rocky Mountain spotted fever</li>
-<li>Tularemia</li>
-<li>Plague</li>
-<li>Hantavirus exposure risk</li>
-<li>Mosquito-borne encephalitis</li>
-<li>Emerging climate-shifted vector diseases</li>
-</ul>
-<p><strong>One Health integration:</strong></p>
-<ul>
-<li>Human health, animal reservoirs, vector ecology, climate, land use, and public health operations are jointly modeled.</li>
-</ul>
-<hr/>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7746bc48">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Data-Sources-and-Integration">Data Sources and Integration<a class="anchor-link" href="#Data-Sources-and-Integration">¶</a></h2><p><strong>Primary Data Sources:</strong></p>
-<ul>
-<li><strong>CDC ArboNET:</strong> Human case surveillance, mosquito pool testing, vector surveillance</li>
-<li><strong>NOAA:</strong> Climate anomalies, drought, precipitation, temperature</li>
-<li><strong>NASA MODIS/EarthData:</strong> Vegetation, land surface temperature, wildfire, land cover</li>
-<li><strong>USGS:</strong> Hydrology, water bodies, ecological layers</li>
-<li><strong>CDC Vector Distribution:</strong> Official vector presence/absence and suitability maps</li>
-<li><strong>Colorado Department of Public Health &amp; Environment:</strong> Local case reports, vector surveillance</li>
-<li><strong>Mosquito Districts:</strong> Trap counts, pool testing, spatial coverage</li>
-<li><strong>Migratory Bird Datasets:</strong> eBird, USGS, state ornithology data</li>
-<li><strong>Land Cover/Wildfire:</strong> USGS, NASA, state sources</li>
-<li><strong>Drought Severity:</strong> US Drought Monitor, NOAA</li>
-</ul>
-<p><strong>Integration Strategy:</strong></p>
-<ul>
-<li>Modular ETL pipelines for each source</li>
-<li>Automated data validation and harmonization</li>
-<li>Metadata and provenance tracking for all datasets</li>
-</ul>
-<p><strong>CDC ArboNET Integration:</strong></p>
-<ul>
-<li>Weekly human case reports (county, disease, onset date)</li>
-<li>Mosquito pool testing (location, species, infection status)</li>
-<li>Tick/vector surveillance (where available)</li>
-<li>Used for both model training and validation</li>
-</ul>
-<hr/>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ccf9ea26">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Environmental-and-Ecological-Feature-Engineering">Environmental and Ecological Feature Engineering<a class="anchor-link" href="#Environmental-and-Ecological-Feature-Engineering">¶</a></h2><p>The system models:</p>
-<ul>
-<li>Mosquito habitat suitability (climate, water, vegetation, land cover)</li>
-<li>Tick habitat suitability (vegetation, humidity, host presence)</li>
-<li>Rodent exposure zones (land cover, human proximity)</li>
-<li>Bird migration impacts (seasonal corridors, vector dispersal)</li>
-<li>Standing water persistence (hydrology, precipitation, drought)</li>
-<li>Vegetation and humidity conditions (NDVI, EVI, MODIS)</li>
-<li>Drought and precipitation anomalies (NOAA, US Drought Monitor)</li>
-<li>Wildfire ecological disruption (NASA, USGS)</li>
-<li>Human recreational exposure risk (land use, OSM, parks, trails)</li>
-</ul>
-<p>All features are engineered to support ecological, entomological, and epidemiological modeling.</p>
-<hr/>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=415fc928">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="One-Health-System-Framing">One Health System Framing<a class="anchor-link" href="#One-Health-System-Framing">¶</a></h2><p>This platform explicitly connects:</p>
-<ul>
-<li><strong>Human health:</strong> Case surveillance, exposure risk, intervention targeting</li>
-<li><strong>Animal reservoirs:</strong> Rodent/tick/mosquito habitats, bird migration</li>
-<li><strong>Vector ecology:</strong> Mosquito/tick suitability, pool testing, spatial expansion</li>
-<li><strong>Climate systems:</strong> Drought, precipitation, temperature, anomalies</li>
-<li><strong>Land use:</strong> Urban/rural, water bodies, vegetation, wildfire</li>
-<li><strong>Public health operations:</strong> Early warning, resource allocation, intervention planning</li>
-</ul>
-<p>The One Health approach ensures robust, actionable, and scientifically defensible public health interventions.</p>
-<hr/>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bba2e146">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Validation-Methodology">Validation Methodology<a class="anchor-link" href="#Validation-Methodology">¶</a></h2><p><strong>Validation Layers:</strong></p>
-<ul>
-<li><strong>Ecological validation:</strong> Vector habitat suitability vs. CDC/USGS maps, mosquito/tick pool positives</li>
-<li><strong>Entomological validation:</strong> Mosquito/tick pool positives, spatial/temporal expansion</li>
-<li><strong>Epidemiological validation:</strong> Outbreak detection, lead time, spatial accuracy for human cases</li>
-<li><strong>Operational validation:</strong> Actionable lead time, false alert rate, intervention/resource allocation efficiency</li>
-</ul>
-<p><strong>Validation Methods:</strong></p>
-<ul>
-<li>Rolling historical backtesting (train on past, test on future)</li>
-<li>Geographic holdout (hold out counties/regions)</li>
-<li>Climate drift testing (pre/post anomaly periods)</li>
-<li>Outbreak lead-time analysis</li>
-<li>False positive/negative analysis</li>
-<li>Uncertainty estimation (confidence intervals, probability bands)</li>
-<li>Baseline comparison (seasonal averages, persistence, official alerts)</li>
-</ul>
-<hr/>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c2f66057">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Testing-Strategy">Testing Strategy<a class="anchor-link" href="#Testing-Strategy">¶</a></h2><p>Tests validate:</p>
-<ul>
-<li>Vector habitat prediction accuracy (vs. CDC/USGS maps, mosquito pools)</li>
-<li>Environmental anomaly detection (drought, wildfire, precipitation)</li>
-<li>Mosquito pool correlation (spatial/temporal)</li>
-<li>Hotspot persistence and emergence</li>
-<li>County-level outbreak forecasting (lead time, sensitivity, specificity)</li>
-<li>Robustness to incomplete/missing surveillance data</li>
-<li>Regional generalization (urban/rural, ecological zones)</li>
-</ul>
-<hr/>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5fe14ec0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Risk-Scoring-and-Uncertainty">Risk Scoring and Uncertainty<a class="anchor-link" href="#Risk-Scoring-and-Uncertainty">¶</a></h2><ul>
-<li>Risk is modeled as a probability surface, not a binary hotspot.</li>
-<li>Scores reflect:<ul>
-<li>Probability of vector presence</li>
-<li>Probability of human exposure</li>
-<li>Confidence/uncertainty intervals</li>
-<li>Environmental anomaly modifiers</li>
-</ul>
-</li>
-<li>Visualizations include probability bands and uncertainty overlays.</li>
-</ul>
-<hr/>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7d1fb224">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Limitations">Limitations<a class="anchor-link" href="#Limitations">¶</a></h2><ul>
-<li>Uneven surveillance coverage (spatial/temporal gaps)</li>
-<li>Underreporting of human cases</li>
-<li>Climate and ecological uncertainty</li>
-<li>Sparse rural data and changing vector ranges</li>
-<li>Public health response limitations (capacity, resources)</li>
-<li>Ecological complexity and non-stationarity</li>
-</ul>
-<hr/>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8e037adc">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Data-Signal-Prioritization">Data Signal Prioritization<a class="anchor-link" href="#Data-Signal-Prioritization">¶</a></h2><ul>
-<li><strong>Primary:</strong> Ecological, vector, and official epidemiological data</li>
-<li><strong>Secondary:</strong> Search trends, social signals (supporting, not leading)</li>
-</ul>
-<hr/>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e89eff77">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Open-Science-&amp;-Digital-Public-Goods-Principles">Open Science &amp; Digital Public Goods Principles<a class="anchor-link" href="#Open-Science-&amp;-Digital-Public-Goods-Principles">¶</a></h2><ul>
-<li>All code, data, and models are open-source and reproducible</li>
-<li>Modular architecture for easy extension and integration</li>
-<li>Transparent methods and provenance for all data and forecasts</li>
-<li>Designed for public-sector interoperability and scientific review</li>
-</ul>
-<hr/>
-</div>
-</div>
-</div>
-</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0c9eb6e1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8606,7 +8376,11 @@ Current evidence:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><a id="annual-trends"></a></p>
-<h2 id="1.-Annual-Case-Trends-(Finalized,-2010-2024)">1. Annual Case Trends (Finalized, 2010-2024)<a class="anchor-link" href="#1.-Annual-Case-Trends-(Finalized,-2010-2024)">¶</a></h2><p><a href="https://mgifford.github.io/aedesproject-uif/">Back to Home</a> | <a href="#top">Back to Top</a></p>
+<h2 id="1.-Historical-Case-Trends-Archive-(Finalized,-2010%E2%80%932024)">1. Historical Case Trends Archive (Finalized, 2010–2024)<a class="anchor-link" href="#1.-Historical-Case-Trends-Archive-(Finalized,-2010%E2%80%932024)">¶</a></h2><blockquote>
+<p><strong>ℹ️ CDC Data Lag:</strong> CDC's finalized annual case counts are published approximately 12–18 months after the end of each calendar year.
+The most recent finalized data is <strong>2024</strong>. Current-season (2026) provisional data appears in the <a href="#current-situation">Current Situation</a> section above.</p>
+</blockquote>
+<p><a href="https://mgifford.github.io/aedesproject-uif/">Back to Home</a> | <a href="#top">Back to Top</a></p>
 </div>
 </div>
 </div>
@@ -9510,6 +9284,258 @@ Snapshot columns: ['snapshot_date', 'notebook_run_ts', 'wnv_ytd_cases', 'lyme_yt
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Note: CSV export skipped (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=background-accordion-header">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<details>
+<summary><strong>📚 Background &amp; Methodology</strong> (click to expand)</summary>
+<hr/>
+</details></div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bb654899">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Platform-Overview:-Ecological-Surveillance-and-Risk-Forecasting">Platform Overview: Ecological Surveillance and Risk Forecasting<a class="anchor-link" href="#Platform-Overview:-Ecological-Surveillance-and-Risk-Forecasting">¶</a></h2><p>This platform is designed to support:</p>
+<ul>
+<li><strong>Environmental risk forecasting</strong> for vector-borne and zoonotic diseases</li>
+<li><strong>Ecological surveillance</strong> using open environmental, entomological, and epidemiological data</li>
+<li><strong>Vector habitat suitability</strong> modeling (mosquitoes, ticks, rodents, birds)</li>
+<li><strong>Climate anomaly detection</strong> (drought, precipitation, wildfire, temperature)</li>
+<li><strong>Public health early warning</strong> and operational support</li>
+<li><strong>Probabilistic risk estimation</strong> with uncertainty quantification</li>
+</ul>
+<p><strong>Colorado-relevant diseases prioritized:</strong></p>
+<ul>
+<li>West Nile Virus</li>
+<li>Lyme disease</li>
+<li>Colorado tick fever</li>
+<li>Rocky Mountain spotted fever</li>
+<li>Tularemia</li>
+<li>Plague</li>
+<li>Hantavirus exposure risk</li>
+<li>Mosquito-borne encephalitis</li>
+<li>Emerging climate-shifted vector diseases</li>
+</ul>
+<p><strong>One Health integration:</strong></p>
+<ul>
+<li>Human health, animal reservoirs, vector ecology, climate, land use, and public health operations are jointly modeled.</li>
+</ul>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7746bc48">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Data-Sources-and-Integration">Data Sources and Integration<a class="anchor-link" href="#Data-Sources-and-Integration">¶</a></h2><p><strong>Primary Data Sources:</strong></p>
+<ul>
+<li><strong>CDC ArboNET:</strong> Human case surveillance, mosquito pool testing, vector surveillance</li>
+<li><strong>NOAA:</strong> Climate anomalies, drought, precipitation, temperature</li>
+<li><strong>NASA MODIS/EarthData:</strong> Vegetation, land surface temperature, wildfire, land cover</li>
+<li><strong>USGS:</strong> Hydrology, water bodies, ecological layers</li>
+<li><strong>CDC Vector Distribution:</strong> Official vector presence/absence and suitability maps</li>
+<li><strong>Colorado Department of Public Health &amp; Environment:</strong> Local case reports, vector surveillance</li>
+<li><strong>Mosquito Districts:</strong> Trap counts, pool testing, spatial coverage</li>
+<li><strong>Migratory Bird Datasets:</strong> eBird, USGS, state ornithology data</li>
+<li><strong>Land Cover/Wildfire:</strong> USGS, NASA, state sources</li>
+<li><strong>Drought Severity:</strong> US Drought Monitor, NOAA</li>
+</ul>
+<p><strong>Integration Strategy:</strong></p>
+<ul>
+<li>Modular ETL pipelines for each source</li>
+<li>Automated data validation and harmonization</li>
+<li>Metadata and provenance tracking for all datasets</li>
+</ul>
+<p><strong>CDC ArboNET Integration:</strong></p>
+<ul>
+<li>Weekly human case reports (county, disease, onset date)</li>
+<li>Mosquito pool testing (location, species, infection status)</li>
+<li>Tick/vector surveillance (where available)</li>
+<li>Used for both model training and validation</li>
+</ul>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ccf9ea26">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Environmental-and-Ecological-Feature-Engineering">Environmental and Ecological Feature Engineering<a class="anchor-link" href="#Environmental-and-Ecological-Feature-Engineering">¶</a></h2><p>The system models:</p>
+<ul>
+<li>Mosquito habitat suitability (climate, water, vegetation, land cover)</li>
+<li>Tick habitat suitability (vegetation, humidity, host presence)</li>
+<li>Rodent exposure zones (land cover, human proximity)</li>
+<li>Bird migration impacts (seasonal corridors, vector dispersal)</li>
+<li>Standing water persistence (hydrology, precipitation, drought)</li>
+<li>Vegetation and humidity conditions (NDVI, EVI, MODIS)</li>
+<li>Drought and precipitation anomalies (NOAA, US Drought Monitor)</li>
+<li>Wildfire ecological disruption (NASA, USGS)</li>
+<li>Human recreational exposure risk (land use, OSM, parks, trails)</li>
+</ul>
+<p>All features are engineered to support ecological, entomological, and epidemiological modeling.</p>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=415fc928">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="One-Health-System-Framing">One Health System Framing<a class="anchor-link" href="#One-Health-System-Framing">¶</a></h2><p>This platform explicitly connects:</p>
+<ul>
+<li><strong>Human health:</strong> Case surveillance, exposure risk, intervention targeting</li>
+<li><strong>Animal reservoirs:</strong> Rodent/tick/mosquito habitats, bird migration</li>
+<li><strong>Vector ecology:</strong> Mosquito/tick suitability, pool testing, spatial expansion</li>
+<li><strong>Climate systems:</strong> Drought, precipitation, temperature, anomalies</li>
+<li><strong>Land use:</strong> Urban/rural, water bodies, vegetation, wildfire</li>
+<li><strong>Public health operations:</strong> Early warning, resource allocation, intervention planning</li>
+</ul>
+<p>The One Health approach ensures robust, actionable, and scientifically defensible public health interventions.</p>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bba2e146">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Validation-Methodology">Validation Methodology<a class="anchor-link" href="#Validation-Methodology">¶</a></h2><p><strong>Validation Layers:</strong></p>
+<ul>
+<li><strong>Ecological validation:</strong> Vector habitat suitability vs. CDC/USGS maps, mosquito/tick pool positives</li>
+<li><strong>Entomological validation:</strong> Mosquito/tick pool positives, spatial/temporal expansion</li>
+<li><strong>Epidemiological validation:</strong> Outbreak detection, lead time, spatial accuracy for human cases</li>
+<li><strong>Operational validation:</strong> Actionable lead time, false alert rate, intervention/resource allocation efficiency</li>
+</ul>
+<p><strong>Validation Methods:</strong></p>
+<ul>
+<li>Rolling historical backtesting (train on past, test on future)</li>
+<li>Geographic holdout (hold out counties/regions)</li>
+<li>Climate drift testing (pre/post anomaly periods)</li>
+<li>Outbreak lead-time analysis</li>
+<li>False positive/negative analysis</li>
+<li>Uncertainty estimation (confidence intervals, probability bands)</li>
+<li>Baseline comparison (seasonal averages, persistence, official alerts)</li>
+</ul>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c2f66057">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Testing-Strategy">Testing Strategy<a class="anchor-link" href="#Testing-Strategy">¶</a></h2><p>Tests validate:</p>
+<ul>
+<li>Vector habitat prediction accuracy (vs. CDC/USGS maps, mosquito pools)</li>
+<li>Environmental anomaly detection (drought, wildfire, precipitation)</li>
+<li>Mosquito pool correlation (spatial/temporal)</li>
+<li>Hotspot persistence and emergence</li>
+<li>County-level outbreak forecasting (lead time, sensitivity, specificity)</li>
+<li>Robustness to incomplete/missing surveillance data</li>
+<li>Regional generalization (urban/rural, ecological zones)</li>
+</ul>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5fe14ec0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Risk-Scoring-and-Uncertainty">Risk Scoring and Uncertainty<a class="anchor-link" href="#Risk-Scoring-and-Uncertainty">¶</a></h2><ul>
+<li>Risk is modeled as a probability surface, not a binary hotspot.</li>
+<li>Scores reflect:<ul>
+<li>Probability of vector presence</li>
+<li>Probability of human exposure</li>
+<li>Confidence/uncertainty intervals</li>
+<li>Environmental anomaly modifiers</li>
+</ul>
+</li>
+<li>Visualizations include probability bands and uncertainty overlays.</li>
+</ul>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7d1fb224">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Limitations">Limitations<a class="anchor-link" href="#Limitations">¶</a></h2><ul>
+<li>Uneven surveillance coverage (spatial/temporal gaps)</li>
+<li>Underreporting of human cases</li>
+<li>Climate and ecological uncertainty</li>
+<li>Sparse rural data and changing vector ranges</li>
+<li>Public health response limitations (capacity, resources)</li>
+<li>Ecological complexity and non-stationarity</li>
+</ul>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8e037adc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Data-Signal-Prioritization">Data Signal Prioritization<a class="anchor-link" href="#Data-Signal-Prioritization">¶</a></h2><ul>
+<li><strong>Primary:</strong> Ecological, vector, and official epidemiological data</li>
+<li><strong>Secondary:</strong> Search trends, social signals (supporting, not leading)</li>
+</ul>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e89eff77">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Open-Science-&amp;-Digital-Public-Goods-Principles">Open Science &amp; Digital Public Goods Principles<a class="anchor-link" href="#Open-Science-&amp;-Digital-Public-Goods-Principles">¶</a></h2><ul>
+<li>All code, data, and models are open-source and reproducible</li>
+<li>Modular architecture for easy extension and integration</li>
+<li>Transparent methods and provenance for all data and forecasts</li>
+<li>Designed for public-sector interoperability and scientific review</li>
+</ul>
+<hr/>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=background-accordion-footer">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+
 </div>
 </div>
 </div>
