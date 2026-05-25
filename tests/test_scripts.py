@@ -366,31 +366,34 @@ import postprocess_notebook_html as pnh
 
 class TestBuildNotebookCards:
     def test_empty_list_returns_no_data_message(self):
-        html = gd.build_notebook_cards([])
-        assert "no-data" in html or "No analyses" in html
+        current, archive = gd.build_notebook_cards([])
+        assert "no-data" in current or "No analyses" in current
 
     def test_known_notebook_renders_title(self, tmp_path):
         fake_html = tmp_path / "01_west_nile_virus_surveillance.html"
         fake_html.write_text("<html></html>")
-        cards = gd.build_notebook_cards([str(fake_html)])
-        assert "West Nile Virus" in cards
-        assert "Culex tarsalis" in cards
-        assert 'href=' in cards
+        current, archive = gd.build_notebook_cards([str(fake_html)])
+        all_cards = current + archive
+        assert "West Nile Virus" in all_cards
+        assert "Culex tarsalis" in all_cards
+        assert 'href=' in all_cards
 
     def test_unknown_notebook_renders_fallback_title(self, tmp_path):
         fake_html = tmp_path / "99_custom_analysis.html"
         fake_html.write_text("<html></html>")
-        cards = gd.build_notebook_cards([str(fake_html)])
-        assert "99 Custom Analysis" in cards or "custom" in cards.lower()
+        current, archive = gd.build_notebook_cards([str(fake_html)])
+        all_cards = current + archive
+        assert "99 Custom Analysis" in all_cards or "custom" in all_cards.lower()
 
     def test_multiple_notebooks_all_appear(self, tmp_path):
         nb1 = tmp_path / "01_west_nile_virus_surveillance.html"
         nb2 = tmp_path / "02_tick_disease_surveillance.html"
         nb1.write_text("<html></html>")
         nb2.write_text("<html></html>")
-        cards = gd.build_notebook_cards([str(nb1), str(nb2)])
-        assert "West Nile Virus" in cards
-        assert "Tick" in cards
+        current, archive = gd.build_notebook_cards([str(nb1), str(nb2)])
+        all_cards = current + archive
+        assert "West Nile Virus" in all_cards
+        assert "Tick" in all_cards
 
 
 class TestBuildIndex:
