@@ -72,12 +72,7 @@ jobs:
       - name: Post-process notebook HTML (navigation + collapsible query cells)
         run: python scripts/postprocess_notebook_html.py --directory _site/notebooks
 
-      # ── 7. Generate dashboard index (refresh card for notebook 02) ────────────
-      - name: Regenerate dashboard index
-        run: python scripts/generate_dashboard.py
-        continue-on-error: true
-
-      # ── 8. Commit updated data cache back to main branch ──────────────────────
+      # ── 7. Commit updated data cache back to main branch ──────────────────────
       - name: Commit updated surveillance data cache
         run: |
           git config user.name  "github-actions[bot]"
@@ -90,7 +85,7 @@ jobs:
             git push
           fi
 
-      # ── 9. Deploy updated HTML to gh-pages ────────────────────────────────────
+      # ── 8. Deploy updated HTML to gh-pages ────────────────────────────────────
       - name: Deploy to GitHub Pages (gh-pages branch)
         uses: peaceiris/actions-gh-pages@v3
         with:
