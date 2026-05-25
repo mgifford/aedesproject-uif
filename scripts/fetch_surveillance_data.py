@@ -391,6 +391,7 @@ def fetch_google_trends_colorado() -> None:
                 "time_series": [],
                 "by_dma": [],
                 "by_city": [],
+                "data": [],
             },
         )
         return
