@@ -1,24 +1,59 @@
 {
   "season": "2026",
-  "fetched": "2026-05-18",
+  "fetched": "2026-05-25",
   "source": "CDC NNDSS / Colorado CDPHE provisional",
   "note": "County-level data is provisional. Aggregated from CDPHE weekly reports.",
   "regions": {
     "front_range": {
       "label": "Front Range",
-      "counties": ["Denver", "Jefferson", "Arapahoe", "Adams", "Larimer", "Weld", "Boulder", "Douglas", "El Paso"]
+      "counties": [
+        "Denver",
+        "Jefferson",
+        "Arapahoe",
+        "Adams",
+        "Larimer",
+        "Weld",
+        "Boulder",
+        "Douglas",
+        "El Paso"
+      ]
     },
     "western_slope": {
       "label": "Western Slope",
-      "counties": ["Mesa", "Garfield", "Montrose", "Delta", "Routt", "Eagle", "Pitkin"]
+      "counties": [
+        "Mesa",
+        "Garfield",
+        "Montrose",
+        "Delta",
+        "Routt",
+        "Eagle",
+        "Pitkin"
+      ]
     },
     "eastern_plains": {
       "label": "Eastern Plains",
-      "counties": ["Morgan", "Logan", "Yuma", "Phillips", "Sedgwick", "Washington", "Lincoln", "Kit Carson"]
+      "counties": [
+        "Morgan",
+        "Logan",
+        "Yuma",
+        "Phillips",
+        "Sedgwick",
+        "Washington",
+        "Lincoln",
+        "Kit Carson"
+      ]
     },
     "southern": {
       "label": "Southern Colorado",
-      "counties": ["Pueblo", "Huerfano", "Las Animas", "Otero", "Bent", "Prowers", "Baca"]
+      "counties": [
+        "Pueblo",
+        "Huerfano",
+        "Las Animas",
+        "Otero",
+        "Bent",
+        "Prowers",
+        "Baca"
+      ]
     }
   },
   "county_ytd": [
@@ -31,7 +66,9 @@
       "rmsf_cases": 0,
       "population": 715522,
       "lat": 39.7392,
-      "lon": -104.9903
+      "lon": -104.9903,
+      "tick_observations_ytd": 6,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Jefferson",
@@ -42,7 +79,9 @@
       "rmsf_cases": 0,
       "population": 582910,
       "lat": 39.5883,
-      "lon": -105.2136
+      "lon": -105.2136,
+      "tick_observations_ytd": 0,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Arapahoe",
@@ -53,7 +92,9 @@
       "rmsf_cases": 0,
       "population": 655070,
       "lat": 39.6305,
-      "lon": -104.3373
+      "lon": -104.3373,
+      "tick_observations_ytd": 0,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Adams",
@@ -64,7 +105,9 @@
       "rmsf_cases": 0,
       "population": 519572,
       "lat": 39.8729,
-      "lon": -104.3373
+      "lon": -104.3373,
+      "tick_observations_ytd": 0,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Larimer",
@@ -74,8 +117,10 @@
       "lyme_cases": 0,
       "rmsf_cases": 0,
       "population": 359066,
-      "lat": 40.6630,
-      "lon": -105.3972
+      "lat": 40.663,
+      "lon": -105.3972,
+      "tick_observations_ytd": 0,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Weld",
@@ -86,7 +131,9 @@
       "rmsf_cases": 0,
       "population": 328981,
       "lat": 40.5516,
-      "lon": -104.3855
+      "lon": -104.3855,
+      "tick_observations_ytd": 1,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Boulder",
@@ -97,7 +144,9 @@
       "rmsf_cases": 0,
       "population": 326196,
       "lat": 40.0937,
-      "lon": -105.3584
+      "lon": -105.3584,
+      "tick_observations_ytd": 2,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "El Paso",
@@ -108,7 +157,9 @@
       "rmsf_cases": 0,
       "population": 730395,
       "lat": 38.8339,
-      "lon": -104.8253
+      "lon": -104.8253,
+      "tick_observations_ytd": 0,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Pueblo",
@@ -119,7 +170,9 @@
       "rmsf_cases": 1,
       "population": 168424,
       "lat": 38.2544,
-      "lon": -104.6091
+      "lon": -104.6091,
+      "tick_observations_ytd": 0,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Mesa",
@@ -130,7 +183,9 @@
       "rmsf_cases": 0,
       "population": 155998,
       "lat": 39.0639,
-      "lon": -108.5506
+      "lon": -108.5506,
+      "tick_observations_ytd": 6,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Morgan",
@@ -141,7 +196,9 @@
       "rmsf_cases": 0,
       "population": 29068,
       "lat": 40.2622,
-      "lon": -103.8024
+      "lon": -103.8024,
+      "tick_observations_ytd": 0,
+      "mosquito_observations_ytd": 0
     },
     {
       "county": "Weld",
@@ -152,12 +209,29 @@
       "rmsf_cases": 0,
       "population": 328981,
       "lat": 40.5516,
-      "lon": -104.3855
+      "lon": -104.3855,
+      "tick_observations_ytd": 1,
+      "mosquito_observations_ytd": 0
     }
   ],
   "historical_county_peaks": {
-    "wnv_hotspot_counties": ["Weld", "Adams", "Larimer", "Morgan", "Yuma"],
-    "lyme_hotspot_counties": ["Boulder", "Jefferson", "Larimer", "Denver"],
-    "rmsf_hotspot_counties": ["El Paso", "Pueblo", "Fremont"]
+    "wnv_hotspot_counties": [
+      "Weld",
+      "Adams",
+      "Larimer",
+      "Morgan",
+      "Yuma"
+    ],
+    "lyme_hotspot_counties": [
+      "Boulder",
+      "Jefferson",
+      "Larimer",
+      "Denver"
+    ],
+    "rmsf_hotspot_counties": [
+      "El Paso",
+      "Pueblo",
+      "Fremont"
+    ]
   }
 }
