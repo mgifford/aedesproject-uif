@@ -17,41 +17,31 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "surveillance")
 TODAY = datetime.date.today().strftime("%B %d, %Y")
 
 # Metadata for each notebook (filename stem → display info)
+# data_recency: "live" = current season + live feeds, "historical" = finalized data through 2024
 NOTEBOOK_META = {
-    "01_west_nile_virus_surveillance": {
-        "title": "West Nile Virus Surveillance",
-        "icon": "🦟",
-        "description": "Annual case trends, seasonal patterns, and climate correlates for WNV in Colorado.",
-        "disease": "West Nile Virus",
-        "vector": "Culex tarsalis",
-    },
-    "02_tick_disease_surveillance": {
-        "title": "Tick-Borne Disease Surveillance",
-        "icon": "🕷️",
-        "description": "Lyme disease trends, iNaturalist tick observations, and seasonal risk calendar for Colorado.",
-        "disease": "Lyme / RMSF / CTF",
-        "vector": "Ixodes / Dermacentor",
-    },
-    "04_climate_disease_correlation": {
-        "title": "Climate–Disease Correlation",
-        "icon": "🌡️",
-        "description": "Feature engineering with Growing Degree Days, winter survival risk, and correlation between climate variables and disease incidence.",
-        "disease": "WNV / Lyme",
-        "vector": "Climate-driven",
-    },
-    "05_climate_change_impact_analysis": {
-        "title": "Climate Change Impact Analysis",
-        "icon": "📈",
-        "description": "Long-term climate trends, projected vector range expansion, and future risk scoring under warming scenarios.",
-        "disease": "WNV / Lyme / RMSF",
-        "vector": "Multi-vector",
-    },
     "06_current_season_monitoring": {
         "title": "2026 Season Monitoring",
         "icon": "📅",
         "description": "Real-time 2026 season tracking with weekly case counts, baseline comparisons, and early-warning alert levels.",
         "disease": "WNV / Lyme / RMSF",
         "vector": "Live monitoring",
+        "data_recency": "live",
+    },
+    "01_west_nile_virus_surveillance": {
+        "title": "West Nile Virus Surveillance",
+        "icon": "🦟",
+        "description": "Current-season WNV risk, 90-day climate conditions, iNaturalist vector observations, and early warning signals. Historical trends (2010–2024) available below.",
+        "disease": "West Nile Virus",
+        "vector": "Culex tarsalis",
+        "data_recency": "live",
+    },
+    "02_tick_disease_surveillance": {
+        "title": "Tick-Borne Disease Surveillance",
+        "icon": "🕷️",
+        "description": "Current tick activity, iNaturalist tick observations, and seasonal risk calendar for Colorado. Historical Lyme trends (2015–2024) available below.",
+        "disease": "Lyme / RMSF / CTF",
+        "vector": "Ixodes / Dermacentor",
+        "data_recency": "live",
     },
     "07_regional_tracking": {
         "title": "Regional County Tracking",
@@ -59,7 +49,34 @@ NOTEBOOK_META = {
         "description": "County-level breakdown for Colorado — choropleth map, Front Range hotspot analysis, and per-county iNaturalist vector observations.",
         "disease": "WNV / Lyme / RMSF",
         "vector": "County-level",
+        "data_recency": "live",
     },
+    "04_climate_disease_correlation": {
+        "title": "Climate–Disease Correlation",
+        "icon": "🌡️",
+        "description": "Feature engineering with Growing Degree Days, winter survival risk, and correlation between climate variables and disease incidence.",
+        "disease": "WNV / Lyme",
+        "vector": "Climate-driven",
+        "data_recency": "historical",
+    },
+    "05_climate_change_impact_analysis": {
+        "title": "Climate Change Impact Analysis",
+        "icon": "📈",
+        "description": "Long-term climate trends, projected vector range expansion, and future risk scoring under warming scenarios.",
+        "disease": "WNV / Lyme / RMSF",
+        "vector": "Multi-vector",
+        "data_recency": "historical",
+    },
+}
+
+# Notebooks whose CDC case data ends at 2024 and lack a current-season feed
+# are moved to the "Historical Archive" section on the dashboard.
+HISTORICAL_ARCHIVE_STEMS = {
+    "03_multi_disease_dashboard",
+    "04_climate_disease_correlation",
+    "05_climate_change_impact_analysis",
+    "08_comprehensive_surveillance_dashboard",
+    "09_model_validation_report",
 }
 
 
@@ -144,40 +161,90 @@ def build_reliability_section(report: dict | None) -> str:
 """
 
 
-def build_notebook_cards(html_files: list[str]) -> str:
-    if not html_files:
-        return "<p class='no-data'>No analyses available yet. Check back after the first workflow run.</p>"
-
-    cards = []
-    for html_path in sorted(html_files):
-        stem = os.path.splitext(os.path.basename(html_path))[0]
-        meta = NOTEBOOK_META.get(stem, {
-            "title": stem.replace("_", " ").title(),
-            "icon": "📊",
-            "description": "Surveillance analysis notebook.",
-            "disease": "Unknown",
-            "vector": "Unknown",
-        })
-        rel_path = f"notebooks/{os.path.basename(html_path)}"
-        cards.append(f"""
-        <div class="card">
+def _build_card(html_path: str, archive: bool = False) -> str:
+    stem = os.path.splitext(os.path.basename(html_path))[0]
+    meta = NOTEBOOK_META.get(stem, {
+        "title": stem.replace("_", " ").title(),
+        "icon": "📊",
+        "description": "Surveillance analysis notebook.",
+        "disease": "Unknown",
+        "vector": "Unknown",
+        "data_recency": "historical",
+    })
+    rel_path = f"notebooks/{os.path.basename(html_path)}"
+    archive_badge = '<span class="archive-badge">📂 Historical data (through 2024)</span>' if archive else ""
+    return f"""
+        <div class="card{'  card-archive' if archive else ''}">
           <div class="card-icon">{meta['icon']}</div>
           <div class="card-body">
             <h2><a href="{rel_path}">{meta['title']}</a></h2>
             <p class="meta">Disease: <strong>{meta['disease']}</strong> &nbsp;|&nbsp; Vector: <strong>{meta['vector']}</strong></p>
+            {archive_badge}
             <p>{meta['description']}</p>
             <a href="{rel_path}" class="btn">View Analysis →</a>
           </div>
-        </div>""")
-    return "\n".join(cards)
+        </div>"""
+
+
+def build_notebook_cards(html_files: list[str]) -> tuple[str, str]:
+    """Return (current_cards_html, archive_cards_html) as a tuple."""
+    if not html_files:
+        empty = "<p class='no-data'>No analyses available yet. Check back after the first workflow run.</p>"
+        return empty, ""
+
+    # Determine sort order: NOTEBOOK_META key order defines priority within each group
+    meta_order = list(NOTEBOOK_META.keys())
+
+    def sort_key(path: str) -> tuple[int, int]:
+        stem = os.path.splitext(os.path.basename(path))[0]
+        is_archive = stem in HISTORICAL_ARCHIVE_STEMS
+        try:
+            pos = meta_order.index(stem)
+        except ValueError:
+            pos = 999
+        return (1 if is_archive else 0, pos)
+
+    current_cards: list[str] = []
+    archive_cards: list[str] = []
+
+    for html_path in sorted(html_files, key=sort_key):
+        stem = os.path.splitext(os.path.basename(html_path))[0]
+        is_archive = stem in HISTORICAL_ARCHIVE_STEMS
+        card = _build_card(html_path, archive=is_archive)
+        if is_archive:
+            archive_cards.append(card)
+        else:
+            current_cards.append(card)
+
+    return "\n".join(current_cards), "\n".join(archive_cards)
 
 
 def build_index() -> None:
     os.makedirs(SITE_DIR, exist_ok=True)
     html_files = glob.glob(os.path.join(NOTEBOOKS_DIR, "*.html"))
-    cards_html = build_notebook_cards(html_files)
+    current_cards_html, archive_cards_html = build_notebook_cards(html_files)
     last_fetched = get_last_fetched()
     reliability_html = build_reliability_section(get_reliability_report())
+
+    archive_section = ""
+    if archive_cards_html:
+        archive_section = f"""
+  <section aria-label="Historical analysis archive">
+    <details class="archive-section">
+      <summary>
+        <h2 class="archive-heading">📂 Historical Analysis Archive (data through 2024)</h2>
+      </summary>
+      <p class="archive-note">
+        These notebooks use CDC finalized annual case data, which is published with a 12–18 month lag.
+        The most recent finalized year is <strong>2024</strong>.
+        They are preserved here for historical context and methodological reference.
+      </p>
+      <div class="grid">
+        {archive_cards_html}
+      </div>
+    </details>
+  </section>
+"""
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -223,6 +290,24 @@ def build_index() -> None:
       font-size: 0.9rem;
     }}
 
+    .data-note {{
+      background: #fffbeb;
+      border-left: 4px solid #d69e2e;
+      border-radius: 4px;
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 2rem;
+      font-size: 0.88rem;
+    }}
+
+    .section-heading {{
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #e2e8f0;
+    }}
+
     .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 1.5rem; }}
 
     .card {{
@@ -235,12 +320,23 @@ def build_index() -> None:
       transition: box-shadow 0.2s;
     }}
     .card:hover {{ box-shadow: 0 4px 16px rgba(0,0,0,0.13); }}
+    .card-archive {{ opacity: 0.88; border: 1px solid #e2e8f0; box-shadow: none; }}
     .card-icon {{ font-size: 2.5rem; flex-shrink: 0; line-height: 1; }}
     .card-body h2 {{ font-size: 1.1rem; margin-bottom: 0.3rem; }}
     .card-body h2 a {{ color: #2b6cb0; text-decoration: none; }}
     .card-body h2 a:hover {{ text-decoration: underline; }}
     .card-body .meta {{ font-size: 0.8rem; color: #718096; margin-bottom: 0.5rem; }}
     .card-body p {{ font-size: 0.9rem; color: #4a5568; margin-bottom: 0.75rem; }}
+    .archive-badge {{
+      display: inline-block;
+      background: #faf5e4;
+      border: 1px solid #d69e2e;
+      border-radius: 12px;
+      padding: 0.15rem 0.6rem;
+      font-size: 0.78rem;
+      color: #744210;
+      margin-bottom: 0.5rem;
+    }}
     .btn {{
       display: inline-block;
       background: #2b6cb0;
@@ -253,6 +349,37 @@ def build_index() -> None:
     .btn:hover {{ background: #2c5282; }}
 
     .no-data {{ color: #718096; font-style: italic; padding: 1rem 0; }}
+
+    .archive-section {{
+      margin-top: 2.5rem;
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }}
+    .archive-section summary {{
+      cursor: pointer;
+      list-style: none;
+      padding: 0.25rem 0;
+    }}
+    .archive-section summary::-webkit-details-marker {{ display: none; }}
+    .archive-section summary::before {{
+      content: '▶ ';
+      font-size: 0.8em;
+      color: #718096;
+    }}
+    .archive-section[open] summary::before {{ content: '▼ '; }}
+    .archive-heading {{
+      display: inline;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #4a5568;
+    }}
+    .archive-note {{
+      font-size: 0.85rem;
+      color: #718096;
+      margin: 0.75rem 0 1.25rem;
+    }}
 
     .disease-key {{
       margin-top: 2.5rem;
@@ -309,9 +436,21 @@ def build_index() -> None:
     originally developed for dengue surveillance in the Philippines (Ligot &amp; Toledo, 2021).
   </div>
 
-  <div class="grid">
-    {cards_html}
+  <div class="data-note">
+    <strong>ℹ️ About CDC data recency:</strong>
+    CDC's finalized annual case counts are published approximately 12–18 months after the end of each
+    calendar year, so the most recent <em>finalized</em> data is <strong>2024</strong>.
+    Current-season (2026) provisional weekly counts are available in the live monitoring reports below.
+    Reports that rely exclusively on finalized historical data are grouped in the
+    <em>Historical Archive</em> section at the bottom of this page.
   </div>
+
+  <h2 class="section-heading">🔴 Current Season Reports (2026)</h2>
+  <div class="grid">
+    {current_cards_html}
+  </div>
+
+  {archive_section}
 
   {reliability_html}
 
