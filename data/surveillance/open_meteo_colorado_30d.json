@@ -1,78 +1,8 @@
 {
-  "fetched": "2026-06-01",
+  "fetched": "2026-06-08",
   "source": "Open-Meteo API",
   "location": "Denver, CO",
   "data": [
-    {
-      "date": "2026-05-02",
-      "temp_max_c": null,
-      "temp_min_c": null,
-      "temp_mean_c": null,
-      "precip_mm": null,
-      "humidity_max_pct": null,
-      "humidity_min_pct": null,
-      "humidity_mean_pct": null
-    },
-    {
-      "date": "2026-05-03",
-      "temp_max_c": null,
-      "temp_min_c": null,
-      "temp_mean_c": null,
-      "precip_mm": null,
-      "humidity_max_pct": null,
-      "humidity_min_pct": null,
-      "humidity_mean_pct": null
-    },
-    {
-      "date": "2026-05-04",
-      "temp_max_c": null,
-      "temp_min_c": null,
-      "temp_mean_c": null,
-      "precip_mm": null,
-      "humidity_max_pct": null,
-      "humidity_min_pct": null,
-      "humidity_mean_pct": null
-    },
-    {
-      "date": "2026-05-05",
-      "temp_max_c": null,
-      "temp_min_c": null,
-      "temp_mean_c": null,
-      "precip_mm": null,
-      "humidity_max_pct": null,
-      "humidity_min_pct": null,
-      "humidity_mean_pct": null
-    },
-    {
-      "date": "2026-05-06",
-      "temp_max_c": null,
-      "temp_min_c": null,
-      "temp_mean_c": null,
-      "precip_mm": null,
-      "humidity_max_pct": null,
-      "humidity_min_pct": null,
-      "humidity_mean_pct": null
-    },
-    {
-      "date": "2026-05-07",
-      "temp_max_c": null,
-      "temp_min_c": null,
-      "temp_mean_c": null,
-      "precip_mm": null,
-      "humidity_max_pct": null,
-      "humidity_min_pct": null,
-      "humidity_mean_pct": null
-    },
-    {
-      "date": "2026-05-08",
-      "temp_max_c": null,
-      "temp_min_c": null,
-      "temp_mean_c": null,
-      "precip_mm": null,
-      "humidity_max_pct": null,
-      "humidity_min_pct": null,
-      "humidity_mean_pct": null
-    },
     {
       "date": "2026-05-09",
       "temp_max_c": 25.2,
@@ -305,13 +235,83 @@
     },
     {
       "date": "2026-06-01",
-      "temp_max_c": 27.1,
-      "temp_min_c": 14.6,
-      "temp_mean_c": 20.85,
+      "temp_max_c": 26.4,
+      "temp_min_c": 13.9,
+      "temp_mean_c": 20.15,
       "precip_mm": 0.0,
-      "humidity_max_pct": 50,
-      "humidity_min_pct": 25,
-      "humidity_mean_pct": 37.5
+      "humidity_max_pct": 66,
+      "humidity_min_pct": 29,
+      "humidity_mean_pct": 47.5
+    },
+    {
+      "date": "2026-06-02",
+      "temp_max_c": 25.3,
+      "temp_min_c": 12.1,
+      "temp_mean_c": 18.7,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 86,
+      "humidity_min_pct": 38,
+      "humidity_mean_pct": 62.0
+    },
+    {
+      "date": "2026-06-03",
+      "temp_max_c": 27.8,
+      "temp_min_c": 11.7,
+      "temp_mean_c": 19.75,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 72,
+      "humidity_min_pct": 13,
+      "humidity_mean_pct": 42.5
+    },
+    {
+      "date": "2026-06-04",
+      "temp_max_c": 32.6,
+      "temp_min_c": 9.7,
+      "temp_mean_c": 21.15,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 72,
+      "humidity_min_pct": 11,
+      "humidity_mean_pct": 41.5
+    },
+    {
+      "date": "2026-06-05",
+      "temp_max_c": 32.1,
+      "temp_min_c": 13.1,
+      "temp_mean_c": 22.6,
+      "precip_mm": 0.4,
+      "humidity_max_pct": 57,
+      "humidity_min_pct": 16,
+      "humidity_mean_pct": 36.5
+    },
+    {
+      "date": "2026-06-06",
+      "temp_max_c": 34.9,
+      "temp_min_c": 14.1,
+      "temp_mean_c": 24.5,
+      "precip_mm": 1.1,
+      "humidity_max_pct": 67,
+      "humidity_min_pct": 11,
+      "humidity_mean_pct": 39.0
+    },
+    {
+      "date": "2026-06-07",
+      "temp_max_c": 33.7,
+      "temp_min_c": 17.2,
+      "temp_mean_c": 25.45,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 40,
+      "humidity_min_pct": 9,
+      "humidity_mean_pct": 24.5
+    },
+    {
+      "date": "2026-06-08",
+      "temp_max_c": 30.7,
+      "temp_min_c": 16.4,
+      "temp_mean_c": 23.55,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 74,
+      "humidity_min_pct": 10,
+      "humidity_mean_pct": 42.0
     }
   ]
 }
