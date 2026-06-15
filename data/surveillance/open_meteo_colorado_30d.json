@@ -1,78 +1,8 @@
 {
-  "fetched": "2026-06-08",
+  "fetched": "2026-06-15",
   "source": "Open-Meteo API",
   "location": "Denver, CO",
   "data": [
-    {
-      "date": "2026-05-09",
-      "temp_max_c": 25.2,
-      "temp_min_c": 10.4,
-      "temp_mean_c": 17.8,
-      "precip_mm": null,
-      "humidity_max_pct": 76,
-      "humidity_min_pct": 7,
-      "humidity_mean_pct": 41.5
-    },
-    {
-      "date": "2026-05-10",
-      "temp_max_c": 21.2,
-      "temp_min_c": 8.8,
-      "temp_mean_c": 15.0,
-      "precip_mm": 0.4,
-      "humidity_max_pct": 80,
-      "humidity_min_pct": 23,
-      "humidity_mean_pct": 51.5
-    },
-    {
-      "date": "2026-05-11",
-      "temp_max_c": 30.4,
-      "temp_min_c": 12.5,
-      "temp_mean_c": 21.45,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 45,
-      "humidity_min_pct": 6,
-      "humidity_mean_pct": 25.5
-    },
-    {
-      "date": "2026-05-12",
-      "temp_max_c": 27.1,
-      "temp_min_c": 14.9,
-      "temp_mean_c": 21.0,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 36,
-      "humidity_min_pct": 16,
-      "humidity_mean_pct": 26.0
-    },
-    {
-      "date": "2026-05-13",
-      "temp_max_c": 32.0,
-      "temp_min_c": 15.2,
-      "temp_mean_c": 23.6,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 42,
-      "humidity_min_pct": 9,
-      "humidity_mean_pct": 25.5
-    },
-    {
-      "date": "2026-05-14",
-      "temp_max_c": 30.8,
-      "temp_min_c": 18.2,
-      "temp_mean_c": 24.5,
-      "precip_mm": 0.3,
-      "humidity_max_pct": 31,
-      "humidity_min_pct": 8,
-      "humidity_mean_pct": 19.5
-    },
-    {
-      "date": "2026-05-15",
-      "temp_max_c": 29.4,
-      "temp_min_c": 17.3,
-      "temp_mean_c": 23.35,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 30,
-      "humidity_min_pct": 7,
-      "humidity_mean_pct": 18.5
-    },
     {
       "date": "2026-05-16",
       "temp_max_c": 26.2,
@@ -305,13 +235,83 @@
     },
     {
       "date": "2026-06-08",
-      "temp_max_c": 30.7,
-      "temp_min_c": 16.4,
-      "temp_mean_c": 23.55,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 74,
+      "temp_max_c": 27.5,
+      "temp_min_c": 17.3,
+      "temp_mean_c": 22.4,
+      "precip_mm": 3.6,
+      "humidity_max_pct": 71,
       "humidity_min_pct": 10,
-      "humidity_mean_pct": 42.0
+      "humidity_mean_pct": 40.5
+    },
+    {
+      "date": "2026-06-09",
+      "temp_max_c": 29.2,
+      "temp_min_c": 12.1,
+      "temp_mean_c": 20.65,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 100,
+      "humidity_min_pct": 25,
+      "humidity_mean_pct": 62.5
+    },
+    {
+      "date": "2026-06-10",
+      "temp_max_c": 31.8,
+      "temp_min_c": 11.9,
+      "temp_mean_c": 21.85,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 57,
+      "humidity_min_pct": 7,
+      "humidity_mean_pct": 32.0
+    },
+    {
+      "date": "2026-06-11",
+      "temp_max_c": 27.3,
+      "temp_min_c": 11.2,
+      "temp_mean_c": 19.25,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 56,
+      "humidity_min_pct": 8,
+      "humidity_mean_pct": 32.0
+    },
+    {
+      "date": "2026-06-12",
+      "temp_max_c": 34.5,
+      "temp_min_c": 11.2,
+      "temp_mean_c": 22.85,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 36,
+      "humidity_min_pct": 8,
+      "humidity_mean_pct": 22.0
+    },
+    {
+      "date": "2026-06-13",
+      "temp_max_c": 26.9,
+      "temp_min_c": 12.5,
+      "temp_mean_c": 19.7,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 50,
+      "humidity_min_pct": 15,
+      "humidity_mean_pct": 32.5
+    },
+    {
+      "date": "2026-06-14",
+      "temp_max_c": 21.7,
+      "temp_min_c": 11.8,
+      "temp_mean_c": 16.75,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 66,
+      "humidity_min_pct": 37,
+      "humidity_mean_pct": 51.5
+    },
+    {
+      "date": "2026-06-15",
+      "temp_max_c": 27.2,
+      "temp_min_c": 9.9,
+      "temp_mean_c": 18.55,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 64,
+      "humidity_min_pct": 16,
+      "humidity_mean_pct": 40.0
     }
   ]
 }
