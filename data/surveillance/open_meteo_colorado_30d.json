@@ -1,78 +1,8 @@
 {
-  "fetched": "2026-06-22",
+  "fetched": "2026-06-29",
   "source": "Open-Meteo API",
   "location": "Denver, CO",
   "data": [
-    {
-      "date": "2026-05-23",
-      "temp_max_c": 24.9,
-      "temp_min_c": 5.1,
-      "temp_mean_c": 15.0,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 89,
-      "humidity_min_pct": 14,
-      "humidity_mean_pct": 51.5
-    },
-    {
-      "date": "2026-05-24",
-      "temp_max_c": 28.5,
-      "temp_min_c": 9.6,
-      "temp_mean_c": 19.05,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 61,
-      "humidity_min_pct": 15,
-      "humidity_mean_pct": 38.0
-    },
-    {
-      "date": "2026-05-25",
-      "temp_max_c": 29.0,
-      "temp_min_c": 11.8,
-      "temp_mean_c": 20.4,
-      "precip_mm": 0.4,
-      "humidity_max_pct": 62,
-      "humidity_min_pct": 15,
-      "humidity_mean_pct": 38.5
-    },
-    {
-      "date": "2026-05-26",
-      "temp_max_c": 27.0,
-      "temp_min_c": 13.1,
-      "temp_mean_c": 20.05,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 63,
-      "humidity_min_pct": 24,
-      "humidity_mean_pct": 43.5
-    },
-    {
-      "date": "2026-05-27",
-      "temp_max_c": 22.3,
-      "temp_min_c": 14.1,
-      "temp_mean_c": 18.2,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 70,
-      "humidity_min_pct": 37,
-      "humidity_mean_pct": 53.5
-    },
-    {
-      "date": "2026-05-28",
-      "temp_max_c": 26.7,
-      "temp_min_c": 12.6,
-      "temp_mean_c": 19.65,
-      "precip_mm": 1.1,
-      "humidity_max_pct": 87,
-      "humidity_min_pct": 36,
-      "humidity_mean_pct": 61.5
-    },
-    {
-      "date": "2026-05-29",
-      "temp_max_c": 30.9,
-      "temp_min_c": 14.9,
-      "temp_mean_c": 22.9,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 90,
-      "humidity_min_pct": 15,
-      "humidity_mean_pct": 52.5
-    },
     {
       "date": "2026-05-30",
       "temp_max_c": 24.6,
@@ -305,13 +235,83 @@
     },
     {
       "date": "2026-06-22",
-      "temp_max_c": 33.0,
-      "temp_min_c": 13.3,
-      "temp_mean_c": 23.15,
+      "temp_max_c": 32.4,
+      "temp_min_c": 13.2,
+      "temp_mean_c": 22.8,
       "precip_mm": 0.0,
       "humidity_max_pct": 86,
+      "humidity_min_pct": 17,
+      "humidity_mean_pct": 51.5
+    },
+    {
+      "date": "2026-06-23",
+      "temp_max_c": 30.5,
+      "temp_min_c": 14.0,
+      "temp_mean_c": 22.25,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 82,
+      "humidity_min_pct": 26,
+      "humidity_mean_pct": 54.0
+    },
+    {
+      "date": "2026-06-24",
+      "temp_max_c": 30.6,
+      "temp_min_c": 17.7,
+      "temp_mean_c": 24.15,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 85,
+      "humidity_min_pct": 44,
+      "humidity_mean_pct": 64.5
+    },
+    {
+      "date": "2026-06-25",
+      "temp_max_c": 25.8,
+      "temp_min_c": 13.9,
+      "temp_mean_c": 19.85,
+      "precip_mm": 46.5,
+      "humidity_max_pct": 96,
+      "humidity_min_pct": 41,
+      "humidity_mean_pct": 68.5
+    },
+    {
+      "date": "2026-06-26",
+      "temp_max_c": 31.4,
+      "temp_min_c": 13.6,
+      "temp_mean_c": 22.5,
+      "precip_mm": 1.8,
+      "humidity_max_pct": 88,
+      "humidity_min_pct": 17,
+      "humidity_mean_pct": 52.5
+    },
+    {
+      "date": "2026-06-27",
+      "temp_max_c": 35.9,
+      "temp_min_c": 17.9,
+      "temp_mean_c": 26.9,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 55,
+      "humidity_min_pct": 8,
+      "humidity_mean_pct": 31.5
+    },
+    {
+      "date": "2026-06-28",
+      "temp_max_c": 32.9,
+      "temp_min_c": 15.6,
+      "temp_mean_c": 24.25,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 49,
       "humidity_min_pct": 12,
-      "humidity_mean_pct": 49.0
+      "humidity_mean_pct": 30.5
+    },
+    {
+      "date": "2026-06-29",
+      "temp_max_c": 31.2,
+      "temp_min_c": 14.8,
+      "temp_mean_c": 23.0,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 47,
+      "humidity_min_pct": 5,
+      "humidity_mean_pct": 26.0
     }
   ]
 }
