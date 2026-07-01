@@ -1,5 +1,5 @@
 # Colorado Vector-Borne Disease Risk Briefing
-## June 2026
+## July 2026
 
 ### Current Status
 - **GDD Accumulation**: 382°C·days (baseline normalized)
@@ -20,4 +20,4 @@
 - GDD calculations: Colorado base 10°C
 - Historical baseline: 1990-2010 climate normal period
 
-*Generated: 2026-06-30 07:11 UTC*
+*Generated: 2026-07-01 07:23 UTC*
