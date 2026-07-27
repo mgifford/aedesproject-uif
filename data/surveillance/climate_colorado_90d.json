@@ -1,43 +1,8 @@
 {
-  "fetched": "2026-07-20",
+  "fetched": "2026-07-27",
   "source": "NASA POWER",
   "location": "Denver, CO",
   "data": [
-    {
-      "date": "20260421",
-      "temp_c": 16.94,
-      "precip_mm": 0.0
-    },
-    {
-      "date": "20260422",
-      "temp_c": 16.84,
-      "precip_mm": 0.0
-    },
-    {
-      "date": "20260423",
-      "temp_c": 9.63,
-      "precip_mm": 0.0
-    },
-    {
-      "date": "20260424",
-      "temp_c": 10.15,
-      "precip_mm": 0.0
-    },
-    {
-      "date": "20260425",
-      "temp_c": 6.38,
-      "precip_mm": 0.02
-    },
-    {
-      "date": "20260426",
-      "temp_c": 7.7,
-      "precip_mm": 2.26
-    },
-    {
-      "date": "20260427",
-      "temp_c": 7.02,
-      "precip_mm": 3.36
-    },
     {
       "date": "20260428",
       "temp_c": 7.04,
@@ -210,153 +175,153 @@
     },
     {
       "date": "20260601",
-      "temp_c": 17.9,
-      "precip_mm": 1.48
+      "temp_c": 19.79,
+      "precip_mm": 2.57
     },
     {
       "date": "20260602",
-      "temp_c": 17.31,
-      "precip_mm": 1.32
+      "temp_c": 19.62,
+      "precip_mm": 1.4
     },
     {
       "date": "20260603",
-      "temp_c": 17.25,
-      "precip_mm": 1.28
+      "temp_c": 18.15,
+      "precip_mm": 1.15
     },
     {
       "date": "20260604",
-      "temp_c": 19.48,
-      "precip_mm": 0.18
+      "temp_c": 21.27,
+      "precip_mm": 0.01
     },
     {
       "date": "20260605",
-      "temp_c": 20.38,
-      "precip_mm": 0.37
+      "temp_c": 21.33,
+      "precip_mm": 0.54
     },
     {
       "date": "20260606",
-      "temp_c": 21.19,
-      "precip_mm": 1.31
+      "temp_c": 22.86,
+      "precip_mm": 0.26
     },
     {
       "date": "20260607",
-      "temp_c": 22.44,
-      "precip_mm": 0.23
+      "temp_c": 23.53,
+      "precip_mm": 0.0
     },
     {
       "date": "20260608",
-      "temp_c": 19.72,
-      "precip_mm": 0.65
+      "temp_c": 20.63,
+      "precip_mm": 2.42
     },
     {
       "date": "20260609",
-      "temp_c": 20.66,
-      "precip_mm": 0.13
+      "temp_c": 21.19,
+      "precip_mm": 0.11
     },
     {
       "date": "20260610",
-      "temp_c": 20.81,
-      "precip_mm": 0.04
+      "temp_c": 20.45,
+      "precip_mm": 0.33
     },
     {
       "date": "20260611",
-      "temp_c": 16.92,
+      "temp_c": 17.04,
       "precip_mm": 0.0
     },
     {
       "date": "20260612",
-      "temp_c": 20.52,
+      "temp_c": 21.11,
       "precip_mm": 0.0
     },
     {
       "date": "20260613",
-      "temp_c": 18.53,
-      "precip_mm": 0.15
+      "temp_c": 18.54,
+      "precip_mm": 0.28
     },
     {
       "date": "20260614",
-      "temp_c": 15.13,
-      "precip_mm": 0.97
+      "temp_c": 15.78,
+      "precip_mm": 0.6
     },
     {
       "date": "20260615",
-      "temp_c": 17.07,
-      "precip_mm": 0.01
+      "temp_c": 18.32,
+      "precip_mm": 0.2
     },
     {
       "date": "20260616",
-      "temp_c": 21.06,
+      "temp_c": 21.58,
       "precip_mm": 0.0
     },
     {
       "date": "20260617",
-      "temp_c": 23.59,
-      "precip_mm": 0.0
+      "temp_c": 23.91,
+      "precip_mm": 0.22
     },
     {
       "date": "20260618",
-      "temp_c": 20.11,
-      "precip_mm": 0.09
+      "temp_c": 20.74,
+      "precip_mm": 1.1
     },
     {
       "date": "20260619",
-      "temp_c": 19.33,
+      "temp_c": 19.8,
       "precip_mm": 0.0
     },
     {
       "date": "20260620",
-      "temp_c": 21.29,
-      "precip_mm": 0.77
+      "temp_c": 23.03,
+      "precip_mm": 0.38
     },
     {
       "date": "20260621",
-      "temp_c": 20.26,
-      "precip_mm": 1.4
+      "temp_c": 21.23,
+      "precip_mm": 0.96
     },
     {
       "date": "20260622",
-      "temp_c": 20.23,
-      "precip_mm": 0.99
+      "temp_c": 21.83,
+      "precip_mm": 0.39
     },
     {
       "date": "20260623",
-      "temp_c": 20.01,
-      "precip_mm": 2.43
+      "temp_c": 21.23,
+      "precip_mm": 0.03
     },
     {
       "date": "20260624",
-      "temp_c": 20.74,
-      "precip_mm": 2.61
+      "temp_c": 21.95,
+      "precip_mm": 8.09
     },
     {
       "date": "20260625",
-      "temp_c": 17.89,
-      "precip_mm": 2.69
+      "temp_c": 18.51,
+      "precip_mm": 10.45
     },
     {
       "date": "20260626",
-      "temp_c": 20.9,
-      "precip_mm": 0.63
+      "temp_c": 22.8,
+      "precip_mm": 0.49
     },
     {
       "date": "20260627",
-      "temp_c": 22.93,
-      "precip_mm": 0.0
+      "temp_c": 23.87,
+      "precip_mm": 0.02
     },
     {
       "date": "20260628",
-      "temp_c": 22.57,
-      "precip_mm": 0.0
+      "temp_c": 22.06,
+      "precip_mm": 0.01
     },
     {
       "date": "20260629",
-      "temp_c": 21.17,
-      "precip_mm": 0.0
+      "temp_c": 20.7,
+      "precip_mm": 0.29
     },
     {
       "date": "20260630",
-      "temp_c": 21.17,
-      "precip_mm": 0.37
+      "temp_c": 21.91,
+      "precip_mm": 0.15
     },
     {
       "date": "20260701",
@@ -442,6 +407,41 @@
       "date": "20260717",
       "temp_c": 23.52,
       "precip_mm": 0.05
+    },
+    {
+      "date": "20260718",
+      "temp_c": 24.1,
+      "precip_mm": 0.01
+    },
+    {
+      "date": "20260719",
+      "temp_c": 25.31,
+      "precip_mm": 0.0
+    },
+    {
+      "date": "20260720",
+      "temp_c": 26.91,
+      "precip_mm": 0.0
+    },
+    {
+      "date": "20260721",
+      "temp_c": 25.0,
+      "precip_mm": 0.16
+    },
+    {
+      "date": "20260722",
+      "temp_c": 23.18,
+      "precip_mm": 4.61
+    },
+    {
+      "date": "20260723",
+      "temp_c": 22.11,
+      "precip_mm": 2.99
+    },
+    {
+      "date": "20260724",
+      "temp_c": 24.21,
+      "precip_mm": 1.47
     }
   ]
 }
