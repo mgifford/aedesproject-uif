@@ -1,78 +1,8 @@
 {
-  "fetched": "2026-08-17",
+  "fetched": "2026-08-24",
   "source": "Open-Meteo API",
   "location": "Denver, CO",
   "data": [
-    {
-      "date": "2026-07-18",
-      "temp_max_c": 35.8,
-      "temp_min_c": 18.7,
-      "temp_mean_c": 27.25,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 56,
-      "humidity_min_pct": 16,
-      "humidity_mean_pct": 36.0
-    },
-    {
-      "date": "2026-07-19",
-      "temp_max_c": 38.3,
-      "temp_min_c": 18.5,
-      "temp_mean_c": 28.4,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 54,
-      "humidity_min_pct": 14,
-      "humidity_mean_pct": 34.0
-    },
-    {
-      "date": "2026-07-20",
-      "temp_max_c": 39.4,
-      "temp_min_c": 21.0,
-      "temp_mean_c": 30.2,
-      "precip_mm": 0.4,
-      "humidity_max_pct": 45,
-      "humidity_min_pct": 15,
-      "humidity_mean_pct": 30.0
-    },
-    {
-      "date": "2026-07-21",
-      "temp_max_c": 36.1,
-      "temp_min_c": 21.2,
-      "temp_mean_c": 28.65,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 56,
-      "humidity_min_pct": 14,
-      "humidity_mean_pct": 35.0
-    },
-    {
-      "date": "2026-07-22",
-      "temp_max_c": 34.2,
-      "temp_min_c": 19.1,
-      "temp_mean_c": 26.65,
-      "precip_mm": 2.2,
-      "humidity_max_pct": 72,
-      "humidity_min_pct": 23,
-      "humidity_mean_pct": 47.5
-    },
-    {
-      "date": "2026-07-23",
-      "temp_max_c": 31.8,
-      "temp_min_c": 19.3,
-      "temp_mean_c": 25.55,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 86,
-      "humidity_min_pct": 32,
-      "humidity_mean_pct": 59.0
-    },
-    {
-      "date": "2026-07-24",
-      "temp_max_c": 36.9,
-      "temp_min_c": 18.1,
-      "temp_mean_c": 27.5,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 76,
-      "humidity_min_pct": 22,
-      "humidity_mean_pct": 49.0
-    },
     {
       "date": "2026-07-25",
       "temp_max_c": 39.2,
@@ -305,13 +235,83 @@
     },
     {
       "date": "2026-08-17",
-      "temp_max_c": 34.3,
-      "temp_min_c": 14.5,
-      "temp_mean_c": 24.4,
+      "temp_max_c": 34.7,
+      "temp_min_c": 15.2,
+      "temp_mean_c": 24.95,
       "precip_mm": 0.0,
-      "humidity_max_pct": 92,
-      "humidity_min_pct": 11,
-      "humidity_mean_pct": 51.5
+      "humidity_max_pct": 86,
+      "humidity_min_pct": 13,
+      "humidity_mean_pct": 49.5
+    },
+    {
+      "date": "2026-08-18",
+      "temp_max_c": 31.6,
+      "temp_min_c": 16.6,
+      "temp_mean_c": 24.1,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 63,
+      "humidity_min_pct": 20,
+      "humidity_mean_pct": 41.5
+    },
+    {
+      "date": "2026-08-19",
+      "temp_max_c": 33.5,
+      "temp_min_c": 17.5,
+      "temp_mean_c": 25.5,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 87,
+      "humidity_min_pct": 22,
+      "humidity_mean_pct": 54.5
+    },
+    {
+      "date": "2026-08-20",
+      "temp_max_c": 34.8,
+      "temp_min_c": 16.0,
+      "temp_mean_c": 25.4,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 83,
+      "humidity_min_pct": 18,
+      "humidity_mean_pct": 50.5
+    },
+    {
+      "date": "2026-08-21",
+      "temp_max_c": 38.6,
+      "temp_min_c": 18.3,
+      "temp_mean_c": 28.45,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 48,
+      "humidity_min_pct": 9,
+      "humidity_mean_pct": 28.5
+    },
+    {
+      "date": "2026-08-22",
+      "temp_max_c": 32.9,
+      "temp_min_c": 16.6,
+      "temp_mean_c": 24.75,
+      "precip_mm": 0.7,
+      "humidity_max_pct": 75,
+      "humidity_min_pct": 30,
+      "humidity_mean_pct": 52.5
+    },
+    {
+      "date": "2026-08-23",
+      "temp_max_c": 35.5,
+      "temp_min_c": 19.9,
+      "temp_mean_c": 27.7,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 61,
+      "humidity_min_pct": 17,
+      "humidity_mean_pct": 39.0
+    },
+    {
+      "date": "2026-08-24",
+      "temp_max_c": 34.1,
+      "temp_min_c": 16.3,
+      "temp_mean_c": 25.2,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 62,
+      "humidity_min_pct": 16,
+      "humidity_mean_pct": 39.0
     }
   ]
 }
