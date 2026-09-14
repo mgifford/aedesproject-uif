@@ -1,43 +1,8 @@
 {
-  "fetched": "2026-09-07",
+  "fetched": "2026-09-14",
   "source": "NASA POWER",
   "location": "Denver, CO",
   "data": [
-    {
-      "date": "20260609",
-      "temp_c": 21.19,
-      "precip_mm": 0.11
-    },
-    {
-      "date": "20260610",
-      "temp_c": 20.45,
-      "precip_mm": 0.33
-    },
-    {
-      "date": "20260611",
-      "temp_c": 17.04,
-      "precip_mm": 0.0
-    },
-    {
-      "date": "20260612",
-      "temp_c": 21.11,
-      "precip_mm": 0.0
-    },
-    {
-      "date": "20260613",
-      "temp_c": 18.54,
-      "precip_mm": 0.28
-    },
-    {
-      "date": "20260614",
-      "temp_c": 15.78,
-      "precip_mm": 0.6
-    },
-    {
-      "date": "20260615",
-      "temp_c": 18.32,
-      "precip_mm": 0.2
-    },
     {
       "date": "20260616",
       "temp_c": 21.58,
@@ -417,6 +382,66 @@
       "date": "20260830",
       "temp_c": 20.18,
       "precip_mm": 0.01
+    },
+    {
+      "date": "20260831",
+      "temp_c": 20.34,
+      "precip_mm": 0.54
+    },
+    {
+      "date": "20260901",
+      "temp_c": 20.55,
+      "precip_mm": 0.13
+    },
+    {
+      "date": "20260902",
+      "temp_c": 21.18,
+      "precip_mm": 0.04
+    },
+    {
+      "date": "20260903",
+      "temp_c": 21.87,
+      "precip_mm": 0.0
+    },
+    {
+      "date": "20260904",
+      "temp_c": 22.67,
+      "precip_mm": 0.66
+    },
+    {
+      "date": "20260905",
+      "temp_c": 22.8,
+      "precip_mm": 0.46
+    },
+    {
+      "date": "20260906",
+      "temp_c": 22.71,
+      "precip_mm": 0.29
+    },
+    {
+      "date": "20260907",
+      "temp_c": 22.17,
+      "precip_mm": 2.13
+    },
+    {
+      "date": "20260908",
+      "temp_c": 20.14,
+      "precip_mm": 0.77
+    },
+    {
+      "date": "20260909",
+      "temp_c": 19.2,
+      "precip_mm": 0.0
+    },
+    {
+      "date": "20260910",
+      "temp_c": 19.86,
+      "precip_mm": 0.0
+    },
+    {
+      "date": "20260911",
+      "temp_c": 20.67,
+      "precip_mm": 0.15
     }
   ]
 }
