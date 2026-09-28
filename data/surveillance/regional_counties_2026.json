@@ -1,6 +1,6 @@
 {
   "season": "2026",
-  "fetched": "2026-09-21",
+  "fetched": "2026-09-28",
   "source": "CDC NNDSS / Colorado CDPHE provisional",
   "note": "County-level data is provisional. Aggregated from CDPHE weekly reports.",
   "regions": {
@@ -132,7 +132,7 @@
       "population": 328981,
       "lat": 40.5516,
       "lon": -104.3855,
-      "tick_observations_ytd": 4,
+      "tick_observations_ytd": 3,
       "mosquito_observations_ytd": 0
     },
     {
@@ -158,7 +158,7 @@
       "population": 730395,
       "lat": 38.8339,
       "lon": -104.8253,
-      "tick_observations_ytd": 0,
+      "tick_observations_ytd": 1,
       "mosquito_observations_ytd": 0
     },
     {
@@ -171,7 +171,7 @@
       "population": 168424,
       "lat": 38.2544,
       "lon": -104.6091,
-      "tick_observations_ytd": 2,
+      "tick_observations_ytd": 1,
       "mosquito_observations_ytd": 0
     },
     {
@@ -184,7 +184,7 @@
       "population": 155998,
       "lat": 39.0639,
       "lon": -108.5506,
-      "tick_observations_ytd": 1,
+      "tick_observations_ytd": 3,
       "mosquito_observations_ytd": 0
     },
     {
@@ -210,7 +210,7 @@
       "population": 328981,
       "lat": 40.5516,
       "lon": -104.3855,
-      "tick_observations_ytd": 4,
+      "tick_observations_ytd": 3,
       "mosquito_observations_ytd": 0
     }
   ],
