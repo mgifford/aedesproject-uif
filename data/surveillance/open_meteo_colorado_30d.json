@@ -1,78 +1,8 @@
 {
-  "fetched": "2026-10-19",
+  "fetched": "2026-10-26",
   "source": "Open-Meteo API",
   "location": "Denver, CO",
   "data": [
-    {
-      "date": "2026-09-19",
-      "temp_max_c": 27.0,
-      "temp_min_c": 12.1,
-      "temp_mean_c": 19.55,
-      "precip_mm": 1.8,
-      "humidity_max_pct": 92,
-      "humidity_min_pct": 22,
-      "humidity_mean_pct": 57.0
-    },
-    {
-      "date": "2026-09-20",
-      "temp_max_c": 24.5,
-      "temp_min_c": 9.8,
-      "temp_mean_c": 17.15,
-      "precip_mm": 1.8,
-      "humidity_max_pct": 95,
-      "humidity_min_pct": 33,
-      "humidity_mean_pct": 64.0
-    },
-    {
-      "date": "2026-09-21",
-      "temp_max_c": 25.2,
-      "temp_min_c": 12.4,
-      "temp_mean_c": 18.8,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 94,
-      "humidity_min_pct": 31,
-      "humidity_mean_pct": 62.5
-    },
-    {
-      "date": "2026-09-22",
-      "temp_max_c": 29.7,
-      "temp_min_c": 10.7,
-      "temp_mean_c": 20.2,
-      "precip_mm": 2.5,
-      "humidity_max_pct": 80,
-      "humidity_min_pct": 17,
-      "humidity_mean_pct": 48.5
-    },
-    {
-      "date": "2026-09-23",
-      "temp_max_c": 24.1,
-      "temp_min_c": 14.7,
-      "temp_mean_c": 19.4,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 81,
-      "humidity_min_pct": 39,
-      "humidity_mean_pct": 60.0
-    },
-    {
-      "date": "2026-09-24",
-      "temp_max_c": 22.6,
-      "temp_min_c": 14.8,
-      "temp_mean_c": 18.7,
-      "precip_mm": 0.0,
-      "humidity_max_pct": 89,
-      "humidity_min_pct": 45,
-      "humidity_mean_pct": 67.0
-    },
-    {
-      "date": "2026-09-25",
-      "temp_max_c": 24.3,
-      "temp_min_c": 11.9,
-      "temp_mean_c": 18.1,
-      "precip_mm": 1.8,
-      "humidity_max_pct": 93,
-      "humidity_min_pct": 48,
-      "humidity_mean_pct": 70.5
-    },
     {
       "date": "2026-09-26",
       "temp_max_c": 29.2,
@@ -305,13 +235,83 @@
     },
     {
       "date": "2026-10-19",
-      "temp_max_c": 22.2,
-      "temp_min_c": 5.3,
-      "temp_mean_c": 13.75,
+      "temp_max_c": 19.8,
+      "temp_min_c": 5.8,
+      "temp_mean_c": 12.8,
       "precip_mm": 0.0,
-      "humidity_max_pct": 65,
-      "humidity_min_pct": 19,
-      "humidity_mean_pct": 42.0
+      "humidity_max_pct": 69,
+      "humidity_min_pct": 29,
+      "humidity_mean_pct": 49.0
+    },
+    {
+      "date": "2026-10-20",
+      "temp_max_c": 22.7,
+      "temp_min_c": 6.4,
+      "temp_mean_c": 14.55,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 75,
+      "humidity_min_pct": 26,
+      "humidity_mean_pct": 50.5
+    },
+    {
+      "date": "2026-10-21",
+      "temp_max_c": 25.0,
+      "temp_min_c": 7.0,
+      "temp_mean_c": 16.0,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 73,
+      "humidity_min_pct": 21,
+      "humidity_mean_pct": 47.0
+    },
+    {
+      "date": "2026-10-22",
+      "temp_max_c": 23.5,
+      "temp_min_c": 13.4,
+      "temp_mean_c": 18.45,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 58,
+      "humidity_min_pct": 35,
+      "humidity_mean_pct": 46.5
+    },
+    {
+      "date": "2026-10-23",
+      "temp_max_c": 26.1,
+      "temp_min_c": 14.5,
+      "temp_mean_c": 20.3,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 50,
+      "humidity_min_pct": 18,
+      "humidity_mean_pct": 34.0
+    },
+    {
+      "date": "2026-10-24",
+      "temp_max_c": 14.5,
+      "temp_min_c": 5.9,
+      "temp_mean_c": 10.2,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 76,
+      "humidity_min_pct": 32,
+      "humidity_mean_pct": 54.0
+    },
+    {
+      "date": "2026-10-25",
+      "temp_max_c": 13.4,
+      "temp_min_c": 4.7,
+      "temp_mean_c": 9.05,
+      "precip_mm": 0.0,
+      "humidity_max_pct": 88,
+      "humidity_min_pct": 48,
+      "humidity_mean_pct": 68.0
+    },
+    {
+      "date": "2026-10-26",
+      "temp_max_c": 11.4,
+      "temp_min_c": 4.5,
+      "temp_mean_c": 7.95,
+      "precip_mm": 10.8,
+      "humidity_max_pct": 97,
+      "humidity_min_pct": 77,
+      "humidity_mean_pct": 87.0
     }
   ]
 }
