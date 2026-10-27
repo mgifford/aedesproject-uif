@@ -1,6 +1,6 @@
 {
   "model_type": "RandomForest",
-  "created_timestamp": "2026-10-26T11:37:11.582877",
+  "created_timestamp": "2026-10-27T11:08:36.310996",
   "performance": {
     "mae": 0.0,
     "rmse": 0.0,
