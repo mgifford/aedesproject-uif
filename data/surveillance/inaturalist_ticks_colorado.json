@@ -1,8 +1,125 @@
 {
-  "fetched": "2026-10-26",
+  "fetched": "2026-11-02",
   "source": "iNaturalist API",
   "count": 200,
   "data": [
+    {
+      "id": 412324679,
+      "observed_on": "2026-11-01",
+      "taxon": "Eupeodes fumipennis",
+      "common_name": "Western Aphideater",
+      "lat": "39.5376508527",
+      "lon": "-105.0091348706",
+      "county": "Marcy Gulch Trail, Highlands Ranch, CO, US"
+    },
+    {
+      "id": 411835439,
+      "observed_on": "2026-10-30",
+      "taxon": "Allograpta exotica",
+      "common_name": "Exotic Streaktail",
+      "lat": "40.0527915833",
+      "lon": "-105.03365325",
+      "county": "Erie, CO, USA"
+    },
+    {
+      "id": 411826748,
+      "observed_on": "2026-10-30",
+      "taxon": "Syrphus opinator",
+      "common_name": "Black-margined Flower Fly",
+      "lat": "39.0551916667",
+      "lon": "-108.4633916667",
+      "county": "Clifton, CO, USA"
+    },
+    {
+      "id": 411622088,
+      "observed_on": "2026-10-29",
+      "taxon": "Eupeodes volucris",
+      "common_name": "Large-tailed Aphideater",
+      "lat": "39.7538712619",
+      "lon": "-104.8011228295",
+      "county": "E Smith Rd, Aurora, CO, US"
+    },
+    {
+      "id": 411609657,
+      "observed_on": "2026-10-29",
+      "taxon": "Eristalis tenax",
+      "common_name": "Common Drone Fly",
+      "lat": "40.584625",
+      "lon": "-104.7384129722",
+      "county": "Ault, CO, USA"
+    },
+    {
+      "id": 411442063,
+      "observed_on": "2026-10-28",
+      "taxon": "Syritta pipiens",
+      "common_name": "Thick-legged Hover Fly",
+      "lat": "39.60897",
+      "lon": "-104.9408633333",
+      "county": "E Orchard Rd, Centennial, CO, US"
+    },
+    {
+      "id": 411442011,
+      "observed_on": "2026-10-28",
+      "taxon": "Eristalis arbustorum",
+      "common_name": "Eurasian Drone Fly",
+      "lat": "39.6089466667",
+      "lon": "-104.9408716667",
+      "county": "E Orchard Rd, Centennial, CO, US"
+    },
+    {
+      "id": 411462394,
+      "observed_on": "2026-10-28",
+      "taxon": "Toxomerus marginatus",
+      "common_name": "Margined Calligrapher",
+      "lat": "39.9529429388",
+      "lon": "-105.035254915",
+      "county": "Colorado, US"
+    },
+    {
+      "id": 411457681,
+      "observed_on": "2026-10-28",
+      "taxon": "Eristalis tenax",
+      "common_name": "Common Drone Fly",
+      "lat": "39.9611733784",
+      "lon": "-105.0477479081",
+      "county": "Colorado, US"
+    },
+    {
+      "id": 412223752,
+      "observed_on": "2026-10-28",
+      "taxon": "Eupeodes fumipennis",
+      "common_name": "Western Aphideater",
+      "lat": "40.1682257363",
+      "lon": "-105.064512684",
+      "county": "Longmont, CO, USA"
+    },
+    {
+      "id": 411253469,
+      "observed_on": "2026-10-27",
+      "taxon": "Allograpta exotica",
+      "common_name": "Exotic Streaktail",
+      "lat": "39.8480261617",
+      "lon": "-105.1171780902",
+      "county": "Colorado, US"
+    },
+    {
+      "id": 411288922,
+      "observed_on": "2026-10-26",
+      "taxon": "Eupeodes volucris",
+      "common_name": "Large-tailed Aphideater",
+      "lat": "39.6262166667",
+      "lon": "-107.1310361667",
+      "county": "Bureau of Land Management Route 8440C, Glenwood Springs, CO, US"
+    },
+    {
+      "id": 411034368,
+      "observed_on": "2026-10-26",
+      "taxon": "Eristalis arbustorum",
+      "common_name": "Eurasian Drone Fly",
+      "lat": "39.6758025",
+      "lon": "-104.9629625",
+      "county": "Evans Ave & S Race St, Denver, CO 80210, USA"
+    },
     {
       "id": 410776674,
       "observed_on": "2026-10-25",
@@ -11,6 +128,15 @@
       "lat": "40.2478369637",
       "lon": "-105.020290901",
       "county": "Colorado, US"
+    },
+    {
+      "id": 410747226,
+      "observed_on": "2026-10-25",
+      "taxon": "Rabdophaga strobiloides",
+      "common_name": "Willow Pinecone Gall Midge",
+      "lat": "39.7718236895",
+      "lon": "-105.1337251158",
+      "county": "Bass Lake Boardwalk, Wheat Ridge, CO, US"
     },
     {
       "id": 410574795,
@@ -47,6 +173,15 @@
       "lat": "39.886905",
       "lon": "-105.0666111667",
       "county": "W 104th Ave, Westminster, CO, US"
+    },
+    {
+      "id": 410299973,
+      "observed_on": "2026-10-22",
+      "taxon": "Hermetia illucens",
+      "common_name": "Black Soldier Fly",
+      "lat": "40.5393960362",
+      "lon": "-105.0821735213",
+      "county": "Riva Ridge Pl, Fort Collins, CO, US"
     },
     {
       "id": 410133959,
@@ -1667,141 +1802,6 @@
       "lat": "40.5893202614",
       "lon": "-105.0896353278",
       "county": "Laporte Ave, Fort Collins, CO, US"
-    },
-    {
-      "id": 401292873,
-      "observed_on": "2026-09-18",
-      "taxon": "Aciurina bigeloviae",
-      "common_name": "Cotton-gall Tephritid",
-      "lat": "39.6700533333",
-      "lon": "-105.1638638333",
-      "county": "Lakewood, CO, US"
-    },
-    {
-      "id": 401292490,
-      "observed_on": "2026-09-18",
-      "taxon": "Rhopalomyia chrysothamni",
-      "common_name": null,
-      "lat": "39.6698116667",
-      "lon": "-105.1629945",
-      "county": "Lakewood, CO, US"
-    },
-    {
-      "id": 404004871,
-      "observed_on": "2026-09-18",
-      "taxon": "Lucilia sericata",
-      "common_name": "Common European Greenbottle Fly",
-      "lat": "40.1908490568",
-      "lon": "-105.1116654214",
-      "county": "Colorado, US"
-    },
-    {
-      "id": 401046954,
-      "observed_on": "2026-09-17",
-      "taxon": "Aciurina bigeloviae",
-      "common_name": "Cotton-gall Tephritid",
-      "lat": "39.6781781593",
-      "lon": "-104.9650761726",
-      "county": "Denver County, US-CO, US"
-    },
-    {
-      "id": 401065457,
-      "observed_on": "2026-09-17",
-      "taxon": "Paragus haemorrhous",
-      "common_name": "Common Grass Skimmer",
-      "lat": "38.9441444444",
-      "lon": "-104.614925",
-      "county": "Falcon, CO 80831, USA"
-    },
-    {
-      "id": 401027093,
-      "observed_on": "2026-09-17",
-      "taxon": "Toxomerus marginatus",
-      "common_name": "Margined Calligrapher",
-      "lat": "39.7849883333",
-      "lon": "-104.9746333333",
-      "county": "Denver County, US-CO, US"
-    },
-    {
-      "id": 401256511,
-      "observed_on": "2026-09-16",
-      "taxon": "Aciurina bigeloviae",
-      "common_name": "Cotton-gall Tephritid",
-      "lat": "39.8141666667",
-      "lon": "-104.8589138889",
-      "county": "Denver, CO 80239, USA"
-    },
-    {
-      "id": 400956843,
-      "observed_on": "2026-09-16",
-      "taxon": "Aciurina bigeloviae",
-      "common_name": "Cotton-gall Tephritid",
-      "lat": "39.8157716667",
-      "lon": "-104.8575966667",
-      "county": "Joliet St, Denver, CO, US"
-    },
-    {
-      "id": 400882982,
-      "observed_on": "2026-09-16",
-      "taxon": "Lucilia sericata",
-      "common_name": "Common European Greenbottle Fly",
-      "lat": "39.7752616667",
-      "lon": "-105.0450445",
-      "county": "Utica St, Denver, CO, US"
-    },
-    {
-      "id": 400813756,
-      "observed_on": "2026-09-16",
-      "taxon": "Syritta pipiens",
-      "common_name": "Thick-legged Hover Fly",
-      "lat": "39.0556333333",
-      "lon": "-108.4625222222",
-      "county": "Clifton, CO, USA"
-    },
-    {
-      "id": 400749873,
-      "observed_on": "2026-09-16",
-      "taxon": "Eristalis tenax",
-      "common_name": "Common Drone Fly",
-      "lat": "40.4812983213",
-      "lon": "-104.611067691",
-      "county": "Weld County, US-CO, US"
-    },
-    {
-      "id": 400592781,
-      "observed_on": "2026-09-15",
-      "taxon": "Adejeania vexatrix",
-      "common_name": null,
-      "lat": "39.6417583333",
-      "lon": "-105.2793116667",
-      "county": "Bear Creek Trail, Indian Hills, CO, US"
-    },
-    {
-      "id": 400605523,
-      "observed_on": "2026-09-15",
-      "taxon": "Adejeania vexatrix",
-      "common_name": null,
-      "lat": "40.7056929997",
-      "lon": "-105.2954304997",
-      "county": "Livermore, CO 80536, USA"
-    },
-    {
-      "id": 401055914,
-      "observed_on": "2026-09-15",
-      "taxon": "Allograpta obliqua",
-      "common_name": "Oblique Streaktail",
-      "lat": "37.5427518217",
-      "lon": "-108.4604217806",
-      "county": "Montezuma County, US-CO, US"
-    },
-    {
-      "id": 400373362,
-      "observed_on": "2026-09-14",
-      "taxon": "Nephrotoma wulpiana",
-      "common_name": "Short-palped Tiger crane fly",
-      "lat": "38.8474758",
-      "lon": "-104.8027594",
-      "county": "1204 E Yampa St, Colorado Springs, CO 80909, USA"
     }
   ]
 }
