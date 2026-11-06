@@ -22,15 +22,13 @@ The United States faces a growing threat from multiple tick-borne and mosquito-b
 
 ### Vector-Borne Diseases in Colorado
 
-#### 1. **Lyme Disease** (Tick-borne) — PRIMARY CONCERN
-- **Cases in Colorado**: Rising (2023: 42 reported cases)
-- **Vector**: Ixodes scapularis ticks (black-legged ticks) and I. pacificus (western ticks)
-- **Peak Season**: April-October (highest June-August)
-- **Risk Areas**: Forested and wooded areas, especially eastern and western Colorado
-- **Trend**: Expanding northward and westward as climate warms
+#### 1. **Lyme Disease** (Tick-borne): travel-associated in Colorado
+- **Cases in Colorado**: Reported among Colorado residents, almost all after travel to places where Lyme disease is endemic. The annual counts in this repository have not yet been verified against CDC (see the [scientific audit](docs/SCIENTIFIC-AUDIT.md)).
+- **Vector**: *Ixodes scapularis* (blacklegged tick) and *I. pacificus* (western blacklegged tick). Neither is documented as established in Colorado, and CDPHE does not list Lyme disease among [Colorado's tick-borne diseases](https://cdphe.colorado.gov/communicable/animal-related-diseases/tick-borne-diseases).
+- **Local risk**: Not established. The dashboard treats Lyme counts as a travel-exposure signal only.
 
 #### 2. **West Nile Virus** (Mosquito-borne)
-- **Cases in Colorado**: Variable (2023: 8 reported cases)
+- **Cases in Colorado**: Variable. 2023 was the largest season since 2003, with 634 reported cases (316 neuroinvasive), according to [CDC ArboNET](https://www.cdc.gov/west-nile-virus/data-maps/historic-data.html)
 - **Vector**: Culex mosquitoes (night-feeding)
 - **Peak Season**: June-October (highest August-September)
 - **Risk Areas**: Urban areas with stagnant water, irrigation systems
@@ -38,11 +36,15 @@ The United States faces a growing threat from multiple tick-borne and mosquito-b
 
 #### 3. **Rocky Mountain Spotted Fever** (Tick-borne)
 - **Cases in Colorado**: Low but potentially underreported
-- **Vector**: Dermacentor (American dog tick) and Ixodes ticks
+- **Vector**: *Dermacentor andersoni* (Rocky Mountain wood tick) and *D. variabilis* (American dog tick)
 - **Peak Season**: April-June (spring tick season)
 - **Trend**: Sporadic cases, often misdiagnosed initially
 
-#### 4. **Avian Influenza** (Spillover Risk) — EMERGING THREAT
+#### 4. **Colorado Tick Fever** (Tick-borne)
+- **Vector**: *Dermacentor andersoni* (Rocky Mountain wood tick), found at about 4,000 to 10,000 feet ([CDC](https://www.cdc.gov/colorado-tick-fever/causes-and-spread/index.html))
+- **Local risk**: Locally acquired in Colorado; listed by [CDPHE](https://cdphe.colorado.gov/communicable/animal-related-diseases/tick-borne-diseases)
+
+#### 5. **Avian Influenza** (Spillover Risk) — EMERGING THREAT
 - **Wild Bird Detections**: Growing across Colorado (H5N1 confirmed)
 - **Risk to Poultry**: High economic impact (commercial flocks)
 - **Risk to Humans**: Occupational exposure for farm workers, wildlife handlers
@@ -113,9 +115,11 @@ Real-Time Data → Analysis Engine → Risk Score → Forecast → Dashboard
 
 ---
 
-### Dashboard Features
+### Dashboard Features (planned)
 
-**AEDES Colorado provides:**
+Most of the features below are planned and not yet implemented. The current dashboard publishes climate data, iNaturalist observations, static historical case tables, and an experimental risk index that has not been validated. See the [scientific audit](docs/SCIENTIFIC-AUDIT.md) for what each output does and does not show.
+
+**AEDES Colorado aims to provide:**
 - Real-time case maps by disease
 - 4-week risk forecasts with confidence intervals
 - Tick activity hotspot predictions
@@ -222,7 +226,7 @@ Whether you're here to contribute to our Python package or to collaborate and us
 
 We are always on the lookout for enthusiastic developers to help us improve our Python package. Whether you are fixing bugs, adding new features, or improving documentation, your contributions are highly valued.
 
-- **Getting Started:** Check out our [**Contributing Guidelines**](Contributing.md) to understand how you can start contributing.
+- **Getting Started:** Check out our [**Contributing Guidelines**](CONTRIBUTING.md) to understand how you can start contributing.
 - **Code of Conduct:** We believe in fostering an inclusive and welcoming environment. Please read our [**Code of Conduct**](CODE_OF_CONDUCT.md) to understand our community's values and expectations.
 
 #### For App Collaborators

@@ -85,7 +85,7 @@ Automation workflows in [`.github/workflows/`](.github/workflows/) run scheduled
 - Manual workflow dispatch via GitHub Actions UI
 
 **Pipeline Steps:**
-1. Fetch CDC WNV/Lyme data (annual summaries from CDC NNDSS + weekly YTD provisional)
+1. Load CDC WNV/Lyme case tables (currently static values in `scripts/fetch_surveillance_data.py`, not fetched; weekly provisional counts are entered manually; see `docs/SCIENTIFIC-AUDIT.md`)
 2. Fetch NASA POWER climate data (90-day rolling window for Colorado, excluding sentinel values)
 3. Fetch iNaturalist tick/mosquito observations (real-time)
 4. Execute Jupyter notebooks (`.ipynb` → `.html`) with executable Python cells
@@ -130,7 +130,7 @@ Automation workflows in [`.github/workflows/`](.github/workflows/) run scheduled
 - Framework: `pytest 9.0.3`
 - Coverage: `pytest-cov` with terminal + XML reporting
 - Ignored optional tests: `test_geoboundaries.py`, `test_nasa_worldview.py`, `test_osm.py` (require external deps)
-- Passes: 60/60 tests (4 test modules, shared `conftest.py` fixtures)
+- Run the suite for the current test count. A passing suite shows the code behaves as tested; it does not show that published outputs are scientifically valid (see `docs/SCIENTIFIC-AUDIT.md`).
 
 **Key Test Files:**
 - `tests/test_demographics.py` — Admin boundary and population data
@@ -215,7 +215,7 @@ pytest tests/ ... --cov=src/aedesproject_uif --cov-report=html
 ### 3. CI/CD Validation
 
 - Push to `main` → **Test Coverage** workflow runs automatically
-- All 60 tests must pass before PR merge
+- All tests must pass before PR merge
 - Coverage report uploaded to Codecov
 
 ### 4. Data Pipeline Execution
