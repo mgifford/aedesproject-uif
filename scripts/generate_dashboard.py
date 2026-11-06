@@ -30,7 +30,7 @@ NOTEBOOK_META = {
     "01_west_nile_virus_surveillance": {
         "title": "West Nile Virus Surveillance",
         "icon": "🦟",
-        "description": "Experimental (not validated) WNV index, 90-day climate conditions for the Denver area, and iNaturalist mosquito observations. Historical trends (2010–2024) available below.",
+        "description": "Experimental (not validated) WNV index, 90-day climate conditions for the Denver area, and iNaturalist mosquito observations. Historical CDC ArboNET trends (2010 onward) available below.",
         "disease": "West Nile Virus",
         "vector": "Culex tarsalis",
         "data_recency": "live",
@@ -133,21 +133,28 @@ def build_reliability_section(report: dict | None) -> str:
         status_reason = source.get("status_reason", "n/a")
         last_success_at = source.get("last_success_at") or "n/a"
         fallback_used = "Yes" if source.get("fallback_used", False) else "No"
+        kind = source.get("kind") or "n/a"
+        latest = source.get("latest_observation") or "n/a"
         rows.append(
-            f"<tr><td>{source_id}</td><td>{status}</td><td>{fallback_used}</td><td>{last_success_at}</td><td>{status_reason}</td></tr>"
+            f"<tr><td>{source_id}</td><td>{kind}</td><td>{status}</td><td>{latest}</td><td>{fallback_used}</td><td>{last_success_at}</td><td>{status_reason}</td></tr>"
         )
 
-    rows_html = "\n".join(rows) if rows else "<tr><td colspan='5'>No source status data available.</td></tr>"
+    rows_html = "\n".join(rows) if rows else "<tr><td colspan='7'>No source status data available.</td></tr>"
 
     return f"""
   <div class=\"reliability\">
     <h3>Pipeline Reliability Status</h3>
     <p><strong>Run mode:</strong> {mode_label} &nbsp;|&nbsp; <strong>Generated:</strong> {generated_at}</p>
+    <p>Kind "static" means the values are stored in this repository and are not fetched. Status "stale" means
+    the source could not be updated on this run, so the previous copy is shown. "Latest observation" is the
+    most recent year or date in the data, which is not the same as the date it was retrieved.</p>
     <table>
       <thead>
         <tr>
           <th>Source</th>
+          <th>Kind</th>
           <th>Status</th>
+          <th>Latest Observation</th>
           <th>Fallback Used</th>
           <th>Last Success</th>
           <th>Reason</th>
@@ -430,8 +437,9 @@ def build_index() -> None:
 
   <div class="alert">
     <strong>About this dashboard:</strong> Rebuilt daily. NASA POWER and Open-Meteo climate data and
-    iNaturalist citizen-science observations are fetched on each run. CDC case tables are currently
-    static values stored in the code, not fetched, and are being checked against CDC.
+    iNaturalist citizen-science observations are fetched on each run, and so are Colorado West Nile virus
+    case counts from CDC ArboNET. The Lyme disease and county case tables are static values stored in this
+    repository; they are not fetched and have not been verified.
     Risk levels are an experimental index: they have not been validated and are not probabilities of
     infection. Notebooks 04 and 05 use synthetic data for demonstration only.
     See the <a href="https://github.com/mgifford/aedesproject-uif/blob/main/docs/SCIENTIFIC-AUDIT.md">scientific audit</a> for known limitations.
@@ -446,7 +454,8 @@ def build_index() -> None:
   <div class="data-note">
     <strong>ℹ️ About CDC data recency:</strong>
     CDC's finalized annual case counts are published approximately 12–18 months after the end of each
-    calendar year. The most recent year in this dashboard's case tables is <strong>2024</strong>.
+    calendar year. West Nile virus counts run to the latest year CDC has finalized; the Lyme table ends in
+    <strong>2024</strong>. The reliability table below shows the latest observation for each source.
     Current-season (2026) provisional counts are entered manually and may be months out of date.
     Reports that rely exclusively on finalized historical data are grouped in the
     <em>Historical Archive</em> section at the bottom of this page.
@@ -493,7 +502,7 @@ def build_index() -> None:
     AEDES — Advanced Early Disease Prediction and Exploration Service &nbsp;|&nbsp;
     <a href="https://github.com/mgifford/aedesproject-uif">GitHub</a> &nbsp;|&nbsp;
     Built with Jupyter, nbconvert, and GitHub Actions &nbsp;|&nbsp;
-    Data: CDC (static tables, under review), NASA POWER, Open-Meteo, iNaturalist &nbsp;|&nbsp;
+    Data: CDC ArboNET, NASA POWER, Open-Meteo, iNaturalist; static Lyme and county tables &nbsp;|&nbsp;
     Generated: {TODAY}
   </p>
   <p style="margin-top:0.5rem;">

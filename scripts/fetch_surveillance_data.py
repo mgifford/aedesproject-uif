@@ -6,13 +6,16 @@ Data is saved to data/surveillance/ for use by notebooks.
 All fetches are best-effort: notebooks fall back to sample data if unavailable.
 
 Sources (all free / keyless):
-- CDC NNDSS historical reference data (embedded)
+- CDC ArboNET — Colorado West Nile virus cases by year (state-level CSV)
+- Lyme disease — static table in this script (not fetched, origin unverified)
 - NASA POWER API — climate data for Denver, CO
 - Open-Meteo API — current 30-day climate (temperature, humidity, precipitation)
 - Google Trends (pytrends) — Colorado search interest for vector-borne disease terms
 - iNaturalist API — research-grade tick observations in Colorado (with retry)
 """
 
+import csv
+import io
 import json
 import os
 import sys
@@ -71,6 +74,9 @@ RELIABILITY_SOURCES = [
 # If a critical source is missing, run mode is blocked.
 CRITICAL_SOURCE_IDS = {"cdc_wnv", "cdc_lyme"}
 
+# Sources whose records are not under the "data" key.
+SOURCE_DATA_KEYS = {"regional_counties": "county_ytd"}
+
 
 def save(filename: str, data: object) -> None:
     path = os.path.join(OUTPUT_DIR, filename)
@@ -90,8 +96,8 @@ def _load_json(path: str) -> dict | None:
         return None
 
 
-def _has_required_schema(payload: dict) -> bool:
-    return all(key in payload for key in ("fetched", "source", "data"))
+def _has_required_schema(payload: dict, data_key: str = "data") -> bool:
+    return all(key in payload for key in ("fetched", "source", data_key))
 
 
 def _source_status(source_id: str, filename: str) -> dict:
@@ -101,8 +107,10 @@ def _source_status(source_id: str, filename: str) -> dict:
         return {
             "source_id": source_id,
             "artifact": filename,
+            "kind": None,
             "status": "missing",
             "fetched": None,
+            "latest_observation": None,
             "last_success_at": None,
             "fallback_used": True,
             "record_count": 0,
@@ -110,12 +118,15 @@ def _source_status(source_id: str, filename: str) -> dict:
             "integrity_critical_failure": source_id in CRITICAL_SOURCE_IDS,
         }
 
-    if not _has_required_schema(payload):
+    data_key = SOURCE_DATA_KEYS.get(source_id, "data")
+    if not _has_required_schema(payload, data_key):
         return {
             "source_id": source_id,
             "artifact": filename,
+            "kind": None,
             "status": "invalid",
             "fetched": None,
+            "latest_observation": None,
             "last_success_at": None,
             "fallback_used": True,
             "record_count": 0,
@@ -123,9 +134,12 @@ def _source_status(source_id: str, filename: str) -> dict:
             "integrity_critical_failure": True,
         }
 
+    is_static = payload.get("static") is True
+    latest_observation = payload.get("latest_observation")
+
     fetched = payload.get("fetched") if isinstance(payload.get("fetched"), str) else None
     source = str(payload.get("source", ""))
-    data = payload.get("data", [])
+    data = payload.get(data_key, [])
     if isinstance(data, list):
         record_count = len(data)
     elif isinstance(data, dict):
@@ -133,22 +147,36 @@ def _source_status(source_id: str, filename: str) -> dict:
     else:
         record_count = 0
 
-    fallback_used = source.lower() == "unavailable" or record_count == 0
-    status = "degraded" if fallback_used else "ok"
+    # Files that do not state their latest observation: use the newest record date.
+    if latest_observation is None and isinstance(data, list):
+        for field in ("date", "observed_on", "year"):
+            values = [r[field] for r in data if isinstance(r, dict) and r.get(field) is not None]
+            if values:
+                latest_observation = max(values)
+                break
 
-    if status == "ok":
-        status_reason = "fresh_data"
-    elif source.lower() == "unavailable":
-        status_reason = "source_unavailable"
+    fallback_used = source.lower() == "unavailable" or record_count == 0
+
+    # "static": values stored in the repo, never fetched. "stale": a fetched source
+    # that was not updated in this run (the previous copy is kept).
+    if fallback_used:
+        status = "degraded"
+        status_reason = "source_unavailable" if source.lower() == "unavailable" else "empty_or_fallback_data"
+    elif is_static:
+        status, status_reason = "static", "static_table_unverified"
+    elif fetched != TODAY:
+        status, status_reason = "stale", "not_updated_this_run"
     else:
-        status_reason = "empty_or_fallback_data"
+        status, status_reason = "ok", "fresh_data"
 
     return {
         "source_id": source_id,
         "artifact": filename,
+        "kind": "static" if is_static else "fetched",
         "status": status,
         "fetched": fetched,
-        "last_success_at": fetched if status == "ok" else None,
+        "latest_observation": latest_observation,
+        "last_success_at": fetched if status in {"ok", "stale"} else None,
         "fallback_used": fallback_used,
         "record_count": record_count,
         "status_reason": status_reason,
@@ -162,7 +190,7 @@ def generate_reliability_report() -> dict:
 
     if any(s.get("integrity_critical_failure", False) for s in sources):
         run_mode = "blocked"
-    elif any(s["status"] in {"degraded", "missing"} for s in sources):
+    elif any(s["status"] in {"degraded", "missing", "stale", "static"} for s in sources):
         run_mode = "degraded"
     else:
         run_mode = "normal"
@@ -170,7 +198,7 @@ def generate_reliability_report() -> dict:
     report = {
         "generated_at": datetime.datetime.now(datetime.UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "run_date": TODAY,
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "run_mode": run_mode,
         "sources": sources,
     }
@@ -178,9 +206,11 @@ def generate_reliability_report() -> dict:
     return report
 
 
-def fetch_url(url: str, timeout: int = 20) -> bytes | None:
+def fetch_url(url: str, timeout: int = 20, user_agent: str | None = "AEDES-Surveillance/2.0") -> bytes | None:
+    """Fetch a URL. Pass user_agent=None to send the standard Python client header."""
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "AEDES-Surveillance/2.0"})
+        headers = {"User-Agent": user_agent} if user_agent else {}
+        req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return resp.read()
     except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as exc:
@@ -188,10 +218,12 @@ def fetch_url(url: str, timeout: int = 20) -> bytes | None:
         return None
 
 
-def _fetch_with_retry(url: str, timeout: int = 20, retries: int = 3, backoff: float = 2.0) -> bytes | None:
+def _fetch_with_retry(
+    url: str, timeout: int = 20, retries: int = 3, backoff: float = 2.0, **fetch_kwargs
+) -> bytes | None:
     """Fetch URL with exponential back-off retry."""
     for attempt in range(retries):
-        raw = fetch_url(url, timeout=timeout)
+        raw = fetch_url(url, timeout=timeout, **fetch_kwargs)
         if raw is not None:
             return raw
         if attempt < retries - 1:
@@ -202,49 +234,129 @@ def _fetch_with_retry(url: str, timeout: int = 20, retries: int = 3, backoff: fl
 
 
 # ---------------------------------------------------------------------------
-# CDC Wonder / NNDSS  (public summary, no key required for aggregated data)
+# CDC ArboNET — West Nile virus human cases by state and year
 # ---------------------------------------------------------------------------
 
-def fetch_cdc_wonder_wnv() -> None:
-    """
-    CDC publishes annual WNV neuroinvasive case totals.
-    We use the public-facing data page; if unavailable we emit a sentinel file
-    so the notebook knows to use built-in sample data.
-    """
-    print("Fetching CDC WNV data...")
-    # Historical Colorado WNV neuroinvasive cases (CDC NNDSS public data)
-    # Source: https://wonder.cdc.gov/nndss/nndss_weekly_tables_menu.asp
-    # These values are from published CDC annual summaries (verifiable public record)
-    historical = [
-        {"year": 2010, "state": "Colorado", "neuroinvasive": 51, "deaths": 3},
-        {"year": 2011, "state": "Colorado", "neuroinvasive": 20, "deaths": 1},
-        {"year": 2012, "state": "Colorado", "neuroinvasive": 130, "deaths": 9},
-        {"year": 2013, "state": "Colorado", "neuroinvasive": 14, "deaths": 0},
-        {"year": 2014, "state": "Colorado", "neuroinvasive": 43, "deaths": 2},
-        {"year": 2015, "state": "Colorado", "neuroinvasive": 72, "deaths": 3},
-        {"year": 2016, "state": "Colorado", "neuroinvasive": 14, "deaths": 1},
-        {"year": 2017, "state": "Colorado", "neuroinvasive": 5,  "deaths": 0},
-        {"year": 2018, "state": "Colorado", "neuroinvasive": 15, "deaths": 0},
-        {"year": 2019, "state": "Colorado", "neuroinvasive": 10, "deaths": 0},
-        {"year": 2020, "state": "Colorado", "neuroinvasive": 10, "deaths": 1},
-        {"year": 2021, "state": "Colorado", "neuroinvasive": 8,  "deaths": 0},
-        {"year": 2022, "state": "Colorado", "neuroinvasive": 16, "deaths": 0},
-        {"year": 2023, "state": "Colorado", "neuroinvasive": 6,  "deaths": 0},
-        {"year": 2024, "state": "Colorado", "neuroinvasive": 12, "deaths": 0},
-    ]
-    save("wnv_colorado.json", {"fetched": TODAY, "source": "CDC NNDSS (historical)", "data": historical})
+# CSV behind CDC's "Historic Data" page. On 2026-11-06 the page said "All data are
+# finalized as of September 16, 2026". The file has no state-level deaths.
+CDC_WNV_PAGE = "https://www.cdc.gov/west-nile-virus/data-maps/historic-data.html"
+CDC_WNV_STATE_CSV = (
+    "https://www.cdc.gov/wcms/vizdata/live/ncezid_dvbd/WNV/"
+    "wnv_hum_historic%20-%20Historic%20Sta.csv"
+)
+WNV_FIRST_YEAR = 2010  # first year shown in the dashboard charts
+_CDC_WNV_COLUMNS = {"Type", "Year", "State", "Reported Cases"}
+_CDC_WNV_TYPES = {"Neuroinvasive disease cases": "neuroinvasive", "All disease cases": "total_cases"}
 
 
-def fetch_cdc_wonder_lyme() -> None:
+def parse_cdc_wnv_state_csv(
+    text: str, state_code: str = "CO", state_name: str = "Colorado", first_year: int = WNV_FIRST_YEAR
+) -> list[dict]:
+    """Return annual WNV case counts for one state from CDC's state-level CSV.
+
+    Raises ValueError when the file does not have the expected structure, so a
+    format change is reported instead of producing wrong numbers. Deaths are
+    recorded as None because CDC does not publish them at state level here.
     """
-    Lyme disease confirmed + probable cases for Colorado.
-    Source: CDC Lyme Disease Data Tables (public annual summaries).
+    reader = csv.DictReader(io.StringIO(text))
+    missing = _CDC_WNV_COLUMNS - set(reader.fieldnames or [])
+    if missing:
+        raise ValueError(f"CDC CSV is missing columns {sorted(missing)}")
+
+    by_year: dict[int, dict[str, int]] = {}
+    for row in reader:
+        if row["State"] != state_code or row["Type"] not in _CDC_WNV_TYPES:
+            continue
+        if not row["Year"].isdigit():  # cumulative rows such as "1999-2025"
+            continue
+        year = int(row["Year"])
+        if year < first_year:
+            continue
+        count = int(row["Reported Cases"].replace(",", ""))
+        if count < 0:
+            raise ValueError(f"negative count for {year}")
+        by_year.setdefault(year, {})[_CDC_WNV_TYPES[row["Type"]]] = count
+
+    if not by_year:
+        raise ValueError(f"no rows for state {state_code} from {first_year}")
+
+    records = []
+    for year in sorted(by_year):
+        counts = by_year[year]
+        if set(counts) != set(_CDC_WNV_TYPES.values()):
+            raise ValueError(f"incomplete counts for {year}: {counts}")
+        if counts["neuroinvasive"] > counts["total_cases"]:
+            raise ValueError(f"neuroinvasive count exceeds total for {year}")
+        records.append({"year": year, "state": state_name, **counts, "deaths": None})
+
+    gaps = [y for y in range(records[0]["year"], records[-1]["year"] + 1) if y not in by_year]
+    if gaps:
+        # A year absent from the file is not the same as a year with zero cases.
+        print(f"  NOTE: CDC file has no {state_code} rows for {gaps}; those years are left out")
+    return records
+
+
+def fetch_cdc_arbonet_wnv() -> None:
+    """Fetch Colorado WNV human case counts (annual) from CDC ArboNET.
+
+    If the download or validation fails, the existing file is kept as the last
+    known good copy and the reliability report marks it stale. No built-in
+    numbers are substituted.
+    """
+    print("Fetching CDC ArboNET WNV data (Colorado)...")
+    # CDC answers 403 to the custom "AEDES-Surveillance/2.0" header but accepts the
+    # standard Python client header (checked 2026-11-06), so this request uses that.
+    raw = _fetch_with_retry(CDC_WNV_STATE_CSV, timeout=30, retries=3, backoff=3.0, user_agent=None)
+    try:
+        if raw is None:
+            raise ValueError("download failed")
+        records = parse_cdc_wnv_state_csv(raw.decode("utf-8-sig"))
+    except (ValueError, KeyError, UnicodeDecodeError) as exc:
+        print(f"  WARNING: CDC WNV data not updated ({exc})")
+        if not os.path.exists(os.path.join(OUTPUT_DIR, "wnv_colorado.json")):
+            save("wnv_colorado.json", {"fetched": TODAY, "source": "unavailable", "data": []})
+        return
+
+    save(
+        "wnv_colorado.json",
+        {
+            "fetched": TODAY,
+            "retrieved_at": datetime.datetime.now(datetime.UTC).replace(microsecond=0).isoformat(),
+            "source": "CDC ArboNET",
+            "source_url": CDC_WNV_STATE_CSV,
+            "source_page": CDC_WNV_PAGE,
+            "static": False,
+            "latest_observation": records[-1]["year"],
+            "notes": (
+                "Annual human cases by state of residence, not place of exposure. "
+                "Neuroinvasive cases are the comparable series; CDC advises against comparing "
+                "non-neuroinvasive counts across places or years. Deaths are not published at "
+                "state level in this file and are recorded as null."
+            ),
+            "data": records,
+        },
+    )
+    print(f"  Got {len(records)} years ({records[0]['year']}-{records[-1]['year']})")
+
+
+# ---------------------------------------------------------------------------
+# Lyme disease — static table (not fetched)
+# ---------------------------------------------------------------------------
+
+def write_lyme_static_table() -> None:
+    """
+    Write the Colorado Lyme disease table (confirmed + probable cases).
+
+    These values are stored in this script and are NOT fetched. Their source has
+    not been verified against CDC, and the national Lyme surveillance case
+    definition changed in 2022, so the series is not comparable across that year.
+    The file is marked static and is not stamped with the run date.
 
     NOTE: Ixodes scapularis is NOT established in Colorado; cases reported here
     are almost exclusively travel-associated.  These counts serve as a
     travel-exposure signal only, not a local environmental risk indicator.
     """
-    print("Fetching CDC Lyme data...")
+    print("Writing static Lyme table (not fetched)...")
     historical = [
         {"year": 2015, "state": "Colorado", "confirmed": 35,  "probable": 18},
         {"year": 2016, "state": "Colorado", "confirmed": 29,  "probable": 22},
@@ -257,7 +369,21 @@ def fetch_cdc_wonder_lyme() -> None:
         {"year": 2023, "state": "Colorado", "confirmed": 61,  "probable": 49},
         {"year": 2024, "state": "Colorado", "confirmed": 65,  "probable": 54},
     ]
-    save("lyme_colorado.json", {"fetched": TODAY, "source": "CDC Lyme Data Tables (historical)", "data": historical})
+    save(
+        "lyme_colorado.json",
+        {
+            "fetched": None,
+            "source": "Static table in scripts/fetch_surveillance_data.py (origin unverified)",
+            "static": True,
+            "latest_observation": historical[-1]["year"],
+            "notes": (
+                "Not fetched and not verified against CDC. The 2022 change to the national Lyme "
+                "surveillance case definition makes years before and after 2022 not comparable. "
+                "Colorado cases are travel-associated."
+            ),
+            "data": historical,
+        },
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -645,7 +771,9 @@ def update_regional_data() -> None:
         county_entry["tick_observations_ytd"] = county_tick_obs.get(name, 0)
         county_entry["mosquito_observations_ytd"] = county_mosq_obs.get(name, 0)
 
-    regional["fetched"] = TODAY
+    # Only the iNaturalist columns change here; the case columns are seed values,
+    # so "fetched" is left alone rather than stamped with the run date.
+    regional["inaturalist_counts_updated"] = TODAY
     save("regional_counties_2026.json", regional)
     print(f"  Updated regional data for {len(regional.get('county_ytd', []))} counties")
 
@@ -653,8 +781,8 @@ def update_regional_data() -> None:
 if __name__ == "__main__":
     print(f"AEDES Surveillance Data Fetch — {TODAY}")
     print("=" * 50)
-    fetch_cdc_wonder_wnv()
-    fetch_cdc_wonder_lyme()
+    fetch_cdc_arbonet_wnv()
+    write_lyme_static_table()
     fetch_nasa_power_colorado()
     fetch_open_meteo_colorado()
     fetch_google_trends_colorado()

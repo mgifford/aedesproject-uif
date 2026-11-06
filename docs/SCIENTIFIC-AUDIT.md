@@ -5,7 +5,7 @@
 - Published site audited: https://mgifford.github.io/aedesproject-uif/ (generated 2026-11-05)
 - Upstream: https://github.com/Cirrolytix/aedesproject-uif (no commits since 2023-10-09; this fork is 116 commits ahead)
 - Status of this document: **draft, AI-assisted, not reviewed by an epidemiologist or vector ecologist.**
-- Updated 2026-11-05 for PR 1 (correctness and labels). Section 9 lists what PR 1 changed.
+- Updated 2026-11-05 for PR 1 (correctness and labels) and 2026-11-06 for PR 2 (provenance). Sections 9 and 10 list what each changed.
 
 ## How this audit was done
 
@@ -30,11 +30,11 @@ Ranked by the harm a reader could suffer from trusting the published output.
 | # | Finding | Evidence | Status in this branch |
 |---|---|---|---|
 | 1 | **"Tick observations" contain no ticks; "mosquito observations" query a fish genus.** The iNaturalist fetch used taxon `47822` (order Diptera, true flies) for ticks and `53522` (genus *Synbranchus*, swamp eels) for mosquitoes. All 200 cached "tick" records (2026-09-18 to 2026-11-01) are flies, mainly drone flies and hover flies. Mosquito results are always empty. These counts feed NB02, NB07 and the county table. This is the root cause of issue #13. | `scripts/fetch_surveillance_data.py` (before this branch); `data/surveillance/inaturalist_ticks_colorado.json`; `https://api.inaturalist.org/v1/taxa/47822` returns Diptera, `/53522` returns *Synbranchus*, `/51672` returns Ixodida, `/52134` returns Culicidae | **Fixed in code** (constants `INAT_TAXON_TICKS = 51672`, `INAT_TAXON_MOSQUITOES = 52134`, with regression tests). Cached data is corrected by the next scheduled fetch. |
-| 2 | **Colorado West Nile virus counts are wrong for every year 2010 to 2024.** `fetch_cdc_wonder_wnv()` does not fetch anything; it writes a hardcoded table and stamps it `"fetched": TODAY`. Compared with CDC ArboNET state data, the hardcoded neuroinvasive counts differ in all 15 years. The largest error is 2023: the repo shows 6 neuroinvasive cases and 0 deaths; CDC reports 316 neuroinvasive and 634 total cases, Colorado's largest season since 2003. CDC also already publishes 2025 (143 neuroinvasive, 285 total). | `scripts/fetch_surveillance_data.py` `fetch_cdc_wonder_wnv()`; CDC file `https://www.cdc.gov/wcms/vizdata/live/ncezid_dvbd/WNV/wnv_hum_historic - Historic Sta.csv` (from https://www.cdc.gov/west-nile-virus/data-maps/historic-data.html). Comparison table in Appendix A. | Not changed. Proposed for PR 2. |
+| 2 | **Colorado West Nile virus counts are wrong for every year 2010 to 2024.** `fetch_cdc_wonder_wnv()` does not fetch anything; it writes a hardcoded table and stamps it `"fetched": TODAY`. Compared with CDC ArboNET state data, the hardcoded neuroinvasive counts differ in all 15 years. The largest error is 2023: the repo shows 6 neuroinvasive cases and 0 deaths; CDC reports 316 neuroinvasive and 634 total cases, Colorado's largest season since 2003. CDC also already publishes 2025 (143 neuroinvasive, 285 total). | `scripts/fetch_surveillance_data.py` `fetch_cdc_wonder_wnv()`; CDC file `https://www.cdc.gov/wcms/vizdata/live/ncezid_dvbd/WNV/wnv_hum_historic - Historic Sta.csv` (from https://www.cdc.gov/west-nile-virus/data-maps/historic-data.html). Comparison table in Appendix A. | **Fixed in PR 2**: fetched from the CDC ArboNET state file with source URL, retrieval date and latest year recorded; 2010 to 2025 now match CDC. |
 | 3 | **NB05 "Climate Change Impact Analysis" is built entirely on random synthetic data, but the published page names NOAA and CDC as its data sources.** Climate and case series come from `generate_synthetic_climate_data()` and `generate_synthetic_disease_data()` (`np.random`). The word "synthetic" appears only in collapsed code, not in any visible text on the published page. | `notebooks/05_climate_change_impact_analysis.ipynb` cell 6; published page `notebooks/05_climate_change_impact_analysis.html` (visible text checked on 2026-11-05) | Visible "SYNTHETIC DATA: demonstration only" notice added and data-source list corrected. Unpublishing still needs a maintainer decision. |
 | 4 | **NB04 "Climate-Disease Correlation" trains its forecasting model on synthetic case counts.** WNV weekly cases are generated with `np.random.poisson` from the same climate features the model then "predicts". Climate data also falls back silently to random values if the real file is missing. Any reported accuracy is circular. | `notebooks/04_climate_disease_correlation.ipynb` cells 7 and 13 | Visible synthetic-data notice added and data-source list corrected. Unpublishing still needs a maintainer decision. |
 | 5 | **NB09 "Model Validation" does not validate anything yet.** Correction to the first draft of this audit: the live page does not show the 426 and 455 totals as "2026 YTD". Those figures (sums of the hardcoded 2010 to 2024 WNV and 2015 to 2024 Lyme tables) appear only in the stale committed file `notebooks/nb09_validation_report.json`, dated 2026-05-20. The live page labels both baselines "2010-2025" although the data cover 2010 to 2024 and 2015 to 2024, and its module output is `integrated risk=nan`. | `notebooks/09_model_validation_report.ipynb` cells 5 and 9; published `09_model_validation_report.html` (checked 2026-11-05); `notebooks/nb09_validation_report.json` | Year ranges fixed (computed from the data); experimental banner added. `nan` output and stale JSON not changed. |
-| 6 | **The reliability report certifies hardcoded data as fresh.** `cdc_wnv` and `cdc_lyme` are reported `ok / fresh_data` every day because the static tables are re-stamped with today's date. `regional_counties_2026.json` gets `fetched: TODAY` daily although its case columns are seed values. The report's own `run_mode` is `blocked` (regional file fails schema), yet the site publishes anyway. | `scripts/fetch_surveillance_data.py` `update_regional_data()`, `generate_reliability_report()`; `data/surveillance/reliability_report.json`; dashboard "Pipeline Reliability Status" | Not changed. Proposed for PR 2. |
+| 6 | **The reliability report certifies hardcoded data as fresh.** `cdc_wnv` and `cdc_lyme` are reported `ok / fresh_data` every day because the static tables are re-stamped with today's date. `regional_counties_2026.json` gets `fetched: TODAY` daily although its case columns are seed values. The report's own `run_mode` is `blocked` (regional file fails schema), yet the site publishes anyway. | `scripts/fetch_surveillance_data.py` `update_regional_data()`, `generate_reliability_report()`; `data/surveillance/reliability_report.json`; dashboard "Pipeline Reliability Status" | **Fixed in PR 2**: static tables are reported as `static`, sources not updated in a run as `stale`, and the Lyme and county files are no longer re-stamped. The report still does not stop publication. |
 
 ### P1: misleading interpretation
 
@@ -77,10 +77,10 @@ Out of scope for code changes here, but relevant to upstream contribution:
 
 | Source (as named in repo) | What the code actually does | Real fetch? | Observation type | Notes |
 |---|---|---|---|---|
-| CDC NNDSS WNV (`wnv_colorado.json`) | Writes a hardcoded 2010 to 2024 table | No | Human reported cases (claimed) | Values do not match CDC ArboNET (Appendix A). |
-| CDC Lyme (`lyme_colorado.json`) | Writes a hardcoded 2015 to 2024 table | No | Human reported cases (claimed) | Unverified; case definition changed in 2022. |
+| CDC ArboNET WNV (`wnv_colorado.json`) | Downloads and validates the CDC state-level CSV (PR 2; previously a hardcoded table) | Yes | Human reported cases by state of residence | No state-level deaths in the file (recorded as null). |
+| Lyme table (`lyme_colorado.json`) | Writes a static 2015 to 2024 table, marked `static` (PR 2) | No | Human reported cases (claimed) | Unverified; case definition changed in 2022. |
 | CDC provisional weekly (`2026_season_ytd.json`) | Stub; manual `workflow_dispatch` inputs only | No | Human provisional cases | Two rows, last 2026-05-18. |
-| CDPHE county (`regional_counties_2026.json`) | Seed file; only iNaturalist counts and `fetched` are updated | No (cases) | Human cases by county (claimed) | Case columns are static seed values. |
+| County seed file (`regional_counties_2026.json`) | Seed file marked `static`; only iNaturalist counts are updated (PR 2) | No (cases) | Human cases by county (claimed) | Case columns are seed values of undocumented origin. |
 | NASA POWER daily, 90 days | Live API at Denver point; filters `-999` sentinels | Yes | Modelled (reanalysis-based) | Single point. |
 | Open-Meteo, 30 days | Live API at Denver point | Yes | Modelled forecast and reanalysis | Single point. |
 | Google Trends, Colorado | `pytrends`; currently failing | Attempted | Search interest index | `degraded` in every recent report. |
@@ -95,7 +95,7 @@ Status values: Observed, Derived, Modelled, Experimental, Unsupported, Synthetic
 
 | Indicator (as shown) | Where | Actual calculation | Source | Time / space | Evidence cited | Validation | Status | Action |
 |---|---|---|---|---|---|---|---|---|
-| WNV annual neuroinvasive cases and deaths | NB01, NB08, NB09 | Hardcoded table | None verifiable; differs from CDC | Annual / state | None | None | Unsupported (incorrect) | Replace with CDC ArboNET CSV and record provenance |
+| WNV annual neuroinvasive cases | NB01, NB06, NB08, NB09 | CDC ArboNET state file (PR 2) | CDC ArboNET | Annual / state of residence | n/a | Values checked against CDC on 2026-11-06 | Observed | Keep; deaths shown as not published |
 | Lyme confirmed and probable | NB02, NB08, NB09 | Hardcoded table | Unverified | Annual / state | None | None | Unsupported (unverified) | Verify; split at 2022; label as residence, not exposure |
 | 2026 season weekly counts | NB06 | Two manual rows | Manual entry | Weekly / state | None | None | Stale | Show last observation date; stop calling it live |
 | County cases and "hotspots" | NB07 | Seed values plus static hotspot list | Seed file | YTD / county | None | None | Unsupported | Remove "hotspot" wording until a method exists |
@@ -110,7 +110,7 @@ Status values: Observed, Derived, Modelled, Experimental, Unsupported, Synthetic
 | Climate-to-cases forecast | NB04 | Model trained on synthetic Poisson cases | Synthetic | Weekly | None | Circular | Synthetic | Label as demonstration or unpublish |
 | Climate change impact | NB05 | All inputs random | Synthetic | Daily | None | None | Synthetic | Label as demonstration or unpublish |
 | Model validation | NB09 | Baselines against mislabelled totals | Hardcoded | Annual | n/a | Invalid | Unsupported | Fix inputs; use rolling-origin evaluation |
-| Pipeline reliability | index | File presence and schema keys | Pipeline | Daily | n/a | n/a | Software check only | Track real observation date, not run date |
+| Pipeline reliability | index | File presence, schema keys, static flag and retrieval date; reports latest observation (PR 2) | Pipeline | Daily | n/a | n/a | Software check only | Add a publication gate |
 
 The table covers the headline indicators. Chart-by-chart entries for NB01, NB02, NB03, NB06 to NB08 still need to be completed. Several charts reuse the indicators above.
 
@@ -251,4 +251,40 @@ What PR 1 changed, and why. Nothing was removed from the published site; NB04 an
 - All seven edited notebooks executed with `jupyter nbconvert --execute` in an isolated copy; the rendered HTML shows the new notices and labels.
 - Live iNaturalist queries with the corrected IDs for the past year in the Colorado bounding box return 7 tick records (*Dermacentor andersoni*, *D. variabilis*) and 7 mosquito records (including *Culex tarsalis*).
 - Not verified: screen-reader output, keyboard flow, zoom and reflow on the notebook pages; the matplotlib chart images in NB03 were not inspected visually.
+
+## 10. PR 2 changes (data provenance)
+
+| Change | Files | Why |
+|---|---|---|
+| West Nile virus counts fetched from the CDC ArboNET state-level CSV, validated (expected columns, complete years, neuroinvasive not above total, no negative counts) and saved with source URL, documentation page, retrieval time and latest year | `scripts/fetch_surveillance_data.py`, `data/surveillance/wnv_colorado.json` | Finding 2 |
+| If the CDC download or validation fails, the previous file is kept and reported as `stale`; no built-in numbers are substituted | `scripts/fetch_surveillance_data.py` | Brief Phase 3.2; finding 2 |
+| WNV deaths recorded as `null` (not published at state level in the CDC file) instead of being filled with zeros | script, NB01 | Brief Phase 3.2 |
+| Lyme table renamed to `write_lyme_static_table()`, marked `static`, no longer stamped with the run date | script, `lyme_colorado.json` | Finding 6 |
+| County seed file marked `static`; its unsupported "aggregated from CDPHE weekly reports" note replaced; only the iNaturalist columns and `inaturalist_counts_updated` change on each run | script, `regional_counties_2026.json` | Finding 6 |
+| Reliability report schema 1.1: adds `kind` and `latest_observation`, and the statuses `static` and `stale`; reads county records from `county_ytd`, so the county file is no longer reported as invalid | script | Finding 6 |
+| Dashboard reliability table shows kind and latest observation, and explains both | `scripts/generate_dashboard.py` | Brief Phase 3.1 |
+| Where a file does not state its latest observation, the report takes the newest record date (for example NASA POWER's newest day was 2026-10-30 in a file retrieved 2026-11-05) | script | Brief Phase 3.1: show observation date, not run date |
+| Machine-readable source registry, checked by tests against the reliability report | `config/data-sources.yaml`, `tests/test_data_sources.py` | Brief Phase 3 |
+| NB01 historical WNV load rewritten: the loader path counted rows per year (every year showed 1 case) and the fallback was a second copy of the wrong table; the cell now shows the source and latest year, and an empty table skips the charts | NB01 | New finding |
+| NB01 alt text computed from the data; the uncited claim that peak years "correlate with warm, wet springs" removed | NB01 | Brief Phase 5 |
+| NB08 panel 8 fixed: it summed the `state` column (the text "Colorado") instead of case counts, and drew Lyme (from 2015) on the WNV (from 2010) x positions | NB08 | New finding |
+| NB06 bars relabelled from "Annual Total" to "Neuroinvasive cases"; year ranges in NB01, NB06 and NB08 computed from the data | NB01, NB06, NB08 | Data now run to 2025 |
+| `pyyaml` added to the test workflow install (already in `requirements.txt`) | `.github/workflows/test-coverage.yml` | Registry tests |
+
+### Not changed in PR 2
+
+- The reliability report still does not stop publication when the run mode is `blocked` (brief Phase 10.4).
+- `2026_season_ytd.json` and the provisional-ingestion stub are unchanged; the 2026 season view is still months out of date.
+- The Lyme table is still unverified. No machine-readable state-level Lyme source was found during this audit.
+- iNaturalist pagination and county parsing are unchanged.
+
+### New findings from the PR 2 pass
+
+- CDC returns HTTP 403 to the project's custom User-Agent `AEDES-Surveillance/2.0`, while the standard Python and curl client headers receive the file. The CDC request now sends the standard Python header. This is a judgement call for the maintainer: it does not disguise the client as a browser, but it does change the header CDC sees.
+- CDC also publishes a county-level yearly WNV file (`wnv_hist_hum_nonhum_yearly.csv`, linked from the same page) with human and neuroinvasive cases by county FIPS code. It could replace the county seed values for WNV in a later PR.
+- CDC's public WNV files give deaths only as national totals.
+- CDC's page states that non-neuroinvasive counts should not be compared between places or over time, so the dashboard should keep using neuroinvasive counts for trends.
+- NB06 and NB08 publish none of their Plotly charts: the live pages contain no Plotly output (checked 2026-11-06), while NB02 publishes five. The cells run without error, so the figures are dropped silently. Only the matplotlib panels in NB08 appear.
+- Five PNG files tracked in `notebooks/` (for example `wnv_annual_trend.png`, which still shows the old "2012 outbreak, 130 cases" table) are stale. They are not published, because the deploy copies only `_site/`, but they are misleading to anyone browsing the repository.
+- NB08 panel 8 draws WNV in a light green from the viridis palette, which appears to fall well below the 3:1 non-text contrast WCAG 2.2 requires for chart graphics (SC 1.4.11). Not measured; for PR 5.
 

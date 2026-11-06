@@ -1,0 +1,201 @@
+# Data source registry for the Colorado dashboard.
+#
+# One entry per source tracked in the reliability report
+# (RELIABILITY_SOURCES in scripts/fetch_surveillance_data.py).
+# tests/test_data_sources.py checks that the two lists match.
+#
+# Field notes:
+#   kind:              fetched (downloaded on each run) or static (stored in this repository)
+#   observation_type:  observed, opportunistic, modelled, index, or unknown
+#   status:            verified (values checked against the provider), unverified, or failing
+#   license:           "unverified" until someone has read the provider's terms
+#   last_checked:      date a person last checked the entry against the provider
+#
+# Do not fill a field with a guess. Leave it null or "unverified" and say why in limitations.
+
+sources:
+  - id: cdc_wnv
+    artifact: data/surveillance/wnv_colorado.json
+    kind: fetched
+    provider: US Centers for Disease Control and Prevention (CDC), ArboNET
+    dataset: West Nile virus historic data, human cases by state and year
+    url: https://www.cdc.gov/wcms/vizdata/live/ncezid_dvbd/WNV/wnv_hum_historic%20-%20Historic%20Sta.csv
+    documentation: https://www.cdc.gov/west-nile-virus/data-maps/historic-data.html
+    geography: Colorado (filtered from all US states)
+    spatial_resolution: state of residence
+    temporal_resolution: annual
+    temporal_coverage: 1999 to latest finalized year; the dashboard uses 2010 onward
+    update_frequency: annual; the documentation page said "All data are finalized as of September 16, 2026" on 2026-11-06
+    observation_type: observed
+    data_type: human disease surveillance
+    license: unverified
+    status: verified
+    last_checked: 2026-11-06
+    missing_data: >-
+      Years with no row in the file are left out, not set to zero. Deaths are not
+      published at state level in this file and are recorded as null.
+    limitations:
+      - Under-reporting, larger for non-neuroinvasive disease (CDC).
+      - Cases are counted by state of residence, not place of exposure (CDC).
+      - CDC advises against comparing non-neuroinvasive counts between places or over time; use neuroinvasive counts for trends.
+      - The CSV path sits behind a web page and is not a documented API, so it may change without notice.
+      - CDC returned HTTP 403 to the custom User-Agent "AEDES-Surveillance/2.0" on 2026-11-06; the fetch sends the standard Python client header.
+
+  - id: cdc_lyme
+    artifact: data/surveillance/lyme_colorado.json
+    kind: static
+    provider: unknown (labelled as CDC in earlier versions of this repository)
+    dataset: Colorado Lyme disease confirmed and probable cases, 2015 to 2024 (static table in scripts/fetch_surveillance_data.py)
+    url: null
+    documentation: null
+    geography: Colorado
+    spatial_resolution: state
+    temporal_resolution: annual
+    temporal_coverage: 2015 to 2024
+    update_frequency: never (not fetched)
+    observation_type: unknown
+    data_type: human disease surveillance
+    license: unverified
+    status: unverified
+    last_checked: null
+    missing_data: not applicable
+    limitations:
+      - Origin of the values is not documented; they have not been checked against CDC.
+      - The national Lyme surveillance case definition changed in 2022, so years before and after 2022 are not comparable.
+      - Colorado cases are travel-associated; the counts are not evidence of local transmission.
+
+  - id: nasa_power_90d
+    artifact: data/surveillance/climate_colorado_90d.json
+    kind: fetched
+    provider: NASA Langley Research Center, POWER project
+    dataset: POWER daily point API (parameters T2M, PRECTOTCORR; community RE)
+    url: https://power.larc.nasa.gov/api/temporal/daily/point
+    documentation: https://power.larc.nasa.gov/
+    geography: single point at latitude 39.74, longitude -104.99 (Denver)
+    spatial_resolution: model grid cell containing the point (cell size not recorded here)
+    temporal_resolution: daily
+    temporal_coverage: rolling 90 days before the run date
+    update_frequency: daily
+    observation_type: modelled
+    data_type: environmental
+    license: unverified
+    status: unverified
+    last_checked: null
+    missing_data: values at or below -999 are the provider's missing-data sentinel and are excluded
+    limitations:
+      - One point stands in for the whole state; Denver conditions do not represent the mountains or the Western Slope.
+      - Values are model output, not station observations.
+
+  - id: open_meteo_30d
+    artifact: data/surveillance/open_meteo_colorado_30d.json
+    kind: fetched
+    provider: Open-Meteo
+    dataset: Forecast API with past days (daily temperature, humidity, precipitation)
+    url: https://api.open-meteo.com/v1/forecast
+    documentation: https://open-meteo.com/
+    geography: single point at latitude 39.74, longitude -104.99 (Denver)
+    spatial_resolution: model grid cell containing the point (cell size not recorded here)
+    temporal_resolution: daily
+    temporal_coverage: rolling 30 days before the run date
+    update_frequency: daily
+    observation_type: modelled
+    data_type: environmental
+    license: unverified
+    status: unverified
+    last_checked: null
+    missing_data: not documented here
+    limitations:
+      - One point stands in for the whole state.
+
+  - id: google_trends_co
+    artifact: data/surveillance/google_trends_colorado.json
+    kind: fetched
+    provider: Google Trends, through the unofficial pytrends library
+    dataset: Relative search interest for vector-borne disease terms, region US-CO
+    url: null
+    documentation: https://trends.google.com/
+    geography: Colorado (US-CO), with metro and city breakdowns where returned
+    spatial_resolution: state, metro area, city
+    temporal_resolution: as returned for the requested timeframe
+    temporal_coverage: rolling window set in the script
+    update_frequency: daily attempt
+    observation_type: index
+    data_type: search behaviour
+    license: unverified
+    status: failing
+    last_checked: null
+    missing_data: on failure the file is written with source "unavailable" and no data
+    limitations:
+      - Values are a relative index (0 to 100), not counts of people or cases.
+      - pytrends is not an official API and fails often; recent runs returned no data.
+
+  - id: inaturalist_ticks
+    artifact: data/surveillance/inaturalist_ticks_colorado.json
+    kind: fetched
+    provider: iNaturalist
+    dataset: Research-grade observations of order Ixodida (taxon 51672)
+    url: https://api.inaturalist.org/v1/observations
+    documentation: https://api.inaturalist.org/v1/docs/
+    geography: bounding box latitude 37.0 to 41.0, longitude -109.1 to -102.0 (approximately Colorado)
+    spatial_resolution: point (observer-reported location)
+    temporal_resolution: observation date
+    temporal_coverage: 365 days before the run date
+    update_frequency: daily
+    observation_type: opportunistic
+    data_type: vector presence
+    license: per observation; each record carries its own licence, which must be checked before redistribution
+    status: unverified
+    last_checked: 2026-11-05
+    missing_data: on failure the file is written with source "unavailable" and no data
+    limitations:
+      - Presence-only, effort-biased records; counts are not abundance or density.
+      - Only the first 200 records are requested (no pagination), so "count" is not a total.
+      - County is parsed from free-text place names and is often missing or wrong.
+      - Taxon IDs were wrong before 2026-11-05 (Diptera was queried as ticks; see issue 13).
+
+  - id: inaturalist_mosquitoes
+    artifact: data/surveillance/inaturalist_mosquitoes_colorado.json
+    kind: fetched
+    provider: iNaturalist
+    dataset: Research-grade observations of family Culicidae (taxon 52134)
+    url: https://api.inaturalist.org/v1/observations
+    documentation: https://api.inaturalist.org/v1/docs/
+    geography: bounding box latitude 37.0 to 41.0, longitude -109.1 to -102.0 (approximately Colorado)
+    spatial_resolution: point (observer-reported location)
+    temporal_resolution: observation date
+    temporal_coverage: 365 days before the run date
+    update_frequency: daily
+    observation_type: opportunistic
+    data_type: vector presence
+    license: per observation; each record carries its own licence, which must be checked before redistribution
+    status: unverified
+    last_checked: 2026-11-05
+    missing_data: on failure the file is written with source "unavailable" and no data
+    limitations:
+      - Presence-only, effort-biased records; not trap counts and not abundance.
+      - Mosquito species differ in their role in West Nile virus transmission; check the species before drawing any inference.
+      - Only the first 200 records are requested (no pagination).
+      - Taxon ID was wrong before 2026-11-05 (a fish genus was queried; see issue 13).
+
+  - id: regional_counties
+    artifact: data/surveillance/regional_counties_2026.json
+    kind: static
+    provider: unknown
+    dataset: Seed file of county case counts, county populations and "historical_county_peaks"
+    url: null
+    documentation: null
+    geography: selected Colorado counties
+    spatial_resolution: county
+    temporal_resolution: season to date (as labelled in the file)
+    temporal_coverage: 2026 season (as labelled in the file)
+    update_frequency: never for case columns; iNaturalist counts are refreshed by the pipeline
+    observation_type: unknown
+    data_type: human disease surveillance (claimed)
+    license: unverified
+    status: unverified
+    last_checked: null
+    missing_data: not documented
+    limitations:
+      - Case columns were added in May 2026 with no documented source and are never updated.
+      - Earlier versions said the data was aggregated from CDPHE weekly reports; that is not supported by the code.
+      - The iNaturalist columns inherit the limitations of those sources, including the free-text county parsing.

@@ -236,6 +236,30 @@ class TestSurveillanceDataFiles:
     def test_lyme_colorado_schema(self):
         self._check_file("lyme_colorado.json", ["fetched", "source", "data"])
 
+    def test_wnv_colorado_has_provenance_and_consistent_counts(self):
+        path = DATA_DIR / "wnv_colorado.json"
+        if not path.exists():
+            pytest.skip("wnv_colorado.json not present")
+        payload = json.loads(path.read_text())
+        if payload.get("source") == "unavailable":
+            pytest.skip("CDC source was unavailable and no earlier copy existed")
+        for key in ("source_url", "latest_observation", "static"):
+            assert key in payload, f"wnv_colorado.json: missing provenance key '{key}'"
+        assert payload["static"] is False
+        assert payload["latest_observation"] == max(r["year"] for r in payload["data"])
+        for row in payload["data"]:
+            assert 0 <= row["neuroinvasive"] <= row["total_cases"], row
+            # null means "not published", which must not be turned into zero
+            assert row["deaths"] is None or row["deaths"] >= 0, row
+
+    def test_seed_tables_are_marked_static(self):
+        for name in ("lyme_colorado.json", "regional_counties_2026.json"):
+            path = DATA_DIR / name
+            if not path.exists():
+                continue
+            payload = json.loads(path.read_text())
+            assert payload.get("static") is True, f"{name}: seed table must be marked static"
+
     def test_climate_colorado_schema(self):
         self._check_file("climate_colorado_90d.json", ["fetched", "source", "data"])
 
