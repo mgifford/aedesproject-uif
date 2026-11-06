@@ -8126,7 +8126,7 @@ document.addEventListener('DOMContentLoaded', function () {
   Season year: 2026
   Current week: 45
   Weekly data rows loaded: 2
-  Historical WNV records: 15
+  Historical WNV records: 16
   Historical Lyme records: 10
 </pre>
 </div>
@@ -8508,7 +8508,7 @@ Interpretation:
     <span class="n">fig1</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
         <span class="n">x</span><span class="o">=</span><span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'year'</span><span class="p">],</span>
         <span class="n">y</span><span class="o">=</span><span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'neuroinvasive'</span><span class="p">],</span>
-        <span class="n">name</span><span class="o">=</span><span class="s1">'Annual Total'</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">'Neuroinvasive cases'</span><span class="p">,</span>
         <span class="n">marker_color</span><span class="o">=</span><span class="s1">'rgba(100, 150, 255, 0.6)'</span><span class="p">,</span>
         <span class="n">text</span><span class="o">=</span><span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'neuroinvasive'</span><span class="p">],</span>
         <span class="n">textposition</span><span class="o">=</span><span class="s1">'outside'</span>
@@ -8524,7 +8524,7 @@ Interpretation:
     <span class="p">)</span>
 
 <span class="n">fig1</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"West Nile Virus Cases — Historical Trend (2010-2024) with </span><span class="si">{</span><span class="n">SEASON_YEAR</span><span class="si">}</span><span class="s2"> Context"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"West Nile Virus Neuroinvasive Cases — Historical Trend (</span><span class="si">{</span><span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">–</span><span class="si">{</span><span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">) with </span><span class="si">{</span><span class="n">SEASON_YEAR</span><span class="si">}</span><span class="s2"> Context"</span><span class="p">,</span>
     <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">"Year"</span><span class="p">,</span>
     <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">"Neuroinvasive Cases"</span><span class="p">,</span>
     <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
@@ -8696,9 +8696,9 @@ HISTORICAL BASELINES (for context)
 ======================================================================
 
 WNV Neuroinvasive Cases (Historical):
-  Median annual (all years): 14
-  Recent 5-year average: 10.5
-  Interquartile range (25th-75th): 10–32
+  Median annual (all years): 54
+  Recent 5-year average: 146.2
+  Interquartile range (25th-75th): 37–93
 
 Lyme Disease Cases (Historical):
   Median annual (all years): 42
@@ -8879,7 +8879,7 @@ Latest week snapshot:
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Loaded 2026 YTD data: 2 weeks
-✓ Loaded WNV history: 15 years (through 2024)
+✓ Loaded WNV history: 16 years (through 2025)
 ✓ Loaded Lyme history: 10 years (through 2024)
 ✓ Loaded climate data: 88 days (through 2026-11-03)
 

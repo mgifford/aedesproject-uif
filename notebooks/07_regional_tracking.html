@@ -8005,7 +8005,8 @@ document.addEventListener('DOMContentLoaded', function () {
     <span class="n">REGIONS</span> <span class="o">=</span> <span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'regions'</span><span class="p">,</span> <span class="p">{})</span>
     <span class="n">HOTSPOTS</span> <span class="o">=</span> <span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'historical_county_peaks'</span><span class="p">,</span> <span class="p">{})</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Loaded regional data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">county_df</span><span class="p">)</span><span class="si">}</span><span class="s2"> counties"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Fetched: </span><span class="si">{</span><span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'fetched'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Case columns: </span><span class="si">{</span><span class="s1">'seed values (static, not verified)'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'static'</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'fetched'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+          <span class="sa">f</span><span class="s2">" | iNaturalist counts updated: </span><span class="si">{</span><span class="n">regional_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'inaturalist_counts_updated'</span><span class="p">,</span><span class="w"> </span><span class="s1">'n/a'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"⚠ regional_counties_2026.json not found; creating placeholder"</span><span class="p">)</span>
     <span class="n">county_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
@@ -8052,7 +8053,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Loaded regional data: 12 counties
-  Fetched: 2026-11-06
+  Case columns: seed values (static, not verified) | iNaturalist counts updated: 2026-11-06
   Total YTD cases statewide: WNV=0, Lyme=2, RMSF=1
 </pre>
 </div>
