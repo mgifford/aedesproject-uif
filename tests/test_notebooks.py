@@ -182,6 +182,35 @@ class TestNotebookDocumentation:
             assert src, f"{stem} code cell {i}: is completely empty — remove or fill it"
 
 
+class TestScientificDisclosure:
+    """Published notebooks must disclose synthetic data and unvalidated indices in visible text.
+
+    Code cells are collapsed in the published HTML, so a code comment is not a disclosure.
+    """
+
+    SYNTHETIC_NOTICE = "SYNTHETIC DATA: demonstration only"
+    EXPERIMENTAL_NOTICE = "Experimental index, not validated"
+
+    @pytest.mark.parametrize("stem", EXPECTED_NOTEBOOKS)
+    def test_synthetic_data_is_disclosed_in_first_cell(self, stem):
+        nb = load_nb(stem)
+        code = "".join(source_of(c) for c in all_code_cells(nb)).lower()
+        if "synthetic" in code:
+            assert self.SYNTHETIC_NOTICE in source_of(nb["cells"][0]), (
+                f"{stem}: generates synthetic data but its first cell has no '{self.SYNTHETIC_NOTICE}' notice"
+            )
+
+    @pytest.mark.parametrize("stem", EXPECTED_NOTEBOOKS)
+    def test_composite_index_is_labelled_experimental(self, stem):
+        nb = load_nb(stem)
+        code = "".join(source_of(c) for c in all_code_cells(nb))
+        if "compute_integrated_risk_score" in code:
+            assert self.EXPERIMENTAL_NOTICE in source_of(nb["cells"][0]), (
+                f"{stem}: shows the composite risk index but its first cell has no "
+                f"'{self.EXPERIMENTAL_NOTICE}' notice"
+            )
+
+
 # ---------------------------------------------------------------------------
 # 2. Data-contract tests — verify surveillance data files + exports
 # ---------------------------------------------------------------------------

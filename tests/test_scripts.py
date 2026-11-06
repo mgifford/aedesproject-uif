@@ -154,6 +154,22 @@ class TestFetchINaturalist:
         data = json.loads(out.read_text())
         assert data["source"] == "unavailable"
 
+    def test_taxon_ids_are_ticks_and_mosquitoes(self):
+        # Regression for issue #13: 47822 is Diptera and 53522 is a fish genus.
+        assert fsd.INAT_TAXON_TICKS == 51672       # Ixodida
+        assert fsd.INAT_TAXON_MOSQUITOES == 52134  # Culicidae
+
+    @pytest.mark.parametrize(
+        "fetcher, taxon_id",
+        [("fetch_inaturalist_ticks", 51672), ("fetch_inaturalist_mosquitoes", 52134)],
+    )
+    def test_request_uses_correct_taxon_id(self, tmp_path, monkeypatch, fetcher, taxon_id):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        with patch.object(fsd, "_fetch_with_retry", return_value=None) as mock_fetch:
+            getattr(fsd, fetcher)()
+        requested_url = mock_fetch.call_args[0][0]
+        assert f"taxon_id={taxon_id}&" in requested_url
+
 
 class TestFetchGoogleTrends:
     def test_saves_fallback_when_pytrends_unavailable(self, tmp_path, monkeypatch):

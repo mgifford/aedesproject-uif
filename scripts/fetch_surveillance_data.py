@@ -35,6 +35,12 @@ TODAY = datetime.date.today().isoformat()
 # Colorado bounding box for iNaturalist spatial filter
 _CO_BBOX = {"nelat": 41.0, "nelng": -102.0, "swlat": 37.0, "swlng": -109.1}
 
+# iNaturalist taxon IDs, checked against https://api.inaturalist.org/v1/taxa/<id>
+# on 2026-11-05. The previous values (47822 = order Diptera, 53522 = genus
+# Synbranchus) returned flies and no mosquitoes (see issue #13).
+INAT_TAXON_TICKS = 51672       # order Ixodida (ticks)
+INAT_TAXON_MOSQUITOES = 52134  # family Culicidae (mosquitoes)
+
 # NASA POWER uses -999 (and values below -998) as a missing-data sentinel
 NASA_POWER_SENTINEL = -999
 
@@ -499,7 +505,7 @@ def fetch_inaturalist_ticks() -> None:
     Fetch recent tick observations in Colorado from iNaturalist API (free, no key).
 
     Uses:
-    - taxon_id=47822 (Ixodida — all hard and soft ticks)
+    - taxon_id=INAT_TAXON_TICKS (Ixodida — all hard and soft ticks)
     - Explicit Colorado bounding box to avoid place_id mis-matching
     - Exponential back-off retry for rate-limited GitHub Actions runners
     - Date-window: only observations from the past 365 days are requested
@@ -508,7 +514,7 @@ def fetch_inaturalist_ticks() -> None:
     since = (datetime.date.today() - datetime.timedelta(days=365)).isoformat()
     url = (
         "https://api.inaturalist.org/v1/observations"
-        "?taxon_id=47822"       # Ixodida — all ticks
+        f"?taxon_id={INAT_TAXON_TICKS}"       # Ixodida — all ticks
         "&quality_grade=research"
         f"&nelat={_CO_BBOX['nelat']}&nelng={_CO_BBOX['nelng']}"
         f"&swlat={_CO_BBOX['swlat']}&swlng={_CO_BBOX['swlng']}"
@@ -547,7 +553,7 @@ def fetch_inaturalist_ticks() -> None:
 def fetch_inaturalist_mosquitoes() -> None:
     """
     Fetch recent mosquito observations in Colorado from iNaturalist API.
-    Taxa: Culicidae (family), taxon_id=53522
+    Taxa: Culicidae (family), taxon_id=INAT_TAXON_MOSQUITOES
 
     Uses explicit Colorado bounding box and date-window to reduce API load.
     """
@@ -555,7 +561,7 @@ def fetch_inaturalist_mosquitoes() -> None:
     since = (datetime.date.today() - datetime.timedelta(days=365)).isoformat()
     url = (
         "https://api.inaturalist.org/v1/observations"
-        "?taxon_id=53522"       # Culicidae — mosquitoes
+        f"?taxon_id={INAT_TAXON_MOSQUITOES}"  # Culicidae — mosquitoes
         "&quality_grade=research"
         f"&nelat={_CO_BBOX['nelat']}&nelng={_CO_BBOX['nelng']}"
         f"&swlat={_CO_BBOX['swlat']}&swlng={_CO_BBOX['swlng']}"

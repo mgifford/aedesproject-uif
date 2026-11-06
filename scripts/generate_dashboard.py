@@ -22,7 +22,7 @@ NOTEBOOK_META = {
     "06_current_season_monitoring": {
         "title": "2026 Season Monitoring",
         "icon": "📅",
-        "description": "Real-time 2026 season tracking with weekly case counts, baseline comparisons, and early-warning alert levels.",
+        "description": "2026 season tracking from manually entered provisional counts (these may be months out of date), with baseline comparisons and experimental alert levels.",
         "disease": "WNV / Lyme / RMSF",
         "vector": "Live monitoring",
         "data_recency": "live",
@@ -30,7 +30,7 @@ NOTEBOOK_META = {
     "01_west_nile_virus_surveillance": {
         "title": "West Nile Virus Surveillance",
         "icon": "🦟",
-        "description": "Current-season WNV risk, 90-day climate conditions, iNaturalist vector observations, and early warning signals. Historical trends (2010–2024) available below.",
+        "description": "Experimental (not validated) WNV index, 90-day climate conditions for the Denver area, and iNaturalist mosquito observations. Historical trends (2010–2024) available below.",
         "disease": "West Nile Virus",
         "vector": "Culex tarsalis",
         "data_recency": "live",
@@ -38,15 +38,15 @@ NOTEBOOK_META = {
     "02_tick_disease_surveillance": {
         "title": "Tick-Borne Disease Surveillance",
         "icon": "🕷️",
-        "description": "Current tick activity, iNaturalist tick observations, and seasonal risk calendar for Colorado. Historical Lyme trends (2015–2024) available below.",
-        "disease": "Lyme / RMSF / CTF",
-        "vector": "Ixodes / Dermacentor",
+        "description": "Experimental (not validated) tick index, iNaturalist tick observations, and seasonal calendar for Colorado. Historical Lyme trends (2015–2024, travel-associated cases) available below.",
+        "disease": "CTF / RMSF / Lyme (travel-associated)",
+        "vector": "Dermacentor",
         "data_recency": "live",
     },
     "07_regional_tracking": {
         "title": "Regional County Tracking",
         "icon": "🗺️",
-        "description": "County-level breakdown for Colorado — choropleth map, Front Range hotspot analysis, and per-county iNaturalist vector observations.",
+        "description": "County-level breakdown for Colorado — choropleth map, Front Range comparison, and per-county iNaturalist vector observations.",
         "disease": "WNV / Lyme / RMSF",
         "vector": "County-level",
         "data_recency": "live",
@@ -429,9 +429,16 @@ def build_index() -> None:
 <div class="container">
 
   <div class="alert">
-    <strong>About this dashboard:</strong> Automatically updated daily using CDC surveillance data,
-    NASA POWER climate records, and iNaturalist citizen-science observations. Each analysis notebook
-    includes trend charts, seasonal risk indicators, and early warning signals.
+    <strong>About this dashboard:</strong> Rebuilt daily. NASA POWER and Open-Meteo climate data and
+    iNaturalist citizen-science observations are fetched on each run. CDC case tables are currently
+    static values stored in the code, not fetched, and are being checked against CDC.
+    Risk levels are an experimental index: they have not been validated and are not probabilities of
+    infection. Notebooks 04 and 05 use synthetic data for demonstration only.
+    See the <a href="https://github.com/mgifford/aedesproject-uif/blob/main/docs/SCIENTIFIC-AUDIT.md">scientific audit</a> for known limitations.
+    For official guidance, see
+    <a href="https://cdphe.colorado.gov/communicable/animal-related-diseases/west-nile-virus">CDPHE West Nile virus</a>,
+    <a href="https://cdphe.colorado.gov/communicable/animal-related-diseases/tick-borne-diseases">CDPHE tick-borne diseases</a>
+    and <a href="https://www.cdc.gov/west-nile-virus/index.html">CDC</a>.
     Built on the <a href="https://github.com/mgifford/aedesproject-uif">AEDES framework</a>,
     originally developed for dengue surveillance in the Philippines (Ligot &amp; Toledo, 2021).
   </div>
@@ -439,8 +446,8 @@ def build_index() -> None:
   <div class="data-note">
     <strong>ℹ️ About CDC data recency:</strong>
     CDC's finalized annual case counts are published approximately 12–18 months after the end of each
-    calendar year, so the most recent <em>finalized</em> data is <strong>2024</strong>.
-    Current-season (2026) provisional weekly counts are available in the live monitoring reports below.
+    calendar year. The most recent year in this dashboard's case tables is <strong>2024</strong>.
+    Current-season (2026) provisional counts are entered manually and may be months out of date.
     Reports that rely exclusively on finalized historical data are grouped in the
     <em>Historical Archive</em> section at the bottom of this page.
   </div>
@@ -468,7 +475,7 @@ def build_index() -> None:
       </thead>
       <tbody>
         <tr><td>West Nile Virus</td><td>Culex tarsalis</td><td>Jul–Sep</td><td>~10% (neuroinvasive)</td><td>Yes</td></tr>
-        <tr><td>Lyme Disease</td><td>Ixodes scapularis</td><td>May–Aug</td><td>&lt;1%</td><td>Yes</td></tr>
+        <tr><td>Lyme Disease</td><td>Ixodes scapularis (not established in Colorado; cases are travel-associated)</td><td>May–Aug</td><td>&lt;1%</td><td>Yes</td></tr>
         <tr><td>Rocky Mountain Spotted Fever</td><td>Dermacentor andersoni</td><td>Mar–Aug</td><td>5–20%</td><td>Yes</td></tr>
         <tr><td>Colorado Tick Fever</td><td>Dermacentor andersoni</td><td>May–Aug</td><td>&lt;1%</td><td>CO only</td></tr>
         <tr><td>Tularemia</td><td>Dermacentor / rabbit contact</td><td>Jun–Sep</td><td>&lt;2% treated</td><td>Yes</td></tr>
@@ -476,6 +483,7 @@ def build_index() -> None:
         <tr><td>Plague</td><td>Flea / prairie dog contact</td><td>Jun–Sep</td><td>10–15% treated</td><td>Yes</td></tr>
       </tbody>
     </table>
+    <p>Case-fatality and reportability figures in this table have not yet been checked against a cited source.</p>
   </div>
 
 </div>
@@ -485,7 +493,7 @@ def build_index() -> None:
     AEDES — Advanced Early Disease Prediction and Exploration Service &nbsp;|&nbsp;
     <a href="https://github.com/mgifford/aedesproject-uif">GitHub</a> &nbsp;|&nbsp;
     Built with Jupyter, nbconvert, and GitHub Actions &nbsp;|&nbsp;
-    Data: CDC NNDSS, NASA POWER, iNaturalist &nbsp;|&nbsp;
+    Data: CDC (static tables, under review), NASA POWER, Open-Meteo, iNaturalist &nbsp;|&nbsp;
     Generated: {TODAY}
   </p>
   <p style="margin-top:0.5rem;">
