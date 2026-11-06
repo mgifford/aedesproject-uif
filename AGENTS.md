@@ -85,7 +85,7 @@ Automation workflows in [`.github/workflows/`](.github/workflows/) run scheduled
 - Manual workflow dispatch via GitHub Actions UI
 
 **Pipeline Steps:**
-1. Load CDC WNV/Lyme case tables (currently static values in `scripts/fetch_surveillance_data.py`, not fetched; weekly provisional counts are entered manually; see `docs/SCIENTIFIC-AUDIT.md`)
+1. Fetch Colorado WNV case counts from the CDC ArboNET state file; the Lyme and county case tables are static values that are not fetched or verified (sources and limitations are listed in `config/data-sources.yaml`)
 2. Fetch NASA POWER climate data (90-day rolling window for Colorado, excluding sentinel values)
 3. Fetch iNaturalist tick/mosquito observations (real-time)
 4. Execute Jupyter notebooks (`.ipynb` → `.html`) with executable Python cells

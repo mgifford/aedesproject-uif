@@ -1,8 +1,9 @@
 {
   "season": "2026",
-  "fetched": "2026-11-02",
-  "source": "CDC NNDSS / Colorado CDPHE provisional",
-  "note": "County-level data is provisional. Aggregated from CDPHE weekly reports.",
+  "fetched": null,
+  "source": "Seed file added to the repository in May 2026; case counts not verified against CDC or CDPHE",
+  "note": "County case columns and historical_county_peaks are seed values and are not updated by the pipeline. Only tick_observations_ytd and mosquito_observations_ytd are refreshed from iNaturalist.",
+  "static": true,
   "regions": {
     "front_range": {
       "label": "Front Range",

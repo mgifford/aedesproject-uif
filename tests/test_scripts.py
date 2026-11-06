@@ -69,35 +69,104 @@ class TestFetchUrl:
             result = fsd.fetch_url("https://example.com/api")
         assert result is None
 
+    def test_user_agent_none_sends_default_header(self):
+        mock_response = MagicMock()
+        mock_response.read.return_value = b"ok"
+        mock_response.__enter__ = lambda s: s
+        mock_response.__exit__ = MagicMock(return_value=False)
+        with patch("urllib.request.urlopen", return_value=mock_response) as mock_open:
+            fsd.fetch_url("https://example.com/api", user_agent=None)
+        request = mock_open.call_args[0][0]
+        assert request.get_header("User-agent") is None
 
-class TestFetchCDCWonderWNV:
-    def test_saves_file_with_expected_structure(self, tmp_path, monkeypatch):
-        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
-        fsd.fetch_cdc_wonder_wnv()
-        out = tmp_path / "wnv_colorado.json"
-        assert out.exists()
-        data = json.loads(out.read_text())
-        assert "data" in data
-        assert "fetched" in data
-        assert len(data["data"]) > 0
-        first = data["data"][0]
-        assert "year" in first
-        assert "neuroinvasive" in first
-        assert "deaths" in first
 
-    def test_all_years_have_non_negative_cases(self, tmp_path, monkeypatch):
+CDC_CSV = (
+    '"Type","Year","State","Reported Cases","Legend categories"\n'
+    "All disease cases,1999-2025,CO,5966,>50\n"
+    "All disease cases,2009,CO,103,>50\n"
+    "All disease cases,2010,CO,81,>50\n"
+    "Neuroinvasive disease cases,2010,CO,26,21 to 50\n"
+    "All disease cases,2011,CO,7,1 to 10\n"
+    "Neuroinvasive disease cases,2011,CO,2,1 to 10\n"
+    "All disease cases,2010,WY,9,1 to 10\n"
+    "Neuroinvasive disease cases,2010,WY,4,1 to 10\n"
+)
+
+
+class TestParseCDCWNVStateCSV:
+    def test_returns_state_rows_from_first_year(self):
+        records = fsd.parse_cdc_wnv_state_csv(CDC_CSV)
+        assert [r["year"] for r in records] == [2010, 2011]  # 2009 and cumulative row dropped
+        assert records[0] == {
+            "year": 2010, "state": "Colorado", "neuroinvasive": 26, "total_cases": 81, "deaths": None,
+        }
+
+    def test_rejects_missing_columns(self):
+        with pytest.raises(ValueError, match="missing columns"):
+            fsd.parse_cdc_wnv_state_csv('"Type","Year","State"\nAll disease cases,2010,CO\n')
+
+    def test_rejects_incomplete_year(self):
+        text = '"Type","Year","State","Reported Cases"\nAll disease cases,2010,CO,81\n'
+        with pytest.raises(ValueError, match="incomplete counts"):
+            fsd.parse_cdc_wnv_state_csv(text)
+
+    def test_rejects_neuroinvasive_above_total(self):
+        text = (
+            '"Type","Year","State","Reported Cases"\n'
+            "All disease cases,2010,CO,5\nNeuroinvasive disease cases,2010,CO,9\n"
+        )
+        with pytest.raises(ValueError, match="exceeds total"):
+            fsd.parse_cdc_wnv_state_csv(text)
+
+    def test_rejects_file_without_state_rows(self):
+        with pytest.raises(ValueError, match="no rows"):
+            fsd.parse_cdc_wnv_state_csv(CDC_CSV, state_code="AK")
+
+
+class TestFetchCDCArboNetWNV:
+    def test_saves_file_with_provenance(self, tmp_path, monkeypatch):
         monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
-        fsd.fetch_cdc_wonder_wnv()
+        with patch.object(fsd, "_fetch_with_retry", return_value=CDC_CSV.encode()) as mock_fetch:
+            fsd.fetch_cdc_arbonet_wnv()
         data = json.loads((tmp_path / "wnv_colorado.json").read_text())
-        for row in data["data"]:
-            assert row["neuroinvasive"] >= 0
-            assert row["deaths"] >= 0
+        assert data["source"] == "CDC ArboNET"
+        assert data["source_url"] == fsd.CDC_WNV_STATE_CSV
+        assert data["fetched"] == fsd.TODAY
+        assert data["static"] is False
+        assert data["latest_observation"] == 2011
+        assert all(row["deaths"] is None for row in data["data"])
+        # CDC rejects the custom User-Agent, so this request must use the default header.
+        assert mock_fetch.call_args.kwargs["user_agent"] is None
+
+    def test_keeps_previous_file_when_download_fails(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        previous = {"fetched": "2026-01-01", "source": "CDC ArboNET", "data": [{"year": 2010}]}
+        (tmp_path / "wnv_colorado.json").write_text(json.dumps(previous))
+        with patch.object(fsd, "_fetch_with_retry", return_value=None):
+            fsd.fetch_cdc_arbonet_wnv()
+        assert json.loads((tmp_path / "wnv_colorado.json").read_text()) == previous
+
+    def test_keeps_previous_file_when_format_changes(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        previous = {"fetched": "2026-01-01", "source": "CDC ArboNET", "data": [{"year": 2010}]}
+        (tmp_path / "wnv_colorado.json").write_text(json.dumps(previous))
+        with patch.object(fsd, "_fetch_with_retry", return_value=b"unexpected,columns\n1,2\n"):
+            fsd.fetch_cdc_arbonet_wnv()
+        assert json.loads((tmp_path / "wnv_colorado.json").read_text()) == previous
+
+    def test_writes_unavailable_marker_when_no_previous_file(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        with patch.object(fsd, "_fetch_with_retry", return_value=None):
+            fsd.fetch_cdc_arbonet_wnv()
+        data = json.loads((tmp_path / "wnv_colorado.json").read_text())
+        assert data["source"] == "unavailable"
+        assert data["data"] == []
 
 
-class TestFetchCDCWonderLyme:
+class TestLymeStaticTable:
     def test_saves_file_with_expected_structure(self, tmp_path, monkeypatch):
         monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
-        fsd.fetch_cdc_wonder_lyme()
+        fsd.write_lyme_static_table()
         out = tmp_path / "lyme_colorado.json"
         assert out.exists()
         data = json.loads(out.read_text())
@@ -107,9 +176,17 @@ class TestFetchCDCWonderLyme:
         assert "confirmed" in first
         assert "probable" in first
 
+    def test_is_marked_static_and_not_stamped_with_run_date(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        fsd.write_lyme_static_table()
+        data = json.loads((tmp_path / "lyme_colorado.json").read_text())
+        assert data["static"] is True
+        assert data["fetched"] is None
+        assert data["latest_observation"] == data["data"][-1]["year"]
+
     def test_confirmed_plus_probable_are_positive(self, tmp_path, monkeypatch):
         monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
-        fsd.fetch_cdc_wonder_lyme()
+        fsd.write_lyme_static_table()
         data = json.loads((tmp_path / "lyme_colorado.json").read_text())
         for row in data["data"]:
             assert row["confirmed"] + row["probable"] > 0
@@ -169,6 +246,29 @@ class TestFetchINaturalist:
             getattr(fsd, fetcher)()
         requested_url = mock_fetch.call_args[0][0]
         assert f"taxon_id={taxon_id}&" in requested_url
+
+
+class TestUpdateRegionalData:
+    def test_does_not_restamp_seed_case_data(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        regional = {
+            "fetched": None,
+            "source": "seed",
+            "static": True,
+            "county_ytd": [{"county": "Denver", "wnv_cases": 0}],
+        }
+        (tmp_path / "regional_counties_2026.json").write_text(json.dumps(regional))
+        ticks = {"source": "iNaturalist API", "data": [{"county": "Denver, CO, USA"}]}
+        (tmp_path / "inaturalist_ticks_colorado.json").write_text(json.dumps(ticks))
+
+        fsd.update_regional_data()
+
+        data = json.loads((tmp_path / "regional_counties_2026.json").read_text())
+        assert data["fetched"] is None
+        assert data["static"] is True
+        assert data["inaturalist_counts_updated"] == fsd.TODAY
+        assert data["county_ytd"][0]["tick_observations_ytd"] == 1
+        assert data["county_ytd"][0]["wnv_cases"] == 0
 
 
 class TestFetchGoogleTrends:
@@ -237,33 +337,34 @@ class TestFetchGoogleTrends:
 class TestReliabilityReport:
     @staticmethod
     def _write_all_sources_ok() -> None:
-        fsd.save("wnv_colorado.json", {"fetched": "2026-05-22", "source": "CDC", "data": [{"year": 2024}]})
-        fsd.save("lyme_colorado.json", {"fetched": "2026-05-22", "source": "CDC", "data": [{"year": 2024}]})
+        today = fsd.TODAY
+        fsd.save("wnv_colorado.json", {"fetched": today, "source": "CDC", "data": [{"year": 2024}]})
+        fsd.save("lyme_colorado.json", {"fetched": today, "source": "CDC", "data": [{"year": 2024}]})
         fsd.save(
             "climate_colorado_90d.json",
-            {"fetched": "2026-05-22", "source": "NASA POWER", "data": [{"date": "20260522"}]},
+            {"fetched": today, "source": "NASA POWER", "data": [{"date": "20260522"}]},
         )
         fsd.save(
             "open_meteo_colorado_30d.json",
-            {"fetched": "2026-05-22", "source": "Open-Meteo API", "data": [{"date": "2026-05-22"}]},
+            {"fetched": today, "source": "Open-Meteo API", "data": [{"date": "2026-05-22"}]},
         )
         fsd.save(
             "google_trends_colorado.json",
             {
-                "fetched": "2026-05-22",
+                "fetched": today,
                 "source": "Google Trends API",
                 "data": [{"date": "2026-05-22", "keyword": "west nile virus", "value": 10}],
             },
         )
         fsd.save(
             "inaturalist_ticks_colorado.json",
-            {"fetched": "2026-05-22", "source": "iNaturalist API", "data": [{"id": 1}]},
+            {"fetched": today, "source": "iNaturalist API", "data": [{"id": 1}]},
         )
         fsd.save(
             "inaturalist_mosquitoes_colorado.json",
-            {"fetched": "2026-05-22", "source": "iNaturalist API", "data": [{"id": 2}]},
+            {"fetched": today, "source": "iNaturalist API", "data": [{"id": 2}]},
         )
-        fsd.save("regional_counties_2026.json", {"fetched": "2026-05-22", "source": "generated", "data": [{"county": "Adams"}]})
+        fsd.save("regional_counties_2026.json", {"fetched": today, "source": "generated", "county_ytd": [{"county": "Adams"}]})
 
     def test_generates_reliability_report_with_required_fields(self, tmp_path, monkeypatch):
         monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
@@ -276,7 +377,7 @@ class TestReliabilityReport:
         assert out.exists()
 
         data = json.loads(out.read_text())
-        assert data["schema_version"] == "1.0"
+        assert data["schema_version"] == "1.1"
         assert data["run_mode"] in {"normal", "degraded", "blocked"}
         assert isinstance(data["sources"], list)
         assert len(data["sources"]) == len(fsd.RELIABILITY_SOURCES)
@@ -288,8 +389,61 @@ class TestReliabilityReport:
             assert "fallback_used" in source
             assert "status_reason" in source
             assert "integrity_critical_failure" in source
+            assert "kind" in source
+            assert "latest_observation" in source
 
         assert report["run_mode"] == "normal"
+
+    def test_marks_source_stale_when_not_updated_this_run(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        self._write_all_sources_ok()
+        fsd.save("wnv_colorado.json", {"fetched": "2000-01-01", "source": "CDC ArboNET", "data": [{"year": 2024}]})
+
+        report = fsd.generate_reliability_report()
+        wnv = next(s for s in report["sources"] if s["source_id"] == "cdc_wnv")
+        assert wnv["status"] == "stale"
+        assert wnv["last_success_at"] == "2000-01-01"
+        assert wnv["integrity_critical_failure"] is False
+        assert report["run_mode"] == "degraded"
+
+    def test_marks_static_table_as_static_not_fresh(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        self._write_all_sources_ok()
+        fsd.save(
+            "lyme_colorado.json",
+            {"fetched": None, "source": "static", "static": True, "latest_observation": 2024, "data": [{"year": 2024}]},
+        )
+
+        report = fsd.generate_reliability_report()
+        lyme = next(s for s in report["sources"] if s["source_id"] == "cdc_lyme")
+        assert lyme["kind"] == "static"
+        assert lyme["status"] == "static"
+        assert lyme["status_reason"] == "static_table_unverified"
+        assert lyme["last_success_at"] is None
+        assert lyme["latest_observation"] == 2024
+        assert report["run_mode"] == "degraded"
+
+    def test_latest_observation_taken_from_record_dates(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        self._write_all_sources_ok()
+        fsd.save(
+            "inaturalist_ticks_colorado.json",
+            {"fetched": fsd.TODAY, "source": "iNaturalist API",
+             "data": [{"observed_on": "2026-10-01"}, {"observed_on": "2026-10-30"}, {"observed_on": None}]},
+        )
+
+        report = fsd.generate_reliability_report()
+        ticks = next(s for s in report["sources"] if s["source_id"] == "inaturalist_ticks")
+        assert ticks["latest_observation"] == "2026-10-30"
+
+    def test_regional_file_uses_county_ytd_records(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        self._write_all_sources_ok()
+
+        report = fsd.generate_reliability_report()
+        regional = next(s for s in report["sources"] if s["source_id"] == "regional_counties")
+        assert regional["status"] == "ok"
+        assert regional["record_count"] == 1
 
     def test_degraded_when_non_critical_source_missing(self, tmp_path, monkeypatch):
         monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))

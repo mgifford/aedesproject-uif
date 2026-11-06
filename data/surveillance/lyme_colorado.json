@@ -1,6 +1,9 @@
 {
-  "fetched": "2026-11-02",
-  "source": "CDC Lyme Data Tables (historical)",
+  "fetched": null,
+  "source": "Static table in scripts/fetch_surveillance_data.py (origin unverified)",
+  "static": true,
+  "latest_observation": 2024,
+  "notes": "Not fetched and not verified against CDC. The 2022 change to the national Lyme surveillance case definition makes years before and after 2022 not comparable. Colorado cases are travel-associated.",
   "data": [
     {
       "year": 2015,
