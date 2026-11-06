@@ -7927,12 +7927,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Climate-Change-Impact-on-Vector-Borne-Disease-Risk-in-Colorado">Climate Change Impact on Vector-Borne Disease Risk in Colorado<a class="anchor-link" href="#Climate-Change-Impact-on-Vector-Borne-Disease-Risk-in-Colorado">¶</a></h1><p><strong>Purpose</strong>: Analyze how climate variables (temperature, precipitation, growing degree days) drive disease risk in Lyme disease and West Nile Virus in Colorado.</p>
+<h1 id="Climate-Change-Impact-on-Vector-Borne-Disease-Risk-in-Colorado">Climate Change Impact on Vector-Borne Disease Risk in Colorado<a class="anchor-link" href="#Climate-Change-Impact-on-Vector-Borne-Disease-Risk-in-Colorado">¶</a></h1><blockquote>
+<p><strong>SYNTHETIC DATA: demonstration only.</strong> Every climate and disease value in this notebook is generated with a random-number generator (<code>generate_synthetic_climate_data</code> and <code>generate_synthetic_disease_data</code>). No NOAA, CDC or CDPHE data is used. The trends, anomalies, correlations and forecasts below illustrate the method only and are not evidence about Colorado or about climate change. See the <a href="https://github.com/mgifford/aedesproject-uif/blob/main/docs/SCIENTIFIC-AUDIT.md">scientific audit</a>.</p>
+</blockquote>
+<p><strong>Purpose</strong>: Analyze how climate variables (temperature, precipitation, growing degree days) drive disease risk in Lyme disease and West Nile Virus in Colorado.</p>
 <p><strong>Data Sources</strong>:</p>
 <ul>
-<li>NOAA weather stations (Denver, Boulder, Glenwood Springs, Grand Junction)</li>
-<li>CDC NNDSS surveillance data (Lyme, WNV cases by date)</li>
-<li>Historical climate normals for anomaly detection</li>
+<li>None yet. All inputs are synthetic (see the notice above).</li>
+<li>Intended sources for a future version: NOAA weather stations (Denver, Boulder, Glenwood Springs, Grand Junction), CDC NNDSS surveillance data (Lyme, WNV cases by date), and historical climate normals for anomaly detection.</li>
 </ul>
 <p><strong>Outputs</strong>:</p>
 <ol>
@@ -7997,7 +7999,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Python version: 3.11.17 (main, Oct  1 2026, 14:32:31) [GCC 13.3.0]
+<pre>Python version: 3.11.18 (main, Oct 26 2026, 02:48:34) [GCC 13.3.0]
 Pandas version: 3.1.1
 NumPy version: 2.4.6
 Output directory: docs/climate-analysis
@@ -8239,9 +8241,9 @@ Disease data (first 5 rows):
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>/tmp/ipykernel_2627/3822289597.py:9: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+<pre>/tmp/ipykernel_2626/3822289597.py:9: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
   day_of_year = (dates.dayofyear - 1) / 365
-/tmp/ipykernel_2627/3822289597.py:37: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
+/tmp/ipykernel_2626/3822289597.py:37: Pandas4Warning: DatetimeIndex.dayofyear is deprecated and will be removed in a future version. Use DatetimeIndex.day_of_year instead.
   day_of_year = (dates.dayofyear - 1) / 365
 </pre>
 </div>

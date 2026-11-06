@@ -7927,7 +7927,10 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Model-Validation-&amp;-Baseline-Comparison">Model Validation &amp; Baseline Comparison<a class="anchor-link" href="#Model-Validation-&amp;-Baseline-Comparison">¶</a></h1><h2 id="Notebook-09-%E2%80%94-Phase-4:-Evaluate-Surveillance-Module-Performance">Notebook 09 — Phase 4: Evaluate Surveillance Module Performance<a class="anchor-link" href="#Notebook-09-%E2%80%94-Phase-4:-Evaluate-Surveillance-Module-Performance">¶</a></h2><p>Compares baseline methods against module risk scores:</p>
+<h1 id="Model-Validation-&amp;-Baseline-Comparison">Model Validation &amp; Baseline Comparison<a class="anchor-link" href="#Model-Validation-&amp;-Baseline-Comparison">¶</a></h1><blockquote>
+<p><strong>Experimental index, not validated.</strong> The risk levels and scores in this notebook come from a composite index with fixed weights that have no cited source and have not been tested against observed cases. They are not probabilities of infection or of an outbreak, and the bands shown around them are not statistical confidence intervals. The case tables compared here are static values that have not yet been verified against CDC. Known limitations are listed in the <a href="https://github.com/mgifford/aedesproject-uif/blob/main/docs/SCIENTIFIC-AUDIT.md">scientific audit</a>.</p>
+</blockquote>
+<h2 id="Notebook-09-%E2%80%94-Phase-4:-Evaluate-Surveillance-Module-Performance">Notebook 09 — Phase 4: Evaluate Surveillance Module Performance<a class="anchor-link" href="#Notebook-09-%E2%80%94-Phase-4:-Evaluate-Surveillance-Module-Performance">¶</a></h2><p>Compares baseline methods against module risk scores:</p>
 <ol>
 <li><strong>Seasonal-average baseline</strong> — mean neuroinvasive WNV / confirmed Lyme per year</li>
 <li><strong>Persistence baseline</strong> — previous-year cases as prediction</li>
@@ -7989,7 +7992,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>✓ Setup complete | today=2026-11-05 | registry: 11 diseases
+<pre>✓ Setup complete | today=2026-11-06 | registry: 11 diseases
 </pre>
 </div>
 </div>
@@ -8075,8 +8078,8 @@ Lyme YTD: 0 rows
 <span class="n">lyme_yearly</span> <span class="o">=</span> <span class="n">lyme_hist</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"year"</span><span class="p">)[</span><span class="s2">"confirmed"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Seasonal-Average Baseline:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  WNV neuroinvasive (2010-2025): </span><span class="si">{</span><span class="n">wnv_avg</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> cases/year"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Lyme confirmed (2010-2025): </span><span class="si">{</span><span class="n">lyme_avg</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> cases/year"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  WNV neuroinvasive (</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">wnv_avg</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> cases/year"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Lyme confirmed (</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">lyme_hist</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">lyme_hist</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">lyme_avg</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> cases/year"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8089,8 +8092,8 @@ Lyme YTD: 0 rows
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Seasonal-Average Baseline:
-  WNV neuroinvasive (2010-2025): 28.4 cases/year
-  Lyme confirmed (2010-2025): 45.5 cases/year
+  WNV neuroinvasive (2010-2024): 28.4 cases/year
+  Lyme confirmed (2015-2024): 45.5 cases/year
 </pre>
 </div>
 </div>
@@ -8307,7 +8310,7 @@ Lyme: no YTD data
 <pre>✓ Exported nb09_validation_report.json
 
 {
-  "date": "2026-11-05",
+  "date": "2026-11-06",
   "title": "Surveillance Module Validation Report \u2014 Phase 4",
   "baselines": {
     "seasonal_average_wnv": "28.4 cases/year",

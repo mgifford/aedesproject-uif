@@ -7927,7 +7927,10 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Climate-Disease-Correlation-Analysis-for-Vector-Borne-Diseases">Climate-Disease Correlation Analysis for Vector-Borne Diseases<a class="anchor-link" href="#Climate-Disease-Correlation-Analysis-for-Vector-Borne-Diseases">¶</a></h1><p><strong>Purpose:</strong> Demonstrate the relationship between climate variables (temperature, precipitation, phenology) and vector-borne disease risk in Colorado.</p>
+<h1 id="Climate-Disease-Correlation-Analysis-for-Vector-Borne-Diseases">Climate-Disease Correlation Analysis for Vector-Borne Diseases<a class="anchor-link" href="#Climate-Disease-Correlation-Analysis-for-Vector-Borne-Diseases">¶</a></h1><blockquote>
+<p><strong>SYNTHETIC DATA: demonstration only.</strong> The weekly West Nile virus case counts that this notebook's model is trained on and evaluated against are generated with a random-number generator from the same climate features the model uses. They are not CDC or CDPHE data. If the climate file is missing, the climate inputs are randomly generated too. The forecasts, accuracy figures and alerts below illustrate the method only and are not evidence about Colorado. See the <a href="https://github.com/mgifford/aedesproject-uif/blob/main/docs/SCIENTIFIC-AUDIT.md">scientific audit</a>.</p>
+</blockquote>
+<p><strong>Purpose:</strong> Demonstrate the relationship between climate variables (temperature, precipitation, phenology) and vector-borne disease risk in Colorado.</p>
 <p><strong>Key Outputs:</strong></p>
 <ul>
 <li>Growing Degree Days (GDD) advancement relative to historical average</li>
@@ -7938,9 +7941,9 @@ document.addEventListener('DOMContentLoaded', function () {
 <p><strong>Data Sources:</strong></p>
 <ul>
 <li>NASA POWER (meteorological data)</li>
-<li>CDC NNDSS (disease case counts)</li>
-<li>USGS Phenology Network (spring indices)</li>
-<li>Historical climate/disease data (1990–2026)</li>
+<li>Disease case counts for model training: <strong>synthetic</strong> (random Poisson draws; see notice above)</li>
+<li>USGS Phenology Network (spring indices): not currently loaded</li>
+<li>Historical climate/disease data (1990–2026): not currently loaded; climate input is the 90-day NASA POWER file</li>
 </ul>
 <hr/>
 </div>
@@ -8074,7 +8077,7 @@ If the GDD advancement score is high, it means the season is progressing faster 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>✓ Project climate modules loaded
 ✓ All libraries loaded successfully
-Python version: 3.11.17 (main, Oct  1 2026, 14:32:31) [GCC 13.3.0]
+Python version: 3.11.18 (main, Oct 26 2026, 02:48:34) [GCC 13.3.0]
 Pandas version: 3.1.1
 NumPy version: 2.4.6
 </pre>

@@ -7927,10 +7927,13 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Colorado-Multi-Disease-Surveillance-Dashboard">Colorado Multi-Disease Surveillance Dashboard<a class="anchor-link" href="#Colorado-Multi-Disease-Surveillance-Dashboard">¶</a></h1><p><strong>One Health ecological forecasting — all vectors, all diseases, one view</strong></p>
+<h1 id="Colorado-Multi-Disease-Surveillance-Dashboard">Colorado Multi-Disease Surveillance Dashboard<a class="anchor-link" href="#Colorado-Multi-Disease-Surveillance-Dashboard">¶</a></h1><blockquote>
+<p><strong>Experimental index, not validated.</strong> The risk levels and scores in this notebook come from a composite index with fixed weights that have no cited source and have not been tested against observed cases. They are not probabilities of infection or of an outbreak, and the bands shown around them are not statistical confidence intervals. For official guidance, see <a href="https://cdphe.colorado.gov/communicable/animal-related-diseases/west-nile-virus">CDPHE West Nile virus</a>, <a href="https://cdphe.colorado.gov/communicable/animal-related-diseases/tick-borne-diseases">CDPHE tick-borne diseases</a> and <a href="https://www.cdc.gov/west-nile-virus/index.html">CDC</a>. Known limitations are listed in the <a href="https://github.com/mgifford/aedesproject-uif/blob/main/docs/SCIENTIFIC-AUDIT.md">scientific audit</a>.</p>
+</blockquote>
+<p><strong>One Health ecological forecasting — all vectors, all diseases, one view</strong></p>
 <p>This notebook provides a unified dashboard across all vector-borne and zoonotic diseases
 tracked in the Colorado surveillance platform. It uses the <code>aedesproject_uif.surveillance</code>
-module to compute probabilistic risk scores for each disease and render a consolidated
+module to compute experimental composite risk indices (not validated; not probabilities) for each disease and render a consolidated
 summary with comparative visuals.</p>
 <p><strong>Diseases covered:</strong> West Nile Virus, Lyme, RMSF, Colorado Tick Fever, Anaplasmosis,
 Babesiosis, Tick-borne Relapsing Fever, Tularemia, Plague, Hantavirus</p>
@@ -8005,7 +8008,7 @@ Babesiosis, Tick-borne Relapsing Fever, Tularemia, Plague, Hantavirus</p>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>✓ Multi-disease dashboard — 2026-11-05
+<pre>✓ Multi-disease dashboard — 2026-11-06
   Registered diseases : 11
   Registered vectors  : 4
   Data directory      : /home/runner/work/aedesproject-uif/aedesproject-uif/data/surveillance
@@ -8076,7 +8079,7 @@ Babesiosis, Tick-borne Relapsing Fever, Tularemia, Plague, Hantavirus</p>
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>Loading shared climate data...
-  ✓ Climate: 88 records
+  ✓ Climate: 87 records
   ✓ Mosquito habitat suitability (7d mean): 0.17
   ✓ Tick habitat suitability (7d mean)    : 0.37
 </pre>
@@ -8140,6 +8143,13 @@ Babesiosis, Tick-borne Relapsing Fever, Tularemia, Plague, Hantavirus</p>
     <span class="n">VectorType</span><span class="o">.</span><span class="n">BIRD</span><span class="p">:</span>     <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mf">0.4</span><span class="p">]),</span>
 <span class="p">}</span>
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_sum_cases</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Sum the first case-count column present (counting rows would count records, not cases)."""</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"coerce"</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
 <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">disease_type</span><span class="p">,</span> <span class="n">vector_type</span><span class="p">,</span> <span class="n">case_key</span> <span class="ow">in</span> <span class="n">DISEASE_CONFIG</span><span class="p">:</span>
     <span class="n">info</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_disease_characteristics</span><span class="p">(</span><span class="n">disease_type</span><span class="p">)</span>
@@ -8149,7 +8159,7 @@ Babesiosis, Tick-borne Relapsing Fever, Tularemia, Plague, Hantavirus</p>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">cases_df</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_cdc_arbonet_cases</span><span class="p">(</span>
             <span class="n">case_key</span><span class="p">,</span> <span class="s2">"colorado"</span><span class="p">,</span> <span class="n">year_start</span><span class="o">=</span><span class="n">YEAR_NOW</span><span class="p">,</span> <span class="n">year_end</span><span class="o">=</span><span class="n">YEAR_NOW</span><span class="p">)</span>
-        <span class="n">ytd_cases</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cases_df</span><span class="p">)</span>
+        <span class="n">ytd_cases</span> <span class="o">=</span> <span class="n">_sum_cases</span><span class="p">(</span><span class="n">cases_df</span><span class="p">,</span> <span class="p">(</span><span class="s2">"cases"</span><span class="p">,</span> <span class="s2">"neuroinvasive"</span><span class="p">,</span> <span class="s2">"confirmed"</span><span class="p">))</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">ytd_cases</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -8270,10 +8280,10 @@ Rocky Mountain Spotted Fever     Tick          0      20.6           LOW 0.010
 
     <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">y_pos</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">diseases</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Integrated Risk Probability (%)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Risk Probability with 95% Confidence Intervals"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#48bb78"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"LOW threshold (30%)"</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#e53e3e"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"HIGH threshold (70%)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Experimental composite index (0-100, not a probability)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Experimental composite index with fixed-formula bands (not validated)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#48bb78"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"LOW cut-point (30)"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#e53e3e"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"HIGH cut-point (70)"</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">105</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">"x"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">"lower right"</span><span class="p">)</span>
@@ -8303,7 +8313,7 @@ Rocky Mountain Spotted Fever     Tick          0      20.6           LOW 0.010
             <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s2">"offset points"</span>
         <span class="p">)</span>
 
-    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Integrated Risk Probability (%)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Experimental composite index (0-100, not a probability)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
     <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Case Fatality Rate (%)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
     <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Risk vs. Severity</span><span class="se">\n</span><span class="s2">(bubble size = YTD cases)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
     <span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
@@ -8507,7 +8517,7 @@ Rocky Mountain Spotted Fever     Tick          0      20.6           LOW 0.010
     <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">MONTH_NOW</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#2b6cb0"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">MONTH_NOW</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="s2">"▲ Now"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#2b6cb0"</span><span class="p">)</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Risk Probability (%)"</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"Experimental index (0-100, not a probability)"</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
         <span class="c1"># Export data table alongside chart</span>
     <span class="n">cal_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">calendar_rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">months</span><span class="p">)</span>
@@ -8613,7 +8623,7 @@ Tick entomological validation:
 
 Validation report: 1 checks recorded
 
-✓ Multi-disease dashboard complete — 2026-11-05
+✓ Multi-disease dashboard complete — 2026-11-06
   10 diseases scored | 0 HIGH | 0 MODERATE | 10 LOW
 </pre>
 </div>

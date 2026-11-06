@@ -7927,7 +7927,10 @@ document.addEventListener('DOMContentLoaded', function () {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Comprehensive-One-Health-Surveillance-Dashboard">Comprehensive One Health Surveillance Dashboard<a class="anchor-link" href="#Comprehensive-One-Health-Surveillance-Dashboard">¶</a></h1><h2 id="Notebook-08-%E2%80%94-Multi-Metric-10-Panel-Overview">Notebook 08 — Multi-Metric 10-Panel Overview<a class="anchor-link" href="#Notebook-08-%E2%80%94-Multi-Metric-10-Panel-Overview">¶</a></h2><p>Integrates climate, phenology, habitat, vector, case and risk data into a single accessible
+<h1 id="Comprehensive-One-Health-Surveillance-Dashboard">Comprehensive One Health Surveillance Dashboard<a class="anchor-link" href="#Comprehensive-One-Health-Surveillance-Dashboard">¶</a></h1><blockquote>
+<p><strong>Experimental index, not validated.</strong> The risk levels and scores in this notebook come from a composite index with fixed weights that have no cited source and have not been tested against observed cases. They are not probabilities of infection or of an outbreak, and the bands shown around them are not statistical confidence intervals. For official guidance, see <a href="https://cdphe.colorado.gov/communicable/animal-related-diseases/west-nile-virus">CDPHE West Nile virus</a>, <a href="https://cdphe.colorado.gov/communicable/animal-related-diseases/tick-borne-diseases">CDPHE tick-borne diseases</a> and <a href="https://www.cdc.gov/west-nile-virus/index.html">CDC</a>. Known limitations are listed in the <a href="https://github.com/mgifford/aedesproject-uif/blob/main/docs/SCIENTIFIC-AUDIT.md">scientific audit</a>.</p>
+<h2 id="Notebook-08-%E2%80%94-Multi-Metric-10-Panel-Overview">Notebook 08 — Multi-Metric 10-Panel Overview<a class="anchor-link" href="#Notebook-08-%E2%80%94-Multi-Metric-10-Panel-Overview">¶</a></h2></blockquote>
+<p>Integrates climate, phenology, habitat, vector, case and risk data into a single accessible
 Plotly dashboard. Uses colorblind-safe palettes (viridis/cividis) and includes descriptive
 alt-text summaries beneath each panel.</p>
 <p><strong>Panels:</strong></p>
@@ -8007,7 +8010,7 @@ alt-text summaries beneath each panel.</p>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>✓ Imports OK  |  today=2026-11-05  |  data_dir exists=True
+<pre>✓ Imports OK  |  today=2026-11-06  |  data_dir exists=True
 </pre>
 </div>
 </div>
@@ -8055,7 +8058,7 @@ alt-text summaries beneath each panel.</p>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>✓ Climate: 88 rows | cols=['date', 'temp_c', 'precip_mm']
+<pre>✓ Climate: 87 rows | cols=['date', 'temp_c', 'precip_mm']
 </pre>
 </div>
 </div>
@@ -8105,7 +8108,7 @@ alt-text summaries beneath each panel.</p>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>✓ GDD=685.7°C·days | thermal=nan
+<pre>✓ GDD=671.2°C·days | thermal=nan
 </pre>
 </div>
 </div>
@@ -8480,7 +8483,7 @@ YTD WNV rows=0 | Lyme rows=0
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="sd">"""Cell 8 — Panel 10: Integrated risk score with 95% CI (Plotly)."""</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="sd">"""Cell 8 — Panel 10: Experimental integrated index with fixed-formula band (Plotly)."""</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">have_risk</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"DEBUG: risk data unavailable — skipping panel 10"</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
@@ -8495,7 +8498,7 @@ YTD WNV rows=0 | Lyme rows=0
         <span class="n">fill</span><span class="o">=</span><span class="s2">"toself"</span><span class="p">,</span>
         <span class="n">fillcolor</span><span class="o">=</span><span class="s2">"rgba(66,133,244,0.15)"</span><span class="p">,</span>
         <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"rgba(255,255,255,0)"</span><span class="p">),</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">"95% CI"</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"Index band (fixed formula, not a CI)"</span><span class="p">,</span>
         <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">"skip"</span><span class="p">,</span>
     <span class="p">))</span>
     <span class="c1"># Central estimate</span>
@@ -8511,10 +8514,10 @@ YTD WNV rows=0 | Lyme rows=0
                    <span class="n">annotation_text</span><span class="o">=</span><span class="s2">"High threshold"</span><span class="p">,</span> <span class="n">annotation_position</span><span class="o">=</span><span class="s2">"bottom right"</span><span class="p">)</span>
 
     <span class="n">fig3</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-        <span class="n">title_text</span><span class="o">=</span><span class="sa">f</span><span class="s2">"10. Integrated One Health Risk Score — </span><span class="si">{</span><span class="n">TODAY</span><span class="si">}</span><span class="s2"> | Category: </span><span class="si">{</span><span class="n">risk_label</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">title_text</span><span class="o">=</span><span class="sa">f</span><span class="s2">"10. Experimental integrated index (not validated) — </span><span class="si">{</span><span class="n">TODAY</span><span class="si">}</span><span class="s2"> | Category: </span><span class="si">{</span><span class="n">risk_label</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="n">title_font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
         <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">"Date"</span><span class="p">,</span>
-        <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">"Risk Score (0–1)"</span><span class="p">,</span>
+        <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">"Experimental index (0–1, not a probability)"</span><span class="p">,</span>
         <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
         <span class="n">height</span><span class="o">=</span><span class="mi">380</span><span class="p">,</span>
         <span class="n">legend</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s2">"h"</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">),</span>
@@ -8526,8 +8529,8 @@ YTD WNV rows=0 | Lyme rows=0
     <span class="n">current_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">risk_s</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">ci_l_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ci_low</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">ci_h_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ci_high</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Panel 10 alt text: Integrated risk score over 30 days. "</span>
-          <span class="sa">f</span><span class="s2">"Score=</span><span class="si">{</span><span class="n">current_val</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> (95% CI </span><span class="si">{</span><span class="n">ci_l_val</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">–</span><span class="si">{</span><span class="n">ci_h_val</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">). "</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Panel 10 alt text: Experimental integrated index over 30 days (not validated). "</span>
+          <span class="sa">f</span><span class="s2">"Score=</span><span class="si">{</span><span class="n">current_val</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> (fixed-formula band </span><span class="si">{</span><span class="n">ci_l_val</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">–</span><span class="si">{</span><span class="n">ci_h_val</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, not a confidence interval). "</span>
           <span class="sa">f</span><span class="s2">"Category=</span><span class="si">{</span><span class="n">risk_label</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8543,7 +8546,7 @@ YTD WNV rows=0 | Lyme rows=0
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
-Panel 10 alt text: Integrated risk score over 30 days. Score=nan (95% CI nan–nan). Category=nan.
+Panel 10 alt text: Experimental integrated index over 30 days (not validated). Score=nan (fixed-formula band nan–nan, not a confidence interval). Category=nan.
 </pre>
 </div>
 </div>
