@@ -2,7 +2,11 @@ name: Tick Surveillance Weekly
 
 on:
   schedule:
-    - cron: '0 7 * * 1'   # Every Monday at 07:00 UTC (01:00 Mountain)
+    # Every Monday at 07:00 UTC (01:00 Mountain) from March to November; from December
+    # to February only on the 1st of each month (see surveillance-dashboard.yml). This
+    # job's data commit is what keeps the repository active over the winter.
+    - cron: '0 7 * 3-11 1'
+    - cron: '0 7 1 12,1,2 *'
   workflow_dispatch:        # Manual trigger from Actions tab
 
 permissions:
