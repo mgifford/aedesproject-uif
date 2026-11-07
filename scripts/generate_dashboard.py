@@ -22,7 +22,7 @@ NOTEBOOK_META = {
     "06_current_season_monitoring": {
         "title": "2026 Season Monitoring",
         "icon": "📅",
-        "description": "2026 season tracking from manually entered provisional counts (these may be months out of date), with baseline comparisons and experimental alert levels.",
+        "description": "West Nile virus cases reported to CDC this season (provisional, weekly), compared with the same week in earlier seasons.",
         "disease": "WNV / Lyme / RMSF",
         "vector": "Live monitoring",
         "data_recency": "live",
@@ -438,7 +438,8 @@ def build_index() -> None:
   <div class="alert">
     <strong>About this dashboard:</strong> Rebuilt daily. NASA POWER and Open-Meteo climate data and
     iNaturalist citizen-science observations are fetched on each run, and so are Colorado West Nile virus
-    case counts from CDC ArboNET. The Lyme disease and county case tables are static values stored in this
+    case counts from CDC: finalized annual counts (ArboNET) and provisional weekly counts for the current
+    season (NNDSS). The Lyme disease and county case tables are static values stored in this
     repository; they are not fetched and have not been verified.
     Risk levels are an experimental index: they have not been validated and are not probabilities of
     infection. Notebooks 04 and 05 use synthetic data for demonstration only.
@@ -456,7 +457,8 @@ def build_index() -> None:
     CDC's finalized annual case counts are published approximately 12–18 months after the end of each
     calendar year. West Nile virus counts run to the latest year CDC has finalized; the Lyme table ends in
     <strong>2024</strong>. The reliability table below shows the latest observation for each source.
-    Current-season (2026) provisional counts are entered manually and may be months out of date.
+    Current-season West Nile virus counts are provisional and by week of report; they are revised as late
+    reports arrive. There is no in-season source for Lyme disease in Colorado.
     Reports that rely exclusively on finalized historical data are grouped in the
     <em>Historical Archive</em> section at the bottom of this page.
   </div>

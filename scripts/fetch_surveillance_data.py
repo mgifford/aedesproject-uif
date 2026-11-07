@@ -7,6 +7,7 @@ All fetches are best-effort: notebooks fall back to sample data if unavailable.
 
 Sources (all free / keyless):
 - CDC ArboNET — Colorado West Nile virus cases by year (state-level CSV)
+- CDC NNDSS — Colorado provisional weekly West Nile virus cases (in season)
 - Lyme disease — static table in this script (not fetched, origin unverified)
 - NASA POWER API — climate data for Denver, CO
 - Open-Meteo API — current 30-day climate (temperature, humidity, precipitation)
@@ -22,6 +23,7 @@ import sys
 import datetime
 import time
 import random
+import urllib.parse
 import urllib.request
 import urllib.error
 
@@ -62,6 +64,7 @@ RELIABILITY_REPORT_FILENAME = "reliability_report.json"
 
 RELIABILITY_SOURCES = [
     ("cdc_wnv", "wnv_colorado.json"),
+    ("cdc_wnv_weekly", "wnv_colorado_weekly.json"),
     ("cdc_lyme", "lyme_colorado.json"),
     ("nasa_power_90d", "climate_colorado_90d.json"),
     ("open_meteo_30d", "open_meteo_colorado_30d.json"),
@@ -337,6 +340,103 @@ def fetch_cdc_arbonet_wnv() -> None:
         },
     )
     print(f"  Got {len(records)} years ({records[0]['year']}-{records[-1]['year']})")
+
+
+# ---------------------------------------------------------------------------
+# CDC NNDSS — provisional weekly West Nile virus counts (in season)
+# ---------------------------------------------------------------------------
+
+NNDSS_WEEKLY_API = "https://data.cdc.gov/resource/x9gk-5huc.json"
+NNDSS_WEEKLY_PAGE = "https://data.cdc.gov/NNDSS/NNDSS-Weekly-Data/x9gk-5huc"
+NNDSS_WNV_LABEL = "Arboviral diseases, West Nile virus disease"
+NNDSS_FIRST_YEAR = 2022  # first year of this dataset
+# CDC's flag "-" means the state reported no cases, which is a true zero. Every other
+# flag (U, N, NN, NP, NC) means the value is not available and is recorded as None.
+_NNDSS_NO_CASES_FLAG = "-"
+
+
+def _nndss_count(record: dict, field: str) -> int | None:
+    raw = record.get(field)
+    if raw not in (None, ""):
+        value = float(raw)
+        if value < 0 or value != int(value):
+            raise ValueError(f"unexpected {field} value {raw!r}")
+        return int(value)
+    return 0 if record.get(f"{field}_flag") == _NNDSS_NO_CASES_FLAG else None
+
+
+def parse_nndss_weekly(records: list) -> list[dict]:
+    """Return one row per year and MMWR week from NNDSS weekly records.
+
+    "cumulative" is the year-to-date count as CDC published it that week (m3);
+    "week_cases" is the count reported that week (m1). Raises ValueError when the
+    records do not have the expected structure.
+    """
+    if not isinstance(records, list) or not records:
+        raise ValueError("no NNDSS records")
+    rows = []
+    for record in records:
+        if not isinstance(record, dict) or "year" not in record or "week" not in record:
+            raise ValueError(f"unexpected NNDSS record {record!r}")
+        year, week = int(record["year"]), int(record["week"])
+        if not 1 <= week <= 53:
+            raise ValueError(f"week out of range: {year} week {week}")
+        rows.append({
+            "year": year,
+            "week": week,
+            "week_cases": _nndss_count(record, "m1"),
+            "cumulative": _nndss_count(record, "m3"),
+        })
+    rows.sort(key=lambda r: (r["year"], r["week"]))
+    return rows
+
+
+def fetch_cdc_nndss_wnv_weekly() -> None:
+    """Fetch Colorado's provisional weekly WNV counts from CDC NNDSS, 2022 to now.
+
+    Earlier years are kept as published at the time, so the current season can be
+    compared with them at the same reporting delay. On failure the previous file is
+    kept and reported stale.
+    """
+    print("Fetching CDC NNDSS weekly WNV data (Colorado)...")
+    years = ",".join(f"'{y}'" for y in range(NNDSS_FIRST_YEAR, datetime.date.today().year + 1))
+    query = urllib.parse.urlencode({
+        "$where": f"upper(states)='COLORADO' and label='{NNDSS_WNV_LABEL}' and year in ({years})",
+        "$select": "year,week,m1,m1_flag,m3,m3_flag",
+        "$limit": "1000",
+    })
+    raw = _fetch_with_retry(f"{NNDSS_WEEKLY_API}?{query}", timeout=30, retries=3, backoff=3.0)
+    try:
+        if raw is None:
+            raise ValueError("download failed")
+        rows = parse_nndss_weekly(json.loads(raw))
+    except (ValueError, TypeError, json.JSONDecodeError) as exc:
+        print(f"  WARNING: NNDSS weekly WNV data not updated ({exc})")
+        if not os.path.exists(os.path.join(OUTPUT_DIR, "wnv_colorado_weekly.json")):
+            save("wnv_colorado_weekly.json", {"fetched": TODAY, "source": "unavailable", "data": []})
+        return
+
+    latest = rows[-1]
+    save(
+        "wnv_colorado_weekly.json",
+        {
+            "fetched": TODAY,
+            "retrieved_at": datetime.datetime.now(datetime.UTC).replace(microsecond=0).isoformat(),
+            "source": "CDC NNDSS (provisional weekly)",
+            "source_url": NNDSS_WEEKLY_API,
+            "source_page": NNDSS_WEEKLY_PAGE,
+            "static": False,
+            "latest_observation": f"{latest['year']}-W{latest['week']:02d}",
+            "notes": (
+                "Provisional West Nile virus disease cases (neuroinvasive and non-neuroinvasive) "
+                "reported to CDC by Colorado, by MMWR week of report, not week of illness onset. "
+                "Counts are revised as late reports arrive. cumulative is the year-to-date count "
+                "as published that week; 0 means CDC reported no cases and null means not available."
+            ),
+            "data": rows,
+        },
+    )
+    print(f"  Got {len(rows)} weeks; latest {latest['year']} week {latest['week']}")
 
 
 # ---------------------------------------------------------------------------
@@ -782,6 +882,7 @@ if __name__ == "__main__":
     print(f"AEDES Surveillance Data Fetch — {TODAY}")
     print("=" * 50)
     fetch_cdc_arbonet_wnv()
+    fetch_cdc_nndss_wnv_weekly()
     write_lyme_static_table()
     fetch_nasa_power_colorado()
     fetch_open_meteo_colorado()

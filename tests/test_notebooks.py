@@ -252,6 +252,23 @@ class TestSurveillanceDataFiles:
             # null means "not published", which must not be turned into zero
             assert row["deaths"] is None or row["deaths"] >= 0, row
 
+    def test_wnv_weekly_feed_rows_are_valid(self):
+        path = DATA_DIR / "wnv_colorado_weekly.json"
+        if not path.exists():
+            pytest.skip("wnv_colorado_weekly.json not present")
+        payload = json.loads(path.read_text())
+        if payload.get("source") == "unavailable":
+            pytest.skip("NNDSS source was unavailable and no earlier copy existed")
+        assert payload["static"] is False
+        rows = payload["data"]
+        assert rows, "weekly feed has no rows"
+        for row in rows:
+            assert 1 <= row["week"] <= 53, row
+            # null means "not available"; it must not be turned into zero
+            assert row["cumulative"] is None or row["cumulative"] >= 0, row
+        last = max(rows, key=lambda r: (r["year"], r["week"]))
+        assert payload["latest_observation"] == f"{last['year']}-W{last['week']:02d}"
+
     def test_seed_tables_are_marked_static(self):
         for name in ("lyme_colorado.json", "regional_counties_2026.json"):
             path = DATA_DIR / name

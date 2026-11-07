@@ -5,7 +5,7 @@
 - Published site audited: https://mgifford.github.io/aedesproject-uif/ (generated 2026-11-05)
 - Upstream: https://github.com/Cirrolytix/aedesproject-uif (no commits since 2023-10-09; this fork is 116 commits ahead)
 - Status of this document: **draft, AI-assisted, not reviewed by an epidemiologist or vector ecologist.**
-- Updated 2026-11-05 for PR 1 (correctness and labels) and 2026-11-06 for PR 2 (provenance). Sections 9 and 10 list what each changed.
+- Updated 2026-11-05 for PR 1 (correctness and labels), 2026-11-06 for PR 2 (provenance) and 2026-11-07 for PR 3 (in-season CDC feed). Sections 9 to 11 list what each changed.
 
 ## How this audit was done
 
@@ -287,4 +287,24 @@ What PR 1 changed, and why. Nothing was removed from the published site; NB04 an
 - NB06 and NB08 publish none of their Plotly charts: the live pages contain no Plotly output (checked 2026-11-06), while NB02 publishes five. The cells run without error, so the figures are dropped silently. Only the matplotlib panels in NB08 appear.
 - Five PNG files tracked in `notebooks/` (for example `wnv_annual_trend.png`, which still shows the old "2012 outbreak, 130 cases" table) are stale. They are not published, because the deploy copies only `_site/`, but they are misleading to anyone browsing the repository.
 - NB08 panel 8 draws WNV in a light green from the viridis palette, which appears to fall well below the 3:1 non-text contrast WCAG 2.2 requires for chart graphics (SC 1.4.11). Not measured; for PR 5.
+
+## 11. PR 3 changes (in-season CDC feed)
+
+| Change | Files | Why |
+|---|---|---|
+| Colorado provisional weekly West Nile virus counts fetched from CDC NNDSS (data.cdc.gov dataset x9gk-5huc), 2022 to the current week, with the same validate-or-keep-previous behaviour as the ArboNET feed | `scripts/fetch_surveillance_data.py`, `data/surveillance/wnv_colorado_weekly.json` | Finding 10: the season view had no case data after May 2026 |
+| CDC's "-" flag (no reported cases) recorded as 0; the flags U, N, NN, NP and NC recorded as null | script | Brief Phase 3.2: missing is not zero |
+| `season_pace()`: compares this season's reported count with the same CDC week in each earlier season, as published at the time, and reports below, within or above that range | `src/aedesproject_uif/surveillance/season.py`, `tests/test_season.py` | Replaces an alert that could not work (below) |
+| NB06 alert rebuilt on the feed. The old alert expected cases to build up evenly through the year (week / 52 x median), took its WNV median of 12 from a hardcoded "2024 baseline" in the season file, and defaulted to LOW when there was no data. It said LOW on all 174 published days of 2026. Lyme now shows "No in-season data" because no in-season Colorado source exists. Annual medians come from the CDC ArboNET table (WNV) and the static Lyme table | NB06 | 2026 season review |
+| NB08 panel 9 plots this season's cumulative reported cases by CDC week, with 2022 to 2025 as labelled grey lines; it was always empty before | NB08 | Same |
+| Source registry entry and reliability-report source `cdc_wnv_weekly` | `config/data-sources.yaml`, script | Brief Phase 3 |
+
+The season review that prompted this change is in [2026-SEASON-REVIEW.md](2026-SEASON-REVIEW.md).
+
+### Findings from the PR 3 pass
+
+- NNDSS rows keep each week's count as published at the time, so earlier seasons show the same reporting delay as the current one. CDC's `m4` field (last year's year-to-date) is revised and runs higher; comparing a provisional count with it would make every season look low.
+- Colorado's 2024 count stayed at 0 until week 36 and then rose to 59 at week 38, which suggests reports arrived in a batch. Any in-season comparison can be distorted by this.
+- `SurveillanceDataLoader._fetch_cdc_socrata()` queries a `reporting_area` field, but the NNDSS dataset's field is `states`, so that "live CDC" path has always returned nothing and the loader falls back to local files. It is not used by the new feed and was left unchanged; fixing it would change what several notebooks load.
+- `scripts/ingest_cdc_provisional.py` and the weekly ingestion workflow still maintain `2026_season_ytd.json` by manual entry. NB06 no longer uses that file for West Nile virus. Whether to remove them is a maintainer decision.
 
