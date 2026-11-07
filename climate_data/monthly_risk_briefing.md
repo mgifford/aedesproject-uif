@@ -20,4 +20,4 @@
 - GDD calculations: Colorado base 10°C
 - Historical baseline: 1990-2010 climate normal period
 
-*Generated: 2026-11-07 16:01 UTC*
+*Generated: 2026-11-07 22:11 UTC*
