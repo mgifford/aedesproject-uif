@@ -77,10 +77,10 @@ Automation workflows in [`.github/workflows/`](.github/workflows/) run scheduled
 
 **Purpose:** Daily automated data fetch, notebook execution, and GitHub Pages deployment.
 
-**Schedule:** 6 AM UTC daily (or manual trigger)
+**Schedule:** 6 AM UTC daily from March to November; on the 1st of each month from December to February (or manual trigger)
 
 **Triggers:**
-- Daily cron schedule: `0 6 * * *` (6 AM UTC)
+- Cron schedules: `0 6 * 3-11 *` (daily, March to November) and `0 6 1 12,1,2 *` (1st of the month, December to February)
 - Push to `notebooks/` or `scripts/` directories
 - Manual workflow dispatch via GitHub Actions UI
 
@@ -221,7 +221,7 @@ pytest tests/ ... --cov=src/aedesproject_uif --cov-report=html
 ### 4. Data Pipeline Execution
 
 - Manual trigger via GitHub Actions UI, or
-- Automated daily at 6 AM UTC via **Surveillance Dashboard** workflow
+- Automated via the **Surveillance Dashboard** workflow: daily at 6 AM UTC from March to November, monthly from December to February
 - Fresh data available in `/data/surveillance/` within 30 minutes
 
 ### 5. Notebook-Based Analysis

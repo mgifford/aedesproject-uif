@@ -2,7 +2,14 @@ name: Surveillance Dashboard
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # Daily at 6 AM UTC (midnight Mountain)
+    # Daily at 6 AM UTC (midnight Mountain) from March to November. From December to
+    # February only on the 1st of each month: Colorado has almost no tick or mosquito
+    # records then (1 of 222 research-grade iNaturalist records, checked 2026-11-07),
+    # but CDC still receives late case reports. A monthly run also keeps the repository
+    # active; GitHub disables schedules in public repositories after 60 days without
+    # activity.
+    - cron: '0 6 * 3-11 *'
+    - cron: '0 6 1 12,1,2 *'
   push:
     branches: [main]
     paths:

@@ -436,7 +436,7 @@ def build_index() -> None:
 <div class="container">
 
   <div class="alert">
-    <strong>About this dashboard:</strong> Rebuilt daily. NASA POWER and Open-Meteo climate data and
+    <strong>About this dashboard:</strong> Rebuilt daily from March to November and on the 1st of each month from December to February. NASA POWER and Open-Meteo climate data and
     iNaturalist citizen-science observations are fetched on each run, and so are Colorado West Nile virus
     case counts from CDC ArboNET. The Lyme disease and county case tables are static values stored in this
     repository; they are not fetched and have not been verified.
