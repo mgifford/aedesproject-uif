@@ -663,6 +663,25 @@ class TestBuildIndex:
         content = (tmp_path / "index.html").read_text()
         assert "01_west_nile_virus_surveillance.html" in content
 
+    def test_index_links_season_reviews_newest_first(self, tmp_path, monkeypatch):
+        (tmp_path / "2026-season-review.html").write_text("<html></html>")
+        (tmp_path / "2025-season-review.html").write_text("<html></html>")
+        monkeypatch.setattr(gd, "SITE_DIR", str(tmp_path))
+        monkeypatch.setattr(gd, "NOTEBOOKS_DIR", str(tmp_path / "notebooks"))
+        monkeypatch.setattr(gd, "DATA_DIR", str(tmp_path))
+        gd.build_index()
+        content = (tmp_path / "index.html").read_text()
+        assert '<a class="btn" href="2026-season-review.html">Read the 2026 season review</a>' in content
+        assert '<a href="2025-season-review.html">2025 season review</a>' in content
+        assert content.index("season-review-heading") < content.index('class="alert"')
+
+    def test_index_has_no_review_section_without_review_pages(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(gd, "SITE_DIR", str(tmp_path))
+        monkeypatch.setattr(gd, "NOTEBOOKS_DIR", str(tmp_path / "notebooks"))
+        monkeypatch.setattr(gd, "DATA_DIR", str(tmp_path))
+        gd.build_index()
+        assert "season-review-heading" not in (tmp_path / "index.html").read_text()
+
     def test_fetched_date_appears_in_index(self, tmp_path, monkeypatch):
         monkeypatch.setattr(gd, "SITE_DIR", str(tmp_path))
         monkeypatch.setattr(gd, "NOTEBOOKS_DIR", str(tmp_path / "notebooks"))

@@ -23,7 +23,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest pytest-cov pytest-mock
-          pip install requests pytrends pandas retrying pyyaml
+          pip install requests pytrends pandas retrying pyyaml mistune
           pip install -e . --no-deps
 
       - name: Run tests with coverage
