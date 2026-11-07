@@ -1,0 +1,233 @@
+{
+  "generated_at": "2026-11-07T15:35:27+00:00",
+  "season": 2026,
+  "inputs": {
+    "arbonet_retrieved": "2026-11-06",
+    "nndss_retrieved": "2026-11-07",
+    "nndss_latest_week": "2026-W43",
+    "published_days": 174,
+    "published_first": "2026-05-18",
+    "published_last": "2026-11-07"
+  },
+  "published": {
+    "wnv_index_vs_temp14_pearson_r": 0.975,
+    "wnv_index_days": 170,
+    "wnv_index_peak": {
+      "date": "2026-07-29",
+      "value": 0.487
+    },
+    "wnv_labels": {
+      "MODERATE": 115,
+      "LOW": 55
+    },
+    "season_alert_wnv": {
+      "LOW": 174
+    },
+    "tick_labels": {
+      "LOW": 140,
+      "MODERATE": 32
+    },
+    "monthly": [
+      {
+        "month": "2026-05",
+        "wnv_index_min": 0.179,
+        "wnv_index_max": 0.224,
+        "wnv_labels": {
+          "LOW": 10
+        },
+        "tick_index_min": 0.156,
+        "tick_index_max": 0.605
+      },
+      {
+        "month": "2026-06",
+        "wnv_index_min": 0.273,
+        "wnv_index_max": 0.361,
+        "wnv_labels": {
+          "MODERATE": 23,
+          "LOW": 7
+        },
+        "tick_index_min": 0.146,
+        "tick_index_max": 0.441
+      },
+      {
+        "month": "2026-07",
+        "wnv_index_min": 0.429,
+        "wnv_index_max": 0.487,
+        "wnv_labels": {
+          "MODERATE": 31
+        },
+        "tick_index_min": 0.0,
+        "tick_index_max": 0.137
+      },
+      {
+        "month": "2026-08",
+        "wnv_index_min": 0.44,
+        "wnv_index_max": 0.487,
+        "wnv_labels": {
+          "MODERATE": 31
+        },
+        "tick_index_min": 0.0,
+        "tick_index_max": 0.025
+      },
+      {
+        "month": "2026-09",
+        "wnv_index_min": 0.311,
+        "wnv_index_max": 0.39,
+        "wnv_labels": {
+          "MODERATE": 30
+        },
+        "tick_index_min": 0.028,
+        "tick_index_max": 0.174
+      },
+      {
+        "month": "2026-10",
+        "wnv_index_min": 0.165,
+        "wnv_index_max": 0.242,
+        "wnv_labels": {
+          "LOW": 31
+        },
+        "tick_index_min": 0.185,
+        "tick_index_max": 0.447
+      },
+      {
+        "month": "2026-11",
+        "wnv_index_min": 0.16,
+        "wnv_index_max": 0.165,
+        "wnv_labels": {
+          "LOW": 7
+        },
+        "tick_index_min": 0.13,
+        "tick_index_max": 0.321
+      }
+    ]
+  },
+  "climate_vs_neuroinvasive_spearman": {
+    "years": "2010-2025",
+    "summer_mean_c": {
+      "rho": -0.12,
+      "p": 0.67
+    },
+    "july_mean_c": {
+      "rho": 0.17,
+      "p": 0.52
+    },
+    "max_14day_mean_c": {
+      "rho": 0.09,
+      "p": 0.73
+    },
+    "days_14day_mean_over_18c": {
+      "rho": -0.14,
+      "p": 0.59
+    },
+    "winter_mean_c": {
+      "rho": 0.09,
+      "p": 0.75
+    },
+    "spring_precip_mm": {
+      "rho": 0.19,
+      "p": 0.48
+    },
+    "summer_precip_mm": {
+      "rho": 0.19,
+      "p": 0.49
+    }
+  },
+  "season_climate": {
+    "summer_mean_c": 22.81,
+    "july_mean_c": 24.49,
+    "max_14day_mean_c": 25.52,
+    "days_14day_mean_over_18c": 111.0,
+    "winter_mean_c": 2.03,
+    "spring_precip_mm": 114.92,
+    "summer_precip_mm": 135.69
+  },
+  "base_rates_total_cases": {
+    "years": "2010-2025",
+    "median": 120.0,
+    "quartiles": [
+      80.0,
+      182.75
+    ],
+    "min": 7,
+    "max": 634,
+    "years_over_200": [
+      2013,
+      2022,
+      2023,
+      2025
+    ]
+  },
+  "year_to_year_spearman": {
+    "rho": -0.01,
+    "p": 0.97,
+    "n": 15
+  },
+  "pace": {
+    "30": {
+      "week": 30,
+      "ytd": 2,
+      "prior": {
+        "2022": 1,
+        "2023": 5,
+        "2024": 0,
+        "2025": 2
+      },
+      "prior_median": 1.5,
+      "status": "within_recent_range"
+    },
+    "34": {
+      "week": 34,
+      "ytd": 14,
+      "prior": {
+        "2022": 28,
+        "2023": 101,
+        "2024": 0,
+        "2025": 74
+      },
+      "prior_median": 51.0,
+      "status": "within_recent_range"
+    },
+    "38": {
+      "week": 38,
+      "ytd": 52,
+      "prior": {
+        "2022": 139,
+        "2023": 438,
+        "2024": 59,
+        "2025": 220
+      },
+      "prior_median": 179.5,
+      "status": "below_recent_range"
+    },
+    "latest": {
+      "week": 43,
+      "ytd": 72,
+      "prior": {
+        "2022": 200,
+        "2023": 584,
+        "2024": 70,
+        "2025": 278
+      },
+      "prior_median": 239.0,
+      "status": "within_recent_range"
+    }
+  },
+  "baselines_vs_season": {
+    "last_year": 285,
+    "median": 120.0,
+    "mean": 162.9,
+    "median_last_5_years": 206.0
+  },
+  "share_reported_after_latest_week": {
+    "2022": 0.02,
+    "2023": 0.067,
+    "2024": 0.079,
+    "2025": 0.025
+  },
+  "share_reported_after_week_34": {
+    "2022": 0.863,
+    "2023": 0.839,
+    "2024": 1.0,
+    "2025": 0.74
+  }
+}

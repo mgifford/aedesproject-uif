@@ -1,0 +1,1524 @@
+{
+  "fetched": "2026-11-07",
+  "retrieved_at": "2026-11-07T15:24:30+00:00",
+  "source": "CDC NNDSS (provisional weekly)",
+  "source_url": "https://data.cdc.gov/resource/x9gk-5huc.json",
+  "source_page": "https://data.cdc.gov/NNDSS/NNDSS-Weekly-Data/x9gk-5huc",
+  "static": false,
+  "latest_observation": "2026-W43",
+  "notes": "Provisional West Nile virus disease cases (neuroinvasive and non-neuroinvasive) reported to CDC by Colorado, by MMWR week of report, not week of illness onset. Counts are revised as late reports arrive. cumulative is the year-to-date count as published that week; 0 means CDC reported no cases and null means not available.",
+  "data": [
+    {
+      "year": 2022,
+      "week": 1,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 2,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 3,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 4,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 5,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 6,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 7,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 8,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 9,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 10,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 11,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 12,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 13,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 14,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 15,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 16,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 17,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 18,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 19,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 20,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 21,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 22,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 23,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 24,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 25,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 26,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 27,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 28,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 29,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2022,
+      "week": 30,
+      "week_cases": 0,
+      "cumulative": 1
+    },
+    {
+      "year": 2022,
+      "week": 31,
+      "week_cases": 0,
+      "cumulative": 4
+    },
+    {
+      "year": 2022,
+      "week": 32,
+      "week_cases": 0,
+      "cumulative": 4
+    },
+    {
+      "year": 2022,
+      "week": 33,
+      "week_cases": 0,
+      "cumulative": 13
+    },
+    {
+      "year": 2022,
+      "week": 34,
+      "week_cases": 0,
+      "cumulative": 28
+    },
+    {
+      "year": 2022,
+      "week": 35,
+      "week_cases": 0,
+      "cumulative": 28
+    },
+    {
+      "year": 2022,
+      "week": 36,
+      "week_cases": 0,
+      "cumulative": 117
+    },
+    {
+      "year": 2022,
+      "week": 37,
+      "week_cases": 0,
+      "cumulative": 119
+    },
+    {
+      "year": 2022,
+      "week": 38,
+      "week_cases": 0,
+      "cumulative": 139
+    },
+    {
+      "year": 2022,
+      "week": 39,
+      "week_cases": 0,
+      "cumulative": 173
+    },
+    {
+      "year": 2022,
+      "week": 40,
+      "week_cases": 0,
+      "cumulative": 175
+    },
+    {
+      "year": 2022,
+      "week": 41,
+      "week_cases": 0,
+      "cumulative": 191
+    },
+    {
+      "year": 2022,
+      "week": 42,
+      "week_cases": 0,
+      "cumulative": 198
+    },
+    {
+      "year": 2022,
+      "week": 43,
+      "week_cases": 0,
+      "cumulative": 200
+    },
+    {
+      "year": 2022,
+      "week": 44,
+      "week_cases": 0,
+      "cumulative": 200
+    },
+    {
+      "year": 2022,
+      "week": 45,
+      "week_cases": 0,
+      "cumulative": 201
+    },
+    {
+      "year": 2022,
+      "week": 46,
+      "week_cases": 0,
+      "cumulative": 201
+    },
+    {
+      "year": 2022,
+      "week": 47,
+      "week_cases": 0,
+      "cumulative": 204
+    },
+    {
+      "year": 2022,
+      "week": 48,
+      "week_cases": 0,
+      "cumulative": 204
+    },
+    {
+      "year": 2022,
+      "week": 49,
+      "week_cases": 0,
+      "cumulative": 204
+    },
+    {
+      "year": 2022,
+      "week": 50,
+      "week_cases": 0,
+      "cumulative": 204
+    },
+    {
+      "year": 2022,
+      "week": 51,
+      "week_cases": 0,
+      "cumulative": 204
+    },
+    {
+      "year": 2022,
+      "week": 52,
+      "week_cases": 0,
+      "cumulative": 204
+    },
+    {
+      "year": 2023,
+      "week": 1,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 2,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 3,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 4,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 5,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 6,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 7,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 8,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 9,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 10,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 11,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 12,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 13,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 14,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 15,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 16,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 17,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 18,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 19,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 20,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 21,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 22,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 23,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 24,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 25,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 26,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 27,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 28,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 29,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2023,
+      "week": 30,
+      "week_cases": 0,
+      "cumulative": 5
+    },
+    {
+      "year": 2023,
+      "week": 31,
+      "week_cases": 0,
+      "cumulative": 5
+    },
+    {
+      "year": 2023,
+      "week": 32,
+      "week_cases": 0,
+      "cumulative": 31
+    },
+    {
+      "year": 2023,
+      "week": 33,
+      "week_cases": 0,
+      "cumulative": 31
+    },
+    {
+      "year": 2023,
+      "week": 34,
+      "week_cases": 0,
+      "cumulative": 101
+    },
+    {
+      "year": 2023,
+      "week": 35,
+      "week_cases": 0,
+      "cumulative": 102
+    },
+    {
+      "year": 2023,
+      "week": 36,
+      "week_cases": 0,
+      "cumulative": 243
+    },
+    {
+      "year": 2023,
+      "week": 37,
+      "week_cases": 0,
+      "cumulative": 368
+    },
+    {
+      "year": 2023,
+      "week": 38,
+      "week_cases": 0,
+      "cumulative": 438
+    },
+    {
+      "year": 2023,
+      "week": 39,
+      "week_cases": 0,
+      "cumulative": 542
+    },
+    {
+      "year": 2023,
+      "week": 40,
+      "week_cases": 0,
+      "cumulative": 542
+    },
+    {
+      "year": 2023,
+      "week": 41,
+      "week_cases": 0,
+      "cumulative": 584
+    },
+    {
+      "year": 2023,
+      "week": 42,
+      "week_cases": 0,
+      "cumulative": 584
+    },
+    {
+      "year": 2023,
+      "week": 43,
+      "week_cases": 0,
+      "cumulative": 584
+    },
+    {
+      "year": 2023,
+      "week": 44,
+      "week_cases": 0,
+      "cumulative": 615
+    },
+    {
+      "year": 2023,
+      "week": 45,
+      "week_cases": 0,
+      "cumulative": 615
+    },
+    {
+      "year": 2023,
+      "week": 46,
+      "week_cases": 0,
+      "cumulative": 615
+    },
+    {
+      "year": 2023,
+      "week": 47,
+      "week_cases": 0,
+      "cumulative": 615
+    },
+    {
+      "year": 2023,
+      "week": 48,
+      "week_cases": 0,
+      "cumulative": 615
+    },
+    {
+      "year": 2023,
+      "week": 49,
+      "week_cases": 0,
+      "cumulative": 615
+    },
+    {
+      "year": 2023,
+      "week": 50,
+      "week_cases": 0,
+      "cumulative": 626
+    },
+    {
+      "year": 2023,
+      "week": 51,
+      "week_cases": 0,
+      "cumulative": 626
+    },
+    {
+      "year": 2023,
+      "week": 52,
+      "week_cases": 0,
+      "cumulative": 626
+    },
+    {
+      "year": 2024,
+      "week": 1,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 2,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 3,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 4,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 5,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 6,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 7,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 8,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 9,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 10,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 11,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 12,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 13,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 14,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 15,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 16,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 17,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 18,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 19,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 20,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 21,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 22,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 23,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 24,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 25,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 26,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 27,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 28,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 29,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 30,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 31,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 32,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 33,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 34,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 35,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 36,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2024,
+      "week": 37,
+      "week_cases": 0,
+      "cumulative": 50
+    },
+    {
+      "year": 2024,
+      "week": 38,
+      "week_cases": 0,
+      "cumulative": 59
+    },
+    {
+      "year": 2024,
+      "week": 39,
+      "week_cases": 0,
+      "cumulative": 59
+    },
+    {
+      "year": 2024,
+      "week": 40,
+      "week_cases": 0,
+      "cumulative": 59
+    },
+    {
+      "year": 2024,
+      "week": 41,
+      "week_cases": 0,
+      "cumulative": 70
+    },
+    {
+      "year": 2024,
+      "week": 42,
+      "week_cases": 0,
+      "cumulative": 70
+    },
+    {
+      "year": 2024,
+      "week": 43,
+      "week_cases": 0,
+      "cumulative": 70
+    },
+    {
+      "year": 2024,
+      "week": 44,
+      "week_cases": 0,
+      "cumulative": 70
+    },
+    {
+      "year": 2024,
+      "week": 45,
+      "week_cases": 0,
+      "cumulative": 70
+    },
+    {
+      "year": 2024,
+      "week": 46,
+      "week_cases": 0,
+      "cumulative": 75
+    },
+    {
+      "year": 2024,
+      "week": 47,
+      "week_cases": 0,
+      "cumulative": 75
+    },
+    {
+      "year": 2024,
+      "week": 48,
+      "week_cases": 0,
+      "cumulative": 75
+    },
+    {
+      "year": 2024,
+      "week": 49,
+      "week_cases": 0,
+      "cumulative": 75
+    },
+    {
+      "year": 2024,
+      "week": 50,
+      "week_cases": 0,
+      "cumulative": 76
+    },
+    {
+      "year": 2024,
+      "week": 51,
+      "week_cases": 0,
+      "cumulative": 76
+    },
+    {
+      "year": 2024,
+      "week": 52,
+      "week_cases": 0,
+      "cumulative": 76
+    },
+    {
+      "year": 2025,
+      "week": 1,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 2,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 3,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 4,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 5,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 6,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 7,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 8,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 9,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 10,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 11,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 12,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 13,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 14,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 15,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 16,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 17,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 18,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 19,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 20,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 21,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 22,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 23,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 24,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 25,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 26,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 27,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 28,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2025,
+      "week": 29,
+      "week_cases": 0,
+      "cumulative": 2
+    },
+    {
+      "year": 2025,
+      "week": 30,
+      "week_cases": 0,
+      "cumulative": 2
+    },
+    {
+      "year": 2025,
+      "week": 31,
+      "week_cases": 0,
+      "cumulative": 2
+    },
+    {
+      "year": 2025,
+      "week": 32,
+      "week_cases": 0,
+      "cumulative": 32
+    },
+    {
+      "year": 2025,
+      "week": 33,
+      "week_cases": 0,
+      "cumulative": 58
+    },
+    {
+      "year": 2025,
+      "week": 34,
+      "week_cases": 0,
+      "cumulative": 74
+    },
+    {
+      "year": 2025,
+      "week": 35,
+      "week_cases": 0,
+      "cumulative": 113
+    },
+    {
+      "year": 2025,
+      "week": 36,
+      "week_cases": 0,
+      "cumulative": 150
+    },
+    {
+      "year": 2025,
+      "week": 37,
+      "week_cases": 0,
+      "cumulative": 203
+    },
+    {
+      "year": 2025,
+      "week": 38,
+      "week_cases": 0,
+      "cumulative": 220
+    },
+    {
+      "year": 2025,
+      "week": 39,
+      "week_cases": 0,
+      "cumulative": 241
+    },
+    {
+      "year": 2025,
+      "week": 40,
+      "week_cases": 0,
+      "cumulative": 241
+    },
+    {
+      "year": 2025,
+      "week": 41,
+      "week_cases": 0,
+      "cumulative": 264
+    },
+    {
+      "year": 2025,
+      "week": 42,
+      "week_cases": 0,
+      "cumulative": 275
+    },
+    {
+      "year": 2025,
+      "week": 43,
+      "week_cases": 0,
+      "cumulative": 278
+    },
+    {
+      "year": 2025,
+      "week": 44,
+      "week_cases": 0,
+      "cumulative": 278
+    },
+    {
+      "year": 2025,
+      "week": 45,
+      "week_cases": 0,
+      "cumulative": 281
+    },
+    {
+      "year": 2025,
+      "week": 46,
+      "week_cases": 0,
+      "cumulative": 283
+    },
+    {
+      "year": 2025,
+      "week": 47,
+      "week_cases": 0,
+      "cumulative": 284
+    },
+    {
+      "year": 2025,
+      "week": 48,
+      "week_cases": 0,
+      "cumulative": 284
+    },
+    {
+      "year": 2025,
+      "week": 49,
+      "week_cases": 0,
+      "cumulative": 284
+    },
+    {
+      "year": 2025,
+      "week": 50,
+      "week_cases": 0,
+      "cumulative": 284
+    },
+    {
+      "year": 2025,
+      "week": 51,
+      "week_cases": 0,
+      "cumulative": 284
+    },
+    {
+      "year": 2025,
+      "week": 52,
+      "week_cases": 0,
+      "cumulative": 285
+    },
+    {
+      "year": 2025,
+      "week": 53,
+      "week_cases": 0,
+      "cumulative": 285
+    },
+    {
+      "year": 2026,
+      "week": 1,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 2,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 3,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 4,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 5,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 6,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 7,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 8,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 9,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 10,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 11,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 12,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 13,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 14,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 15,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 16,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 17,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 18,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 19,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 20,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 21,
+      "week_cases": 0,
+      "cumulative": 0
+    },
+    {
+      "year": 2026,
+      "week": 22,
+      "week_cases": 0,
+      "cumulative": 1
+    },
+    {
+      "year": 2026,
+      "week": 23,
+      "week_cases": 0,
+      "cumulative": 1
+    },
+    {
+      "year": 2026,
+      "week": 24,
+      "week_cases": 0,
+      "cumulative": 1
+    },
+    {
+      "year": 2026,
+      "week": 25,
+      "week_cases": 0,
+      "cumulative": 2
+    },
+    {
+      "year": 2026,
+      "week": 26,
+      "week_cases": 0,
+      "cumulative": 2
+    },
+    {
+      "year": 2026,
+      "week": 27,
+      "week_cases": 0,
+      "cumulative": 2
+    },
+    {
+      "year": 2026,
+      "week": 28,
+      "week_cases": 0,
+      "cumulative": 2
+    },
+    {
+      "year": 2026,
+      "week": 29,
+      "week_cases": 0,
+      "cumulative": 2
+    },
+    {
+      "year": 2026,
+      "week": 30,
+      "week_cases": 0,
+      "cumulative": 2
+    },
+    {
+      "year": 2026,
+      "week": 31,
+      "week_cases": 0,
+      "cumulative": 4
+    },
+    {
+      "year": 2026,
+      "week": 32,
+      "week_cases": 0,
+      "cumulative": 5
+    },
+    {
+      "year": 2026,
+      "week": 33,
+      "week_cases": 0,
+      "cumulative": 8
+    },
+    {
+      "year": 2026,
+      "week": 34,
+      "week_cases": 0,
+      "cumulative": 14
+    },
+    {
+      "year": 2026,
+      "week": 35,
+      "week_cases": 0,
+      "cumulative": 14
+    },
+    {
+      "year": 2026,
+      "week": 36,
+      "week_cases": 0,
+      "cumulative": 14
+    },
+    {
+      "year": 2026,
+      "week": 37,
+      "week_cases": 0,
+      "cumulative": 42
+    },
+    {
+      "year": 2026,
+      "week": 38,
+      "week_cases": 0,
+      "cumulative": 52
+    },
+    {
+      "year": 2026,
+      "week": 39,
+      "week_cases": 0,
+      "cumulative": 56
+    },
+    {
+      "year": 2026,
+      "week": 40,
+      "week_cases": 0,
+      "cumulative": 61
+    },
+    {
+      "year": 2026,
+      "week": 41,
+      "week_cases": 0,
+      "cumulative": 67
+    },
+    {
+      "year": 2026,
+      "week": 42,
+      "week_cases": 0,
+      "cumulative": 67
+    },
+    {
+      "year": 2026,
+      "week": 43,
+      "week_cases": 0,
+      "cumulative": 72
+    }
+  ]
+}

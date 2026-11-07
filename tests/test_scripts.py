@@ -163,6 +163,68 @@ class TestFetchCDCArboNetWNV:
         assert data["data"] == []
 
 
+NNDSS_RECORDS = [
+    {"year": "2026", "week": "2", "m1_flag": "-", "m3_flag": "-"},
+    {"year": "2026", "week": "1", "m1_flag": "-", "m3_flag": "-"},
+    {"year": "2026", "week": "3", "m1": "4.0", "m3": "4.0"},
+    {"year": "2026", "week": "4", "m1_flag": "U", "m3_flag": "U"},
+]
+
+
+class TestParseNNDSSWeekly:
+    def test_sorts_rows_and_reads_counts(self):
+        rows = fsd.parse_nndss_weekly(NNDSS_RECORDS)
+        assert [r["week"] for r in rows] == [1, 2, 3, 4]
+        assert rows[2] == {"year": 2026, "week": 3, "week_cases": 4, "cumulative": 4}
+
+    def test_no_reported_cases_flag_is_zero_and_unavailable_is_none(self):
+        rows = fsd.parse_nndss_weekly(NNDSS_RECORDS)
+        assert rows[0]["cumulative"] == 0  # "-" = state reported no cases
+        assert rows[3]["cumulative"] is None  # "U" = unavailable, not zero
+
+    def test_rejects_empty_and_malformed_records(self):
+        with pytest.raises(ValueError):
+            fsd.parse_nndss_weekly([])
+        with pytest.raises(ValueError):
+            fsd.parse_nndss_weekly([{"week": "1"}])
+        with pytest.raises(ValueError, match="out of range"):
+            fsd.parse_nndss_weekly([{"year": "2026", "week": "60", "m3": "1"}])
+        with pytest.raises(ValueError, match="unexpected m3"):
+            fsd.parse_nndss_weekly([{"year": "2026", "week": "1", "m3": "-2"}])
+
+
+class TestFetchNNDSSWeekly:
+    def test_saves_file_with_provenance(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        payload = json.dumps(NNDSS_RECORDS).encode()
+        with patch.object(fsd, "_fetch_with_retry", return_value=payload) as mock_fetch:
+            fsd.fetch_cdc_nndss_wnv_weekly()
+        data = json.loads((tmp_path / "wnv_colorado_weekly.json").read_text())
+        assert data["source"] == "CDC NNDSS (provisional weekly)"
+        assert data["source_url"] == fsd.NNDSS_WEEKLY_API
+        assert data["fetched"] == fsd.TODAY
+        assert data["latest_observation"] == "2026-W04"
+        assert len(data["data"]) == 4
+        url = mock_fetch.call_args[0][0]
+        assert "COLORADO" in url and "West+Nile" in url
+
+    def test_keeps_previous_file_when_download_fails(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        previous = {"fetched": "2026-01-01", "source": "CDC NNDSS (provisional weekly)", "data": [{"year": 2026}]}
+        (tmp_path / "wnv_colorado_weekly.json").write_text(json.dumps(previous))
+        with patch.object(fsd, "_fetch_with_retry", return_value=None):
+            fsd.fetch_cdc_nndss_wnv_weekly()
+        assert json.loads((tmp_path / "wnv_colorado_weekly.json").read_text()) == previous
+
+    def test_keeps_previous_file_when_response_is_not_json(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
+        previous = {"fetched": "2026-01-01", "source": "CDC NNDSS (provisional weekly)", "data": [{"year": 2026}]}
+        (tmp_path / "wnv_colorado_weekly.json").write_text(json.dumps(previous))
+        with patch.object(fsd, "_fetch_with_retry", return_value=b"<html>error</html>"):
+            fsd.fetch_cdc_nndss_wnv_weekly()
+        assert json.loads((tmp_path / "wnv_colorado_weekly.json").read_text()) == previous
+
+
 class TestLymeStaticTable:
     def test_saves_file_with_expected_structure(self, tmp_path, monkeypatch):
         monkeypatch.setattr(fsd, "OUTPUT_DIR", str(tmp_path))
@@ -339,6 +401,10 @@ class TestReliabilityReport:
     def _write_all_sources_ok() -> None:
         today = fsd.TODAY
         fsd.save("wnv_colorado.json", {"fetched": today, "source": "CDC", "data": [{"year": 2024}]})
+        fsd.save(
+            "wnv_colorado_weekly.json",
+            {"fetched": today, "source": "CDC NNDSS (provisional weekly)", "data": [{"year": 2026, "week": 1}]},
+        )
         fsd.save("lyme_colorado.json", {"fetched": today, "source": "CDC", "data": [{"year": 2024}]})
         fsd.save(
             "climate_colorado_90d.json",

@@ -41,6 +41,35 @@ sources:
       - The CSV path sits behind a web page and is not a documented API, so it may change without notice.
       - CDC returned HTTP 403 to the custom User-Agent "AEDES-Surveillance/2.0" on 2026-11-06; the fetch sends the standard Python client header.
 
+  - id: cdc_wnv_weekly
+    artifact: data/surveillance/wnv_colorado_weekly.json
+    kind: fetched
+    provider: US Centers for Disease Control and Prevention (CDC), National Notifiable Diseases Surveillance System (NNDSS)
+    dataset: NNDSS Weekly Data, label "Arboviral diseases, West Nile virus disease", Colorado
+    url: https://data.cdc.gov/resource/x9gk-5huc.json
+    documentation: https://data.cdc.gov/NNDSS/NNDSS-Weekly-Data/x9gk-5huc
+    geography: Colorado (reporting jurisdiction)
+    spatial_resolution: state
+    temporal_resolution: weekly (MMWR week of report)
+    temporal_coverage: 2022 to the current week
+    update_frequency: weekly
+    observation_type: observed
+    data_type: human disease surveillance (provisional)
+    license: unverified
+    status: verified
+    last_checked: 2026-11-07
+    missing_data: >-
+      CDC flag "-" (no reported cases) is recorded as 0. Flags U, N, NN, NP and NC
+      (unavailable, not reportable, not notifiable, not published, not calculated)
+      are recorded as null.
+    limitations:
+      - Provisional counts by week of report, not week of illness onset; they are revised as late reports arrive.
+      - Reports can arrive in batches; Colorado's 2024 count stayed at 0 until week 38 and then rose to 59.
+      - Each year's rows keep the counts as published at the time; the dashboard compares seasons at the same reporting delay, not against final totals.
+      - Counts all West Nile virus disease (neuroinvasive and non-neuroinvasive), so they are not directly comparable with the neuroinvasive annual series.
+      - Only four earlier seasons (2022 to 2025) are available for comparison.
+      - The dataset has no Colorado rows for Lyme disease or spotted fever rickettsiosis.
+
   - id: cdc_lyme
     artifact: data/surveillance/lyme_colorado.json
     kind: static
