@@ -7999,6 +7999,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
     <span class="n">wnv_hist</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'year'</span><span class="p">,</span> <span class="s1">'neuroinvasive'</span><span class="p">,</span> <span class="s1">'deaths'</span><span class="p">])</span>
 
+<span class="c1"># In-season WNV counts: CDC NNDSS provisional weekly feed (scripts/fetch_surveillance_data.py)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">aedesproject_uif.surveillance.season</span><span class="w"> </span><span class="kn">import</span> <span class="n">season_pace</span><span class="p">,</span> <span class="n">as_alert_metrics</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">'wnv_colorado_weekly.json'</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">wnv_weekly_rows</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="p">[])</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
+    <span class="n">wnv_weekly_rows</span> <span class="o">=</span> <span class="p">[]</span>
+
 <span class="c1"># Load historical Lyme data</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">lyme_hist_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -8034,7 +8042,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <span class="c1"># Calculate baseline statistics from historical data</span>
 <span class="n">wnv_baseline_stats</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">'median_annual'</span><span class="p">:</span> <span class="n">historical_2024</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'wnv_cases_full_year'</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+    <span class="s1">'median_annual'</span><span class="p">:</span> <span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'total_cases'</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span> <span class="k">if</span> <span class="s1">'total_cases'</span> <span class="ow">in</span> <span class="n">wnv_hist</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
     <span class="s1">'peak_month'</span><span class="p">:</span> <span class="n">historical_2024</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'peak_wnv_month'</span><span class="p">,</span> <span class="s1">'August'</span><span class="p">),</span>
     <span class="s1">'mean_annual'</span><span class="p">:</span> <span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'neuroinvasive'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">wnv_hist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
     <span class="s1">'p25'</span><span class="p">:</span> <span class="n">wnv_hist</span><span class="p">[</span><span class="s1">'neuroinvasive'</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">wnv_hist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
@@ -8043,7 +8051,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <span class="p">}</span>
 
 <span class="n">lyme_baseline_stats</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">'median_annual'</span><span class="p">:</span> <span class="n">historical_2024</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'lyme_cases_full_year'</span><span class="p">,</span> <span class="mi">119</span><span class="p">),</span>
+    <span class="s1">'median_annual'</span><span class="p">:</span> <span class="p">(</span><span class="n">lyme_hist</span><span class="p">[</span><span class="s1">'confirmed'</span><span class="p">]</span> <span class="o">+</span> <span class="n">lyme_hist</span><span class="p">[</span><span class="s1">'probable'</span><span class="p">])</span><span class="o">.</span><span class="n">median</span><span class="p">()</span> <span class="k">if</span> <span class="p">{</span><span class="s1">'confirmed'</span><span class="p">,</span> <span class="s1">'probable'</span><span class="p">}</span> <span class="o">&lt;=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lyme_hist</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
     <span class="s1">'peak_month'</span><span class="p">:</span> <span class="n">historical_2024</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'peak_lyme_month'</span><span class="p">,</span> <span class="s1">'July'</span><span class="p">),</span>
     <span class="s1">'mean_annual'</span><span class="p">:</span> <span class="p">(</span><span class="n">lyme_hist</span><span class="p">[</span><span class="s1">'confirmed'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lyme_hist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">),</span>
     <span class="s1">'p25'</span><span class="p">:</span> <span class="p">(</span><span class="n">lyme_hist</span><span class="p">[</span><span class="s1">'confirmed'</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lyme_hist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">),</span>
@@ -8051,51 +8059,13 @@ document.addEventListener('DOMContentLoaded', function () {
     <span class="s1">'recent_5yr_avg'</span><span class="p">:</span> <span class="p">(</span><span class="n">lyme_hist</span><span class="p">[</span><span class="n">lyme_hist</span><span class="p">[</span><span class="s1">'year'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">SEASON_YEAR</span> <span class="o">-</span> <span class="mi">5</span><span class="p">][</span><span class="s1">'confirmed'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lyme_hist</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">),</span>
 <span class="p">}</span>
 
-<span class="c1"># Initialize alert_metrics dictionary for downstream cells</span>
-<span class="n">alert_metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'wnv'</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">'lyme'</span><span class="p">:</span> <span class="p">{}}</span>
-
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weekly_current</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">latest_week</span> <span class="o">=</span> <span class="n">weekly_current</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    
-    <span class="c1"># WNV Alert Metrics</span>
-    <span class="n">wnv_ytd</span> <span class="o">=</span> <span class="n">latest_week</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'wnv_cumulative'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">wnv_expected_at_this_week</span> <span class="o">=</span> <span class="p">(</span><span class="n">CURRENT_WEEK</span> <span class="o">/</span> <span class="mi">52</span><span class="p">)</span> <span class="o">*</span> <span class="n">wnv_baseline_stats</span><span class="p">[</span><span class="s1">'median_annual'</span><span class="p">]</span>
-    <span class="n">wnv_deviation_pct</span> <span class="o">=</span> <span class="p">((</span><span class="n">wnv_ytd</span> <span class="o">-</span> <span class="n">wnv_expected_at_this_week</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">wnv_expected_at_this_week</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
-    
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="n">wnv_ytd</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">]</span> <span class="o">=</span> <span class="n">wnv_expected_at_this_week</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span> <span class="o">=</span> <span class="n">wnv_deviation_pct</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">'🟢 LOW'</span> <span class="k">if</span> <span class="n">wnv_deviation_pct</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">25</span> <span class="k">else</span>
-        <span class="s1">'🟡 MODERATE'</span> <span class="k">if</span> <span class="n">wnv_deviation_pct</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span>
-        <span class="s1">'🟠 HIGH'</span> <span class="k">if</span> <span class="n">wnv_deviation_pct</span> <span class="o">&lt;</span> <span class="mi">25</span> <span class="k">else</span>
-        <span class="s1">'🔴 SEVERE'</span>
-    <span class="p">)</span>
-    
-    <span class="c1"># Lyme Alert Metrics</span>
-    <span class="n">lyme_ytd</span> <span class="o">=</span> <span class="n">latest_week</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'lyme_cumulative'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">lyme_expected_at_this_week</span> <span class="o">=</span> <span class="p">(</span><span class="n">CURRENT_WEEK</span> <span class="o">/</span> <span class="mi">52</span><span class="p">)</span> <span class="o">*</span> <span class="n">lyme_baseline_stats</span><span class="p">[</span><span class="s1">'median_annual'</span><span class="p">]</span>
-    <span class="n">lyme_deviation_pct</span> <span class="o">=</span> <span class="p">((</span><span class="n">lyme_ytd</span> <span class="o">-</span> <span class="n">lyme_expected_at_this_week</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">lyme_expected_at_this_week</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
-    
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lyme_ytd</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lyme_expected_at_this_week</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lyme_deviation_pct</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">'🟢 LOW'</span> <span class="k">if</span> <span class="n">lyme_deviation_pct</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">25</span> <span class="k">else</span>
-        <span class="s1">'🟡 MODERATE'</span> <span class="k">if</span> <span class="n">lyme_deviation_pct</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span>
-        <span class="s1">'🟠 HIGH'</span> <span class="k">if</span> <span class="n">lyme_deviation_pct</span> <span class="o">&lt;</span> <span class="mi">25</span> <span class="k">else</span>
-        <span class="s1">'🔴 SEVERE'</span>
-    <span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="c1"># No data yet - set defaults</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'🟢 LOW'</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'🟢 LOW'</span>
+<span class="c1"># WNV: cases reported this season against the same CDC week in earlier seasons</span>
+<span class="c1"># (CDC NNDSS provisional weekly feed). Lyme: no in-season source exists for Colorado,</span>
+<span class="c1"># so it is shown as missing rather than as zero.</span>
+<span class="n">alert_metrics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'wnv'</span><span class="p">:</span> <span class="n">as_alert_metrics</span><span class="p">(</span><span class="n">season_pace</span><span class="p">(</span><span class="n">wnv_weekly_rows</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="p">)),</span>
+    <span class="s1">'lyme'</span><span class="p">:</span> <span class="n">as_alert_metrics</span><span class="p">(</span><span class="n">season_pace</span><span class="p">([],</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="p">)),</span>
+<span class="p">}</span>
 
 <span class="c1"># Display system info</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Python environment initialized"</span><span class="p">)</span>
@@ -8312,10 +8282,10 @@ DATA INTEGRITY VALIDATION
     <span class="s1">'YTD Cases'</span><span class="p">:</span> <span class="p">[</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">],</span> <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">]],</span>
     <span class="s1">'Expected*'</span><span class="p">:</span> <span class="p">[</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">],</span> <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">]],</span>
     <span class="s1">'Deviation'</span><span class="p">:</span> <span class="p">[</span>
-        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%"</span>
+        <span class="s1">'n/a'</span> <span class="k">if</span> <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">,</span>
+        <span class="s1">'n/a'</span> <span class="k">if</span> <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%"</span>
     <span class="p">],</span>
-    <span class="s1">'Alert Level'</span><span class="p">:</span> <span class="p">[</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">],</span> <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]],</span>
+    <span class="s1">'Status'</span><span class="p">:</span> <span class="p">[</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">],</span> <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]],</span>
     <span class="s1">'Historical Median'</span><span class="p">:</span> <span class="p">[</span>
         <span class="n">wnv_baseline_stats</span><span class="p">[</span><span class="s1">'median_annual'</span><span class="p">],</span>
         <span class="n">lyme_baseline_stats</span><span class="p">[</span><span class="s1">'median_annual'</span><span class="p">]</span>
@@ -8326,7 +8296,9 @@ DATA INTEGRITY VALIDATION
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"CURRENT SEASON (</span><span class="si">{</span><span class="n">SEASON_YEAR</span><span class="si">}</span><span class="s2">) SUMMARY — Week </span><span class="si">{</span><span class="n">CURRENT_WEEK</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">90</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">summary_table</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">* Expected based on historical average pace through week </span><span class="si">{</span><span class="n">CURRENT_WEEK</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">* Expected: median of earlier seasons (CDC NNDSS, 2022 onward) at the same CDC week of report."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Historical Median: annual total cases (WNV: CDC ArboNET; Lyme: static table, unverified)."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Lyme disease has no in-season source for Colorado."</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">90</span><span class="p">)</span>
 
 <span class="c1"># Export weekly detail</span>
@@ -8356,11 +8328,13 @@ DATA INTEGRITY VALIDATION
 ==========================================================================================
 CURRENT SEASON (2026) SUMMARY — Week 45
 ==========================================================================================
-        Disease  YTD Cases  Expected* Deviation Alert Level  Historical Median
-West Nile Virus          0  10.384615   -100.0%       🟢 LOW                 12
-   Lyme Disease          2 102.980769    -98.1%       🟢 LOW                119
+        Disease  YTD Cases  Expected* Deviation                             Status  Historical Median
+West Nile Virus       72.0      239.0    -69.9% Within the range of recent seasons              120.0
+   Lyme Disease        NaN        NaN       n/a                  No in-season data               75.5
 
-* Expected based on historical average pace through week 45
+* Expected: median of earlier seasons (CDC NNDSS, 2022 onward) at the same CDC week of report.
+  Historical Median: annual total cases (WNV: CDC ArboNET; Lyme: static table, unverified).
+  Lyme disease has no in-season source for Colorado.
 ==========================================================================================
 
 ✓ Exported weekly detail: /home/runner/work/aedesproject-uif/aedesproject-uif/notebooks/../processed/Dashboard/current_season/2026_weekly_cases.csv
@@ -8387,63 +8361,39 @@ West Nile Virus          0  10.384615   -100.0%       🟢 LOW                 1
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="c1"># Calculate alert metrics for current season</span>
+<span class="c1"># Same comparison as in the setup cell: this season's reported WNV cases against the</span>
+<span class="c1"># same CDC week in earlier seasons. Values that cannot be computed are shown as n/a.</span>
 <span class="n">alert_metrics</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">'wnv'</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">'lyme'</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="s1">'wnv'</span><span class="p">:</span> <span class="n">as_alert_metrics</span><span class="p">(</span><span class="n">season_pace</span><span class="p">(</span><span class="n">wnv_weekly_rows</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="p">)),</span>
+    <span class="s1">'lyme'</span><span class="p">:</span> <span class="n">as_alert_metrics</span><span class="p">(</span><span class="n">season_pace</span><span class="p">([],</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="p">)),</span>
 <span class="p">}</span>
 
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weekly_current</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">latest_week</span> <span class="o">=</span> <span class="n">weekly_current</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    
-    <span class="c1"># WNV Alerts</span>
-    <span class="n">wnv_ytd</span> <span class="o">=</span> <span class="n">latest_week</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'wnv_cumulative'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">wnv_expected_at_this_week</span> <span class="o">=</span> <span class="p">(</span><span class="n">CURRENT_WEEK</span> <span class="o">/</span> <span class="mi">52</span><span class="p">)</span> <span class="o">*</span> <span class="n">wnv_baseline_stats</span><span class="p">[</span><span class="s1">'median_annual'</span><span class="p">]</span>
-    <span class="n">wnv_deviation_pct</span> <span class="o">=</span> <span class="p">((</span><span class="n">wnv_ytd</span> <span class="o">-</span> <span class="n">wnv_expected_at_this_week</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">wnv_expected_at_this_week</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
-    
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="n">wnv_ytd</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">]</span> <span class="o">=</span> <span class="n">wnv_expected_at_this_week</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span> <span class="o">=</span> <span class="n">wnv_deviation_pct</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">'🟢 LOW'</span> <span class="k">if</span> <span class="n">wnv_deviation_pct</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">25</span>
-        <span class="k">else</span> <span class="s1">'🟡 MODERATE'</span> <span class="k">if</span> <span class="n">wnv_deviation_pct</span> <span class="o">&lt;</span> <span class="mi">0</span>
-        <span class="k">else</span> <span class="s1">'🟠 HIGH'</span> <span class="k">if</span> <span class="n">wnv_deviation_pct</span> <span class="o">&lt;</span> <span class="mi">25</span>
-        <span class="k">else</span> <span class="s1">'🔴 SEVERE'</span>
-    <span class="p">)</span>
-    
-    <span class="c1"># Lyme Alerts</span>
-    <span class="n">lyme_ytd</span> <span class="o">=</span> <span class="n">latest_week</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'lyme_cumulative'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">lyme_expected_at_this_week</span> <span class="o">=</span> <span class="p">(</span><span class="n">CURRENT_WEEK</span> <span class="o">/</span> <span class="mi">52</span><span class="p">)</span> <span class="o">*</span> <span class="n">lyme_baseline_stats</span><span class="p">[</span><span class="s1">'median_annual'</span><span class="p">]</span>
-    <span class="n">lyme_deviation_pct</span> <span class="o">=</span> <span class="p">((</span><span class="n">lyme_ytd</span> <span class="o">-</span> <span class="n">lyme_expected_at_this_week</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">lyme_expected_at_this_week</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
-    
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lyme_ytd</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lyme_expected_at_this_week</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lyme_deviation_pct</span>
-    <span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">'🟢 LOW'</span> <span class="k">if</span> <span class="n">lyme_deviation_pct</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">25</span>
-        <span class="k">else</span> <span class="s1">'🟡 MODERATE'</span> <span class="k">if</span> <span class="n">lyme_deviation_pct</span> <span class="o">&lt;</span> <span class="mi">0</span>
-        <span class="k">else</span> <span class="s1">'🟠 HIGH'</span> <span class="k">if</span> <span class="n">lyme_deviation_pct</span> <span class="o">&lt;</span> <span class="mi">25</span>
-        <span class="k">else</span> <span class="s1">'🔴 SEVERE'</span>
-    <span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fmt</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">spec</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">'n/a'</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
+
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"IN-SEASON ALERT METRICS"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"IN-SEASON COMPARISON WITH RECENT SEASONS"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Week </span><span class="si">{</span><span class="n">CURRENT_WEEK</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">SEASON_YEAR</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">West Nile Virus:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  YTD Cases: </span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Expected at this week (historical): </span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Deviation: </span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Alert Level: </span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'wnv'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Today: week </span><span class="si">{</span><span class="n">CURRENT_WEEK</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">((</span><span class="s1">'wnv'</span><span class="p">,</span> <span class="s1">'West Nile Virus'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'lyme'</span><span class="p">,</span> <span class="s1">'Lyme Disease'</span><span class="p">)):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">alert_metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s1">'recent_range'</span><span class="p">]</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">m</span><span class="p">[</span><span class="s1">'recent_years'</span><span class="p">])</span> <span class="ow">or</span> <span class="s1">'none'</span>
+    <span class="n">deviation</span> <span class="o">=</span> <span class="s1">'n/a'</span> <span class="k">if</span> <span class="n">m</span><span class="p">[</span><span class="s1">'deviation_pct'</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="s1">'deviation_pct'</span><span class="p">]</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%"</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Cases reported this season: </span><span class="si">{</span><span class="n">_fmt</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">'ytd_cases'</span><span class="p">],</span><span class="w"> </span><span class="s1">'.0f'</span><span class="p">)</span><span class="si">}</span><span class="s2"> (CDC week </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="s1">'data_week'</span><span class="p">]</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">'n/a'</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Earlier seasons at the same week (</span><span class="si">{</span><span class="n">years</span><span class="si">}</span><span class="s2">): median </span><span class="si">{</span><span class="n">_fmt</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s1">'expected_at_week'</span><span class="p">],</span><span class="w"> </span><span class="s1">'.1f'</span><span class="p">)</span><span class="si">}</span><span class="s2">, "</span>
+          <span class="sa">f</span><span class="s2">"range </span><span class="si">{</span><span class="n">_fmt</span><span class="p">(</span><span class="n">low</span><span class="p">,</span><span class="w"> </span><span class="s1">'.0f'</span><span class="p">)</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">_fmt</span><span class="p">(</span><span class="n">high</span><span class="p">,</span><span class="w"> </span><span class="s1">'.0f'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Difference from median: </span><span class="si">{</span><span class="n">deviation</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Status: </span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="s1">'alert_level'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Lyme Disease:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  YTD Cases: </span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'ytd_cases'</span><span class="p">]</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Expected at this week (historical): </span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'expected_at_week'</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Deviation: </span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'deviation_pct'</span><span class="p">]</span><span class="si">:</span><span class="s2">+.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Alert Level: </span><span class="si">{</span><span class="n">alert_metrics</span><span class="p">[</span><span class="s1">'lyme'</span><span class="p">][</span><span class="s1">'alert_level'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Interpretation:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Negative deviation = Below historical pace"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Positive deviation = Above historical pace (watch closely)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">How to read this:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Counts are provisional and by week of report, not week of illness onset."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Reports can arrive late or in batches, so a season can look low until they arrive."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  This compares reported counts; it is not a risk estimate or a forecast."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Lyme disease has no in-season source for Colorado (CDC NNDSS has no Colorado Lyme rows)."</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -8457,26 +8407,28 @@ West Nile Virus          0  10.384615   -100.0%       🟢 LOW                 1
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>======================================================================
-IN-SEASON ALERT METRICS
+IN-SEASON COMPARISON WITH RECENT SEASONS
 ======================================================================
 
-Week 45 of 2026
+Today: week 45 of 2026
 
 West Nile Virus:
-  YTD Cases: 0
-  Expected at this week (historical): 10.4
-  Deviation: -100.0%
-  Alert Level: 🟢 LOW
+  Cases reported this season: 72 (CDC week 43)
+  Earlier seasons at the same week (2022, 2023, 2024, 2025): median 239.0, range 70 to 584
+  Difference from median: -69.9%
+  Status: Within the range of recent seasons
 
 Lyme Disease:
-  YTD Cases: 2
-  Expected at this week (historical): 103.0
-  Deviation: -98.1%
-  Alert Level: 🟢 LOW
+  Cases reported this season: n/a (CDC week n/a)
+  Earlier seasons at the same week (none): median n/a, range n/a to n/a
+  Difference from median: n/a
+  Status: No in-season data
 
-Interpretation:
-  Negative deviation = Below historical pace
-  Positive deviation = Above historical pace (watch closely)
+How to read this:
+  Counts are provisional and by week of report, not week of illness onset.
+  Reports can arrive late or in batches, so a season can look low until they arrive.
+  This compares reported counts; it is not a risk estimate or a forecast.
+  Lyme disease has no in-season source for Colorado (CDC NNDSS has no Colorado Lyme rows).
 ======================================================================
 </pre>
 </div>
