@@ -42,6 +42,18 @@
       font-size: 0.9rem;
     }
 
+    .review-callout {
+      background: white;
+      border: 1px solid #2b6cb0;
+      border-left-width: 6px;
+      border-radius: 6px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+    }
+    .review-callout h2 { font-size: 1.2rem; color: #1a365d; margin-bottom: 0.4rem; }
+    .review-callout p { margin-bottom: 0.6rem; }
+    .review-callout .btn { font-size: 0.95rem; }
+
     .data-note {
       background: #fffbeb;
       border-left: 4px solid #d69e2e;
@@ -173,12 +185,19 @@
   <div class="container" style="padding-top:0; padding-bottom:0;">
     <h1>🦟 AEDES Colorado Surveillance Dashboard</h1>
     <p>Advanced Early Disease Prediction and Exploration Service — Vector-Borne Disease Monitoring</p>
-    <span class="badge">🕐 Data last fetched: 2026-11-07</span>
+    <span class="badge">🕐 Data last fetched: 2026-11-08</span>
     <span class="badge">📍 Colorado, USA</span>
   </div>
 </header>
 
 <div class="container">
+
+  <section class="review-callout" aria-labelledby="season-review-heading">
+    <h2 id="season-review-heading">2026 season review</h2>
+    <p>How the dashboard's 2026 outputs compared with the cases Colorado reported, the evidence for
+    that comparison, and what should change for the next season.</p>
+    <p><a class="btn" href="2026-season-review.html">Read the 2026 season review</a></p>
+  </section>
 
   <div class="alert">
     <strong>About this dashboard:</strong> Rebuilt daily from March to November and on the 1st of each month from December to February. NASA POWER and Open-Meteo climate data and
@@ -331,7 +350,7 @@
   
   <div class="reliability">
     <h3>Pipeline Reliability Status</h3>
-    <p><strong>Run mode:</strong> Degraded &nbsp;|&nbsp; <strong>Generated:</strong> 2026-11-07T22:09:36Z</p>
+    <p><strong>Run mode:</strong> Degraded &nbsp;|&nbsp; <strong>Generated:</strong> 2026-11-08T02:38:56Z</p>
     <p>Kind "static" means the values are stored in this repository and are not fetched. Status "stale" means
     the source could not be updated on this run, so the previous copy is shown. "Latest observation" is the
     most recent year or date in the data, which is not the same as the date it was retrieved.</p>
@@ -348,14 +367,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td>cdc_wnv</td><td>fetched</td><td>ok</td><td>2025</td><td>No</td><td>2026-11-07</td><td>fresh_data</td></tr>
-<tr><td>cdc_wnv_weekly</td><td>fetched</td><td>ok</td><td>2026-W43</td><td>No</td><td>2026-11-07</td><td>fresh_data</td></tr>
+        <tr><td>cdc_wnv</td><td>fetched</td><td>ok</td><td>2025</td><td>No</td><td>2026-11-08</td><td>fresh_data</td></tr>
+<tr><td>cdc_wnv_weekly</td><td>fetched</td><td>ok</td><td>2026-W43</td><td>No</td><td>2026-11-08</td><td>fresh_data</td></tr>
 <tr><td>cdc_lyme</td><td>static</td><td>static</td><td>2024</td><td>No</td><td>n/a</td><td>static_table_unverified</td></tr>
-<tr><td>nasa_power_90d</td><td>fetched</td><td>ok</td><td>20261104</td><td>No</td><td>2026-11-07</td><td>fresh_data</td></tr>
-<tr><td>open_meteo_30d</td><td>fetched</td><td>ok</td><td>2026-11-07</td><td>No</td><td>2026-11-07</td><td>fresh_data</td></tr>
+<tr><td>nasa_power_90d</td><td>fetched</td><td>ok</td><td>20261104</td><td>No</td><td>2026-11-08</td><td>fresh_data</td></tr>
+<tr><td>open_meteo_30d</td><td>fetched</td><td>ok</td><td>2026-11-08</td><td>No</td><td>2026-11-08</td><td>fresh_data</td></tr>
 <tr><td>google_trends_co</td><td>fetched</td><td>degraded</td><td>n/a</td><td>Yes</td><td>n/a</td><td>source_unavailable</td></tr>
-<tr><td>inaturalist_ticks</td><td>fetched</td><td>ok</td><td>2026-06-10</td><td>No</td><td>2026-11-07</td><td>fresh_data</td></tr>
-<tr><td>inaturalist_mosquitoes</td><td>fetched</td><td>ok</td><td>2026-08-26</td><td>No</td><td>2026-11-07</td><td>fresh_data</td></tr>
+<tr><td>inaturalist_ticks</td><td>fetched</td><td>ok</td><td>2026-06-10</td><td>No</td><td>2026-11-08</td><td>fresh_data</td></tr>
+<tr><td>inaturalist_mosquitoes</td><td>fetched</td><td>ok</td><td>2026-08-26</td><td>No</td><td>2026-11-08</td><td>fresh_data</td></tr>
 <tr><td>regional_counties</td><td>static</td><td>static</td><td>n/a</td><td>No</td><td>n/a</td><td>static_table_unverified</td></tr>
       </tbody>
     </table>
@@ -395,7 +414,7 @@
     <a href="https://github.com/mgifford/aedesproject-uif">GitHub</a> &nbsp;|&nbsp;
     Built with Jupyter, nbconvert, and GitHub Actions &nbsp;|&nbsp;
     Data: CDC ArboNET, NASA POWER, Open-Meteo, iNaturalist; static Lyme and county tables &nbsp;|&nbsp;
-    Generated: November 07, 2026
+    Generated: November 08, 2026
   </p>
   <p style="margin-top:0.5rem;">
     Original AEDES methodology: Ligot &amp; Toledo (2021). Academia Letters, Article 2956.
