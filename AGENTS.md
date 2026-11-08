@@ -90,8 +90,9 @@ Automation workflows in [`.github/workflows/`](.github/workflows/) run scheduled
 3. Fetch iNaturalist tick/mosquito observations (real-time)
 4. Execute Jupyter notebooks (`.ipynb` → `.html`) with executable Python cells
 5. Post-process HTML: inject CSS/JS to collapse query cells by default, add Show/Hide toggles
-6. Generate dashboard landing page with accessible navigation
-7. Deploy to GitHub Pages (`gh-pages` branch)
+6. Render season reviews (`docs/<year>-SEASON-REVIEW.md`) as pages, with their evidence files
+7. Generate dashboard landing page with accessible navigation and a link to the latest season review
+8. Deploy to GitHub Pages (`gh-pages` branch)
 
 **Output:** Evergreen surveillance dashboard with:
 - Semantic section anchors for direct linking
@@ -103,6 +104,7 @@ Automation workflows in [`.github/workflows/`](.github/workflows/) run scheduled
 **Key Scripts:**
 - `scripts/fetch_surveillance_data.py` — Data ingestion from public APIs (CDC, NASA POWER, iNaturalist)
 - `scripts/generate_dashboard.py` — Dashboard HTML generation with notebook cards and index
+- `scripts/build_season_review_pages.py` — Season review pages (`<year>-season-review.html`) from `docs/`
 - Workflow step: Post-processing HTML injection for collapsible query cells (universal JS/CSS toggle)
 
 ---

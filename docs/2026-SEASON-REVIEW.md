@@ -4,6 +4,7 @@
 - Data as of: CDC NNDSS provisional counts through MMWR week 43 of 2026 (retrieved 2026-11-07); CDC ArboNET final counts through 2025 (retrieved 2026-11-06)
 - Status: **draft, AI-assisted, not reviewed by an epidemiologist or vector ecologist**
 - Reproduce: `git fetch origin gh-pages && python scripts/season_review.py --year 2026 --out docs/season-review-2026` (outputs are committed in [`docs/season-review-2026/`](season-review-2026/))
+- Web version: https://mgifford.github.io/aedesproject-uif/2026-season-review.html
 
 ## Summary
 
@@ -14,6 +15,17 @@
 5. **For 2027 the data support a base rate, not a forecast.** In-season mosquito surveillance is the documented early signal in Colorado and is the most useful thing to add next.
 
 There is no outcome data to test the tick-borne disease outputs against (section 3).
+
+## At a glance: what the dashboard showed and what happened
+
+| What the dashboard showed | What was reported | Assessment |
+|---|---|---|
+| WNV index at MODERATE from June to September, peaking at 0.49 on 29 July | Most of the 72 cases were reported to CDC in September and October | **Not a forecast.** The timing fits the usual season, but the index follows temperature (r = 0.975), so it would look much the same every year (section 3). |
+| WNV index driven by temperature, in the warmest summer since 2010 at its weather point | 72 cases, below the 2010 to 2025 median of 120 | **Wrong direction on the size of the season.** No temperature or precipitation measure at that point is associated with annual cases (section 3). |
+| In-season WNV alert at "LOW" on all 174 days | 72 cases, 5 of them fatal | **Did not work.** It read a season file last updated in May and an incorrect baseline, so it could not change (section 3). |
+| Tick index lowest in July and August, rising again in October | No outcome data for Colorado tick-borne disease | **Cannot be assessed.** From late May to early November it was also built partly on fly records (section 1). |
+
+The evidence for each row is in the sections below. The values the dashboard published each day, the climate and case counts by year, and every computed number are in [`season-review-2026/`](season-review-2026/): [`published_values.csv`](season-review-2026/published_values.csv), [`climate_and_cases_by_year.csv`](season-review-2026/climate_and_cases_by_year.csv) and [`summary.json`](season-review-2026/summary.json).
 
 ## 1. What the dashboard published
 
@@ -108,13 +120,29 @@ That is the reference this project will compare 2027 against: first with NNDSS p
 - The dashboard now fetches CDC NNDSS provisional weekly WNV counts and compares the current season with the same week in 2022 to 2025 (notebooks 06 and 08). Missing data is shown as "No in-season data", not as LOW. This comparison of reported counts is not a risk estimate; see section 11 of the [scientific audit](SCIENTIFIC-AUDIT.md).
 - Earlier fixes (PR 1 and PR 2) corrected the iNaturalist taxon IDs, the historical WNV counts and the labels on the composite index.
 
-Still to do before the 2027 season:
+## 6. What would make the dashboard more useful in 2027
 
-1. Find mosquito surveillance data (trap counts, pool results, vector index) from CDPHE or counties, and check the terms of use.
-2. Reframe the WNV composite index as a temperature seasonality indicator, or retire it.
-3. Ask CDPHE about tick submission records and county counts for Colorado tick fever and spotted fever.
+These are recommendations, in priority order, not findings. None has been carried out yet.
 
-## 6. Limitations
+1. **Write down what the dashboard expects for 2027 before the season starts, and how it will be judged.** For example: "Colorado will report between 80 and 183 WNV cases" (the middle half of 2010 to 2025, so a range that held in about half of past years), checked against CDC's count at the end of the season. Without a prediction made in advance, a review can describe the season but cannot test the dashboard.
+2. **Add mosquito surveillance data.** Trap counts, pool test results and the vector index from CDPHE and county mosquito control programmes are the documented early signal in Colorado (Bolling et al. 2009) and give weeks of lead time. This needs the data owners' agreement and a check of each source's terms of use.
+3. **Relabel or retire the WNV composite index.** As it stands it is a temperature seasonality indicator. Before it is shown as "risk" again, it should be tested against a simple baseline: the average seasonal curve of reported cases.
+4. **Make the in-season comparison the main WNV display.** It compares cases reported so far with the same CDC week in 2022 to 2025. On 2026 data it would have shown the season below the range of recent seasons in mid-September (week 38), and just within it by late October (week 43). It describes reports; it does not predict them.
+5. **Decide what to do about ticks.** Either obtain outcome data (ask CDPHE for county counts of Colorado tick fever and spotted fever rickettsiosis, and for tick submission records), or show tick observations without a risk level.
+6. **Stop relying on one weather point.** A modelled point near Denver cannot stand for the whole state. If county or regional case counts can be obtained, compare weather and cases area by area.
+
+## 7. How this review should be improved for 2027
+
+1. **Test predictions made in advance** (item 1 in section 6), instead of working out after the season what the dashboard implied.
+2. **Save what the dashboard publishes each day as data.** The 2026 values had to be read back from rendered pages in the `gh-pages` history, which only works while the page wording stays the same. A small file written by each build (date, index values, labels, alert status, latest data week) would make the comparison exact.
+3. **Compare with simple baselines, and say whether the dashboard did better.** For example: the median season, last year's count and the average seasonal curve. In 2026 every simple total overestimated the season (section 3); the question for 2027 is whether the dashboard beats them.
+4. **Run the comparison during the season, not only at the end.** A weekly check against the CDC NNDSS feed would have shown the alert staying at LOW while reported cases rose in September, instead of the problem being found in November.
+5. **Use date of illness onset where possible.** CDC NNDSS counts are by week of report, which adds a reporting delay to any test of lead time. Onset dates from CDPHE, if they can be shared, would allow a fairer test of early signals.
+6. **Add a chart with a data table.** A chart of the published index against weekly reported cases would show the timing comparison at a glance; the table keeps the same information available to everyone.
+7. **Get a domain review.** Ask an epidemiologist or vector ecologist, for example at CDPHE or a university, to review the method before the 2027 review is published.
+8. **Re-check 2026 against CDC's final counts.** The 2026 counts are provisional; in 2022 to 2025, 2% to 8% of each season's cases were reported after week 43. CDC's historic data page showed 2025 as final on 16 September 2026, so final 2026 counts may not appear until the second half of 2027.
+
+## 8. Limitations
 
 - Climate measures come from one NASA POWER point (latitude 39.74, longitude -104.99). These are modelled values, not station observations.
 - The correlations use 16 years and seven measures, with no correction for multiple comparisons; they are exploratory.
@@ -134,4 +162,4 @@ Still to do before the 2027 season:
 
 ## AI assistance
 
-This review was drafted with Claude (Anthropic, model `claude-opus-5-5`) in Claude Code, under the direction of the repository maintainer. Every number comes from the committed outputs of `scripts/season_review.py` or from the sources listed above, except the CDPHE death count, the tularemia counts and the national Colorado tick fever figures, which were read from the cited pages. The interpretation has not been reviewed by a domain expert.
+This review was drafted with Claude (Anthropic, model `claude-opus-5-5`) in Claude Code, under the direction of the repository maintainer. Every number comes from the committed outputs of `scripts/season_review.py` or from the sources listed above, except the CDPHE death count, the tularemia counts and the national Colorado tick fever figures, which were read from the cited pages. Sections 6 and 7 are recommendations, not findings. The interpretation has not been reviewed by a domain expert.

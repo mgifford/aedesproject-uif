@@ -168,6 +168,35 @@ def build_reliability_section(report: dict | None) -> str:
 """
 
 
+def find_season_reviews(site_dir: str) -> list[tuple[str, str]]:
+    """Return (year, filename) for each season review page in the site, newest first."""
+    reviews = []
+    for path in glob.glob(os.path.join(site_dir, "*-season-review.html")):
+        name = os.path.basename(path)
+        year = name.split("-", 1)[0]
+        if year.isdigit():
+            reviews.append((year, name))
+    return sorted(reviews, reverse=True)
+
+
+def build_review_section(reviews: list[tuple[str, str]]) -> str:
+    if not reviews:
+        return ""
+    year, name = reviews[0]
+    earlier = ""
+    if len(reviews) > 1:
+        links = ", ".join(f'<a href="{n}">{y} season review</a>' for y, n in reviews[1:])
+        earlier = f"\n    <p>Earlier reviews: {links}.</p>"
+    return f"""
+  <section class="review-callout" aria-labelledby="season-review-heading">
+    <h2 id="season-review-heading">{year} season review</h2>
+    <p>How the dashboard's {year} outputs compared with the cases Colorado reported, the evidence for
+    that comparison, and what should change for the next season.</p>
+    <p><a class="btn" href="{name}">Read the {year} season review</a></p>{earlier}
+  </section>
+"""
+
+
 def _build_card(html_path: str, archive: bool = False) -> str:
     stem = os.path.splitext(os.path.basename(html_path))[0]
     meta = NOTEBOOK_META.get(stem, {
@@ -232,6 +261,7 @@ def build_index() -> None:
     current_cards_html, archive_cards_html = build_notebook_cards(html_files)
     last_fetched = get_last_fetched()
     reliability_html = build_reliability_section(get_reliability_report())
+    review_html = build_review_section(find_season_reviews(SITE_DIR))
 
     archive_section = ""
     if archive_cards_html:
@@ -296,6 +326,18 @@ def build_index() -> None:
       margin-bottom: 2rem;
       font-size: 0.9rem;
     }}
+
+    .review-callout {{
+      background: white;
+      border: 1px solid #2b6cb0;
+      border-left-width: 6px;
+      border-radius: 6px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+    }}
+    .review-callout h2 {{ font-size: 1.2rem; color: #1a365d; margin-bottom: 0.4rem; }}
+    .review-callout p {{ margin-bottom: 0.6rem; }}
+    .review-callout .btn {{ font-size: 0.95rem; }}
 
     .data-note {{
       background: #fffbeb;
@@ -434,7 +476,7 @@ def build_index() -> None:
 </header>
 
 <div class="container">
-
+{review_html}
   <div class="alert">
     <strong>About this dashboard:</strong> Rebuilt daily from March to November and on the 1st of each month from December to February. NASA POWER and Open-Meteo climate data and
     iNaturalist citizen-science observations are fetched on each run, and so are Colorado West Nile virus
