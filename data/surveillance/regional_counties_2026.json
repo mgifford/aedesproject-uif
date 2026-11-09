@@ -68,7 +68,7 @@
       "population": 715522,
       "lat": 39.7392,
       "lon": -104.9903,
-      "tick_observations_ytd": 2,
+      "tick_observations_ytd": 0,
       "mosquito_observations_ytd": 0
     },
     {
@@ -107,7 +107,7 @@
       "population": 519572,
       "lat": 39.8729,
       "lon": -104.3373,
-      "tick_observations_ytd": 3,
+      "tick_observations_ytd": 0,
       "mosquito_observations_ytd": 0
     },
     {
@@ -120,7 +120,7 @@
       "population": 359066,
       "lat": 40.663,
       "lon": -105.3972,
-      "tick_observations_ytd": 1,
+      "tick_observations_ytd": 0,
       "mosquito_observations_ytd": 0
     },
     {
@@ -133,7 +133,7 @@
       "population": 328981,
       "lat": 40.5516,
       "lon": -104.3855,
-      "tick_observations_ytd": 1,
+      "tick_observations_ytd": 0,
       "mosquito_observations_ytd": 0
     },
     {
@@ -146,7 +146,7 @@
       "population": 326196,
       "lat": 40.0937,
       "lon": -105.3584,
-      "tick_observations_ytd": 3,
+      "tick_observations_ytd": 0,
       "mosquito_observations_ytd": 0
     },
     {
@@ -159,7 +159,7 @@
       "population": 730395,
       "lat": 38.8339,
       "lon": -104.8253,
-      "tick_observations_ytd": 2,
+      "tick_observations_ytd": 1,
       "mosquito_observations_ytd": 0
     },
     {
@@ -173,7 +173,7 @@
       "lat": 38.2544,
       "lon": -104.6091,
       "tick_observations_ytd": 0,
-      "mosquito_observations_ytd": 0
+      "mosquito_observations_ytd": 1
     },
     {
       "county": "Mesa",
@@ -185,7 +185,7 @@
       "population": 155998,
       "lat": 39.0639,
       "lon": -108.5506,
-      "tick_observations_ytd": 2,
+      "tick_observations_ytd": 0,
       "mosquito_observations_ytd": 0
     },
     {
@@ -211,7 +211,7 @@
       "population": 328981,
       "lat": 40.5516,
       "lon": -104.3855,
-      "tick_observations_ytd": 1,
+      "tick_observations_ytd": 0,
       "mosquito_observations_ytd": 0
     }
   ],
@@ -234,5 +234,6 @@
       "Pueblo",
       "Fremont"
     ]
-  }
+  },
+  "inaturalist_counts_updated": "2026-11-09"
 }

@@ -1,6 +1,70 @@
 {
-  "fetched": "2026-11-02",
+  "fetched": "2026-11-09",
   "source": "iNaturalist API",
-  "count": 0,
-  "data": []
+  "count": 7,
+  "data": [
+    {
+      "id": 395128443,
+      "observed_on": "2026-08-26",
+      "taxon": "Aedes vexans",
+      "common_name": "Inland Floodwater Mosquito",
+      "lat": "39.0721472222",
+      "lon": "-108.5554222222",
+      "county": "Grand Avenue west of 10th Street (Strive), Grand Junction, CO 81501, USA"
+    },
+    {
+      "id": 381206109,
+      "observed_on": "2026-07-13",
+      "taxon": "Culex tarsalis",
+      "common_name": "Western Encephalitis Mosquito",
+      "lat": "40.4306781815",
+      "lon": "-105.0719197878",
+      "county": "Colorado, US"
+    },
+    {
+      "id": 379982354,
+      "observed_on": "2026-07-09",
+      "taxon": "Psorophora signipennis",
+      "common_name": "Mottled Mosquito",
+      "lat": "38.2780247771",
+      "lon": "-104.4830512628",
+      "county": "Pueblo, CO 81001, USA"
+    },
+    {
+      "id": 368361194,
+      "observed_on": "2026-06-04",
+      "taxon": "Aedes vexans",
+      "common_name": "Inland Floodwater Mosquito",
+      "lat": "39.9705212652",
+      "lon": "-104.7508004918",
+      "county": "Brighton, CO, US"
+    },
+    {
+      "id": 365499335,
+      "observed_on": "2026-05-26",
+      "taxon": "Culiseta inornata",
+      "common_name": "Winter Marsh Mosquito",
+      "lat": "38.8759283333",
+      "lon": "-104.7797083333",
+      "county": "Austin Pl, Colorado Springs, CO, US"
+    },
+    {
+      "id": 365198747,
+      "observed_on": "2026-05-25",
+      "taxon": "Culiseta incidens",
+      "common_name": "Cold Weather Mosquito",
+      "lat": "37.0685471667",
+      "lon": "-106.2434383333",
+      "county": "Rio Grande National Forest, Antonito, CO, US"
+    },
+    {
+      "id": 325644554,
+      "observed_on": "2025-11-09",
+      "taxon": "Culex tarsalis",
+      "common_name": "Western Encephalitis Mosquito",
+      "lat": "39.7974736731",
+      "lon": "-105.1857246459",
+      "county": "North Foothills, Golden, CO 80403, USA"
+    }
+  ]
 }
