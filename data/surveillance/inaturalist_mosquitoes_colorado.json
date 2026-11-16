@@ -1,7 +1,7 @@
 {
-  "fetched": "2026-11-09",
+  "fetched": "2026-11-16",
   "source": "iNaturalist API",
-  "count": 7,
+  "count": 6,
   "data": [
     {
       "id": 395128443,
@@ -56,15 +56,6 @@
       "lat": "37.0685471667",
       "lon": "-106.2434383333",
       "county": "Rio Grande National Forest, Antonito, CO, US"
-    },
-    {
-      "id": 325644554,
-      "observed_on": "2025-11-09",
-      "taxon": "Culex tarsalis",
-      "common_name": "Western Encephalitis Mosquito",
-      "lat": "39.7974736731",
-      "lon": "-105.1857246459",
-      "county": "North Foothills, Golden, CO 80403, USA"
     }
   ]
 }
