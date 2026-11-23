@@ -1,11 +1,11 @@
 {
-  "fetched": "2026-11-16",
-  "retrieved_at": "2026-11-16T16:34:35+00:00",
+  "fetched": "2026-11-23",
+  "retrieved_at": "2026-11-23T18:50:05+00:00",
   "source": "CDC NNDSS (provisional weekly)",
   "source_url": "https://data.cdc.gov/resource/x9gk-5huc.json",
   "source_page": "https://data.cdc.gov/NNDSS/NNDSS-Weekly-Data/x9gk-5huc",
   "static": false,
-  "latest_observation": "2026-W44",
+  "latest_observation": "2026-W45",
   "notes": "Provisional West Nile virus disease cases (neuroinvasive and non-neuroinvasive) reported to CDC by Colorado, by MMWR week of report, not week of illness onset. Counts are revised as late reports arrive. cumulative is the year-to-date count as published that week; 0 means CDC reported no cases and null means not available.",
   "data": [
     {
@@ -1523,6 +1523,12 @@
     {
       "year": 2026,
       "week": 44,
+      "week_cases": 0,
+      "cumulative": 72
+    },
+    {
+      "year": 2026,
+      "week": 45,
       "week_cases": 0,
       "cumulative": 72
     }
